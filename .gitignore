@@ -1,0 +1,31 @@
+# Next.js and Node.js
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+.env.*.local
+
+# Build logs and tools
+prebuild-next.log
+prebuild-next.pid
+tsconfig.tsbuildinfo
+node-compile-cache/
+v0-metrics.sh
+
+# Vercel
+.vercel
+
+# Sandbox internal files
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/

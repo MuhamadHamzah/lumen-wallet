@@ -1,0 +1,24 @@
+[package]
+name = "custom-token"
+version = "0.1.0"
+edition = "2021"
+description = "A SEP-41 compatible custom token contract for Soroban (Stellar smart contracts)."
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+soroban-sdk = "22"
+
+[dev-dependencies]
+soroban-sdk = { version = "22", features = ["testutils"] }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
