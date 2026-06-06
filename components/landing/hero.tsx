@@ -96,17 +96,17 @@ export function Hero({ onConnectClick }: HeroProps) {
 
             {/* Stats */}
             <FadeIn delay={550}>
-              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border/30">
+              <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-8 border-t border-border/30">
                 {[
                   { value: "~5s", label: "Settlement" },
                   { value: "< $0.01", label: "Per Transaction" },
                   { value: "100%", label: "Non-custodial" },
                 ].map((stat, i) => (
                   <div key={stat.label} className="group cursor-default">
-                    <div className="text-2xl font-bold text-foreground group-hover:text-purple-400 transition-colors duration-300">
+                    <div className="text-lg sm:text-2xl font-bold text-foreground group-hover:text-purple-400 transition-colors duration-300">
                       {stat.value}
                     </div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                   </div>
                 ))}
               </div>

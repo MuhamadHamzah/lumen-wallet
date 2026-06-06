@@ -30,10 +30,11 @@ export function LandingShell({ children, onConnectClick }: LandingShellProps) {
             {onConnectClick && (
               <Button
                 onClick={onConnectClick}
-                className="rounded-xl px-6 py-2 font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white border-0 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-xl px-3 sm:px-6 py-2 font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white border-0 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-[1.02]"
                 size="sm"
               >
-                Connect Wallet
+                <span className="hidden sm:inline">Connect Wallet</span>
+                <span className="inline sm:hidden">Connect</span>
               </Button>
             )}
           </div>

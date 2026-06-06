@@ -43,7 +43,7 @@ export function BalanceCard() {
   }
 
   return (
-    <Card className="overflow-hidden border border-border/50 bg-gradient-to-br from-card via-card to-muted/20 p-8 shadow-lg">
+    <Card className="overflow-hidden border border-border/50 bg-gradient-to-br from-card via-card to-muted/20 p-5 sm:p-8 shadow-lg">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">

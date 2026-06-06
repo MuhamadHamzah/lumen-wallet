@@ -17,7 +17,7 @@ export function RecentTransactions() {
   )
 
   return (
-    <Card className="border border-border/50 bg-gradient-to-br from-card via-card to-muted/20 p-8 shadow-lg">
+    <Card className="border border-border/50 bg-gradient-to-br from-card via-card to-muted/20 p-5 sm:p-8 shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold">Recent Activity</h2>
         <Link

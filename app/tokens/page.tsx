@@ -61,19 +61,21 @@ export default function TokensPage() {
                 <p className="text-sm font-semibold mb-1">Add Custom Token</p>
                 <p className="text-xs text-muted-foreground">Enter a Soroban token contract ID to track it</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   placeholder="CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                   value={contractId}
                   onChange={(e) => setContractId(e.target.value.trim())}
                   className="font-mono text-sm flex-1"
                 />
-                <Button onClick={handleAddToken} disabled={!contractId.trim()}>
-                  Add
-                </Button>
-                <Button variant="outline" onClick={() => { setIsAdding(false); setContractId("") }}>
-                  Cancel
-                </Button>
+                <div className="flex gap-2 sm:contents">
+                  <Button onClick={handleAddToken} disabled={!contractId.trim()} className="flex-1">
+                    Add
+                  </Button>
+                  <Button variant="outline" onClick={() => { setIsAdding(false); setContractId("") }} className="flex-1">
+                    Cancel
+                  </Button>
+                </div>
               </div>
             </div>
           </Card>
@@ -208,11 +210,11 @@ function TokenCard({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/40">
+        <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-border/40">
           <Button
             size="sm"
             variant="outline"
-            className="gap-1.5 flex-1 bg-transparent"
+            className="gap-1.5 flex-1 bg-transparent min-w-[80px]"
             onClick={() => setActionMode("transfer")}
           >
             <ArrowUpRight className="size-3.5" />
@@ -222,7 +224,7 @@ function TokenCard({
             <Button
               size="sm"
               variant="outline"
-              className="gap-1.5 flex-1 bg-transparent"
+              className="gap-1.5 flex-1 bg-transparent min-w-[80px]"
               onClick={() => setActionMode("mint")}
             >
               <Plus className="size-3.5" />
@@ -242,7 +244,7 @@ function TokenCard({
           <Button
             size="sm"
             variant="ghost"
-            className="text-destructive hover:text-destructive shrink-0"
+            className="text-destructive hover:text-destructive shrink-0 flex-1 sm:flex-initial"
             onClick={onRemove}
           >
             Remove
