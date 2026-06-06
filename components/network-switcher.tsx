@@ -23,7 +23,7 @@ export function NetworkSwitcher() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg border border-border bg-card/60 hover:bg-card/90 transition-all duration-300 text-xs font-medium shadow-sm hover-lift glass cursor-pointer"
+        className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-3 py-1.5 rounded-lg border border-border bg-card/60 hover:bg-card/90 transition-all duration-300 text-xs font-medium shadow-sm hover-lift glass cursor-pointer"
         aria-label="Select stellar network"
       >
         <Globe className={`size-3.5 transition-transform duration-500 ${isOpen ? 'rotate-180 text-primary' : 'text-muted-foreground'}`} />
@@ -32,11 +32,8 @@ export function NetworkSwitcher() {
           <span className="hidden sm:inline">
             {network === "mainnet" ? "Stellar Mainnet" : "Stellar Testnet"}
           </span>
-          <span className="inline sm:hidden font-semibold">
-            {network === "mainnet" ? "Mainnet" : "Testnet"}
-          </span>
         </span>
-        <ChevronDown className={`size-3 text-muted-foreground transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown className={`size-3 text-muted-foreground transition-transform duration-300 ${isOpen ? "rotate-180" : ""} hidden sm:block`} />
       </button>
 
       {isOpen && (
