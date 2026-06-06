@@ -113,7 +113,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {/* Mobile header */}
           <header className="mb-6 flex items-center justify-between lg:hidden rounded-xl border border-border/30 bg-card/50 backdrop-blur px-4 py-3">
             <Logo />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <NetworkSwitcher />
               <ThemeToggle />
               <Button variant="ghost" size="icon" aria-label="Disconnect" onClick={disconnect} className="text-muted-foreground hover:text-foreground">

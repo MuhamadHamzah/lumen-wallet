@@ -24,7 +24,7 @@ export function LandingShell({ children, onConnectClick }: LandingShellProps) {
       <header className="sticky top-0 z-40 border-b border-border/50 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Logo />
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <NetworkSwitcher />
             <ThemeToggle />
             {onConnectClick && (
