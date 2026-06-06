@@ -613,56 +613,58 @@ export function MultisigManager() {
       </div>
 
       {/* Pill Navigation Tabs */}
-      <div className="flex gap-2 p-1 bg-muted/30 border border-border/40 rounded-xl w-fit">
-        <button
-          onClick={() => setActiveTab("overview")}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-            activeTab === "overview" 
-              ? "bg-card text-foreground shadow-sm border border-border/50" 
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Users className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-          Overview
-        </button>
-        <button
-          onClick={() => setActiveTab("proposals")}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all relative ${
-            activeTab === "proposals" 
-              ? "bg-card text-foreground shadow-sm border border-border/50" 
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <FileText className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-          Proposals
-          {proposals.filter(p => p.status === "pending").length > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-              {proposals.filter(p => p.status === "pending").length}
-            </span>
-          )}
-        </button>
-        <button
-          onClick={() => setActiveTab("create")}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-            activeTab === "create" 
-              ? "bg-card text-foreground shadow-sm border border-border/50" 
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Play className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-          Create Tx
-        </button>
-        <button
-          onClick={() => setActiveTab("setup")}
-          className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
-            activeTab === "setup" 
-              ? "bg-card text-foreground shadow-sm border border-border/50" 
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Lock className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-          Setup Safe
-        </button>
+      <div className="w-full overflow-x-auto no-scrollbar pb-1">
+        <div className="flex gap-2 p-1 bg-muted/30 border border-border/40 rounded-xl w-fit min-w-max">
+          <button
+            onClick={() => setActiveTab("overview")}
+            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+              activeTab === "overview" 
+                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Users className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+            Overview
+          </button>
+          <button
+            onClick={() => setActiveTab("proposals")}
+            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all relative ${
+              activeTab === "proposals" 
+                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <FileText className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+            Proposals
+            {proposals.filter(p => p.status === "pending").length > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {proposals.filter(p => p.status === "pending").length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab("create")}
+            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+              activeTab === "create" 
+                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Play className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+            Create Tx
+          </button>
+          <button
+            onClick={() => setActiveTab("setup")}
+            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+              activeTab === "setup" 
+                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Lock className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+            Setup Safe
+          </button>
+        </div>
       </div>
 
       {/* Overview Tab Content */}
@@ -706,7 +708,7 @@ export function MultisigManager() {
             <Separator />
 
             {/* Threshold Requirements Card */}
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
               <div className="p-3 bg-muted/40 rounded-xl border border-border/20">
                 <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Low</div>
                 <div className="text-xl font-extrabold">{accountDetails.thresholds.low_threshold}</div>

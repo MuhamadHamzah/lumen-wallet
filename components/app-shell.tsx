@@ -4,13 +4,19 @@ import type { ReactNode } from "react"
 import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw } from "lucide-react"
+import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, MoreHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWallet } from "@/components/wallet-provider"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { NetworkSwitcher } from "@/components/network-switcher"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -18,6 +24,19 @@ const NAV = [
   { href: "/receive", label: "Receive", icon: ArrowDownLeft },
   { href: "/swap", label: "Swap", icon: RefreshCw },
   { href: "/tokens", label: "Tokens", icon: Coins },
+  { href: "/history", label: "History", icon: History },
+  { href: "/multisig", label: "Multisig Safe", icon: ShieldCheck },
+]
+
+const MOBILE_PRIMARY = [
+  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/send", label: "Send", icon: ArrowUpRight },
+  { href: "/swap", label: "Swap", icon: RefreshCw },
+  { href: "/tokens", label: "Tokens", icon: Coins },
+]
+
+const MOBILE_SECONDARY = [
+  { href: "/receive", label: "Receive", icon: ArrowDownLeft },
   { href: "/history", label: "History", icon: History },
   { href: "/multisig", label: "Multisig Safe", icon: ShieldCheck },
 ]
@@ -116,7 +135,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-6xl items-center justify-around px-2 py-1.5">
-          {NAV.map((item) => {
+          {MOBILE_PRIMARY.map((item) => {
             const active = pathname === item.href
             return (
               <Link
@@ -132,6 +151,42 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             )
           })}
+
+          {/* More menu dropdown for secondary tabs */}
+          {(() => {
+            const isSecondaryActive = MOBILE_SECONDARY.some((item) => pathname === item.href)
+            return (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "flex flex-1 flex-col items-center gap-1 rounded-md py-1.5 text-xs font-medium transition-colors outline-none cursor-pointer",
+                      isSecondaryActive ? "text-primary" : "text-muted-foreground",
+                    )}
+                  >
+                    <MoreHorizontal className="size-5" />
+                    <span>More</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur border-border/50">
+                  {MOBILE_SECONDARY.map((item) => (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 text-sm cursor-pointer w-full",
+                          pathname === item.href ? "text-primary font-semibold" : "text-muted-foreground"
+                        )}
+                      >
+                        <item.icon className="size-4 animate-in fade-in zoom-in duration-200" />
+                        {item.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )
+          })()}
         </div>
       </nav>
     </div>

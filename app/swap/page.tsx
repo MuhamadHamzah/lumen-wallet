@@ -499,7 +499,7 @@ export default function SwapPage() {
                     }
                   }}
                 >
-                  <SelectTrigger className="w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
+                  <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -612,7 +612,7 @@ export default function SwapPage() {
                     }
                   }}
                 >
-                  <SelectTrigger className="w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
+                  <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
