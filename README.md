@@ -87,6 +87,8 @@ CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 
 ## 🛠️ Tech Stack
 
+![Alt Text](public/frontend.png)
+
 | Category | Technology |
 |----------|-----------|
 | **Framework** | Next.js 16 (App Router, Server Components) |
