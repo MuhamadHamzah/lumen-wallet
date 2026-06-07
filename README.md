@@ -54,6 +54,8 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 ```
 
+![Alt Text](public/smartcontract.png)
+
 | Detail | Value |
 |--------|-------|
 | **Token Name** | Lumen Token |
