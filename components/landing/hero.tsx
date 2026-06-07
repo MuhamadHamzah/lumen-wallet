@@ -199,7 +199,6 @@ export function Hero({ onConnectClick }: HeroProps) {
                     </span>
                     Connected to Stellar
                   </span>
-                  <span className="font-mono">Testnet</span>
                 </div>
               </div>
             </div>
