@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import useSWR from "swr"
 import { Coins, Plus, Search, ExternalLink, ArrowUpRight, Loader2 } from "lucide-react"
 import { toast } from "sonner"
@@ -19,6 +19,33 @@ export default function TokensPage() {
   const [trackedContracts, setTrackedContracts] = useState<string[]>([])
   const [isAdding, setIsAdding] = useState(false)
 
+  // Load tracked contracts from localStorage on mount or network change
+  useEffect(() => {
+    const key = `lumen_wallet_tracked_tokens_${network}`
+    const stored = localStorage.getItem(key)
+    if (stored) {
+      try {
+        setTrackedContracts(JSON.parse(stored))
+      } catch (e) {
+        console.error("Failed to parse stored tokens", e)
+      }
+    } else {
+      // Default tokens
+      const isMainnet = network === "mainnet" || network === "public"
+      const defaultToken = isMainnet
+        ? "CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT"
+        : "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD"
+      setTrackedContracts([defaultToken])
+    }
+  }, [network])
+
+  // Save to localStorage when trackedContracts changes
+  const saveTrackedContracts = (newContracts: string[]) => {
+    setTrackedContracts(newContracts)
+    const key = `lumen_wallet_tracked_tokens_${network}`
+    localStorage.setItem(key, JSON.stringify(newContracts))
+  }
+
   function handleAddToken() {
     const id = contractId.trim()
     if (!isValidContractId(id)) {
@@ -29,7 +56,7 @@ export default function TokensPage() {
       toast.error("This token is already being tracked.")
       return
     }
-    setTrackedContracts((prev) => [...prev, id])
+    saveTrackedContracts([...trackedContracts, id])
     setContractId("")
     setIsAdding(false)
     toast.success("Token added!")
@@ -108,7 +135,7 @@ export default function TokensPage() {
                 publicKey={publicKey}
                 network={network}
                 onRemove={() => {
-                  setTrackedContracts((prev) => prev.filter((c) => c !== cid))
+                  saveTrackedContracts(trackedContracts.filter((c) => c !== cid))
                   toast.success("Token removed")
                 }}
               />

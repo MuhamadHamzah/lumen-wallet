@@ -48,10 +48,10 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ## 📜 Smart Contract
 
-### Testnet Smart Contract ID
+### Mainnet Smart Contract ID
 
 ```
-CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD
+CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 ```
 
 | Detail | Value |
@@ -59,10 +59,9 @@ CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD
 | **Token Name** | Lumen Token |
 | **Token Symbol** | LMT |
 | **Decimals** | 7 |
-| **Network** | Stellar Testnet |
-| **Type** | Stellar Asset Contract (SAC) — SEP-41 |
-| **Issuer** | `GD3FDLOWVNC4LQY6V2FDF5KSCBJK5FPXALFZQGGR2OLBFRJTMGDJU5U7` |
-| **Explorer** | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD) |
+| **Network** | Stellar Mainnet |
+| **Type** | Custom Soroban Token — SEP-41 |
+| **Explorer** | [View on Stellar Expert](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT) |
 
 ### Contract Interface
 

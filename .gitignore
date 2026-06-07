@@ -30,3 +30,7 @@ __v0_jsx-dev-runtime.ts
 .snowflake/
 .v0-trash/
 .vercel
+
+# Rust cargo build files
+contracts/**/target/
+target/
