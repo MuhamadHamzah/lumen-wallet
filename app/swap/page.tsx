@@ -226,7 +226,7 @@ export default function SwapPage() {
     const loadingToast = toast.loading(`Opening trustline for ${destAsset.code}...`)
 
     try {
-      if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+      if (walletType === "kit" || secretKey.startsWith("kit:")) {
         // Prepare changeTrust XDR
         const res = await fetch("/api/trustline", {
           method: "POST",
@@ -239,28 +239,30 @@ export default function SwapPage() {
         }
         const { unsignedTxXdr } = await res.json()
 
-        // Sign with Freighter
-        const freighterApi = await import("@stellar/freighter-api")
+        // Sign with StellarWalletsKit
+        const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
         const networkPassphrase = network === "mainnet"
           ? "Public Global Stellar Network ; September 2015"
           : "Test SDF Network ; September 2015"
         
-        const signedResult = await freighterApi.signTransaction(unsignedTxXdr, { networkPassphrase })
-        const signedXdr = typeof signedResult === "string" ? signedResult : signedResult.signedTxXdr
+        const { signedTxXdr } = await StellarWalletsKit.signTransaction(unsignedTxXdr, {
+          networkPassphrase,
+          address: publicKey || undefined,
+        })
 
-        if (!signedXdr) throw new Error("Transaction signature rejected by user.")
+        if (!signedTxXdr) throw new Error("Transaction signature rejected by user.")
 
         // Submit back
         const submitRes = await fetch("/api/trustline", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ signedXdr, network }),
+          body: JSON.stringify({ signedXdr: signedTxXdr, network }),
         })
         if (!submitRes.ok) {
           const errData = await submitRes.json().catch(() => ({}))
           throw new Error(errData.error || "Failed to submit trustline transaction.")
         }
-      } else {
+      } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
         // Direct execution (Manual/Secret Key)
         await createTrustline({
           secret: secretKey,
@@ -292,7 +294,7 @@ export default function SwapPage() {
     const loadingToast = toast.loading(`Executing swap of ${sourceAmount} ${sourceAsset.code}...`)
 
     try {
-      if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+      if (walletType === "kit" || secretKey.startsWith("kit:")) {
         // 1. Prepare swap XDR
         const res = await fetch("/api/swap", {
           method: "POST",
@@ -315,22 +317,24 @@ export default function SwapPage() {
         }
         const { unsignedTxXdr } = await res.json()
 
-        // 2. Sign with Freighter
-        const freighterApi = await import("@stellar/freighter-api")
+        // 2. Sign with StellarWalletsKit
+        const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
         const networkPassphrase = network === "mainnet"
           ? "Public Global Stellar Network ; September 2015"
           : "Test SDF Network ; September 2015"
         
-        const signedResult = await freighterApi.signTransaction(unsignedTxXdr, { networkPassphrase })
-        const signedXdr = typeof signedResult === "string" ? signedResult : signedResult.signedTxXdr
+        const { signedTxXdr } = await StellarWalletsKit.signTransaction(unsignedTxXdr, {
+          networkPassphrase,
+          address: publicKey || undefined,
+        })
 
-        if (!signedXdr) throw new Error("Transaction signature rejected by user.")
+        if (!signedTxXdr) throw new Error("Transaction signature rejected by user.")
 
         // 3. Submit
         const submitRes = await fetch("/api/swap", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ signedXdr, network }),
+          body: JSON.stringify({ signedXdr: signedTxXdr, network }),
         })
         if (!submitRes.ok) {
           const errData = await submitRes.json().catch(() => ({}))
@@ -338,7 +342,7 @@ export default function SwapPage() {
         }
         const { hash } = await submitRes.json()
         setTxHash(hash)
-      } else {
+      } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
         // Direct execution (Manual/Secret Key)
         const result = await executeSwap({
           secret: secretKey,

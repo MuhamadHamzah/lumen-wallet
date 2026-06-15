@@ -177,7 +177,14 @@ export function MultisigManager() {
         toast.info("Signing and broadcasting transaction...")
         let signedXdr = ""
         
-        if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+        if (walletType === "kit" || secretKey.startsWith("kit:")) {
+          const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+          const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+            networkPassphrase: passphrase,
+            address: publicKey || undefined,
+          })
+          signedXdr = signedResult.signedTxXdr
+        } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
           const freighterApi = await import("@stellar/freighter-api")
           const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
             networkPassphrase: passphrase,
@@ -208,7 +215,14 @@ export function MultisigManager() {
         toast.info("Threshold not met. Creating signature proposal instead...")
         let signedXdr = ""
         
-        if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+        if (walletType === "kit" || secretKey.startsWith("kit:")) {
+          const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+          const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+            networkPassphrase: passphrase,
+            address: publicKey || undefined,
+          })
+          signedXdr = signedResult.signedTxXdr
+        } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
           const freighterApi = await import("@stellar/freighter-api")
           const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
             networkPassphrase: passphrase,
@@ -292,7 +306,14 @@ export function MultisigManager() {
         toast.info("Signing and broadcasting transaction...")
         let signedXdr = ""
         
-        if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+        if (walletType === "kit" || secretKey.startsWith("kit:")) {
+          const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+          const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+            networkPassphrase: passphrase,
+            address: publicKey || undefined,
+          })
+          signedXdr = signedResult.signedTxXdr
+        } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
           const freighterApi = await import("@stellar/freighter-api")
           const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
             networkPassphrase: passphrase,
@@ -321,7 +342,14 @@ export function MultisigManager() {
         toast.info("Threshold not met. Creating signature proposal instead...")
         let signedXdr = ""
         
-        if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+        if (walletType === "kit" || secretKey.startsWith("kit:")) {
+          const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+          const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+            networkPassphrase: passphrase,
+            address: publicKey || undefined,
+          })
+          signedXdr = signedResult.signedTxXdr
+        } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
           const freighterApi = await import("@stellar/freighter-api")
           const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
             networkPassphrase: passphrase,
@@ -419,7 +447,14 @@ export function MultisigManager() {
 
       // Sign with our connected wallet
       let signedXdr = ""
-      if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+      if (walletType === "kit" || secretKey.startsWith("kit:")) {
+        const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+        const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+          networkPassphrase: passphrase,
+          address: publicKey || undefined,
+        })
+        signedXdr = signedResult.signedTxXdr
+      } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
         const freighterApi = await import("@stellar/freighter-api")
         const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
           networkPassphrase: passphrase,
@@ -484,7 +519,14 @@ export function MultisigManager() {
 
       // 2. Add signature
       let signedXdr = ""
-      if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+      if (walletType === "kit" || secretKey.startsWith("kit:")) {
+        const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+        const signedResult = await StellarWalletsKit.signTransaction(tx.toEnvelope().toXDR("base64"), {
+          networkPassphrase: passphrase,
+          address: publicKey || undefined,
+        })
+        signedXdr = signedResult.signedTxXdr
+      } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
         const freighterApi = await import("@stellar/freighter-api")
         const signedResult = await freighterApi.signTransaction(tx.toEnvelope().toXDR("base64"), {
           networkPassphrase: passphrase,

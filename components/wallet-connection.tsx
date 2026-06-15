@@ -84,60 +84,29 @@ export function WalletConnection() {
     toast.success("Wallet connected successfully!")
   }, [generatedKeypair, setWallet])
 
-  // Freighter connection
-  const connectFreighter = useCallback(async () => {
+  // Connect with StellarWalletsKit
+  const connectStellarWallet = useCallback(async () => {
     try {
       setIsLoading(true)
       setError("")
 
-      // Use the official Freighter API package
-      const freighterApi = await import("@stellar/freighter-api")
+      const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+      const { address } = await StellarWalletsKit.authModal()
 
-      // Check if Freighter is installed
-      const isInstalled = await freighterApi.isConnected()
-      if (!isInstalled) {
-        throw new Error("Freighter extension not detected. Please install Freighter wallet extension.")
+      setWallet({ publicKey: address, secretKey: `kit:${address}` }, "kit")
+      toast.success("Wallet connected successfully!")
+    } catch (err: any) {
+      if (err?.message === "The user closed the modal.") {
+        return
       }
-
-      // Request access and get public key
-      const accessObj = await freighterApi.requestAccess()
-      if (accessObj.error) {
-        throw new Error(accessObj.error)
-      }
-
-      const publicKey = accessObj.address
-      if (!publicKey) {
-        throw new Error("Failed to retrieve public key from Freighter")
-      }
-
-      // For Freighter, we get the public key but signing is handled by the extension
-      // We'll store a marker that this is a Freighter wallet
-      setWallet({ publicKey, secretKey: `freighter:${publicKey}` }, "freighter")
-      toast.success("Connected with Freighter!")
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to connect Freighter"
+      const message = err instanceof Error ? err.message : (err?.message || "Failed to connect wallet")
       setError(message)
       toast.error(message)
-      console.error("[v0] Freighter connection error:", err)
+      console.error("[v0] StellarWalletsKit connection error:", err)
     } finally {
       setIsLoading(false)
     }
   }, [setWallet])
-
-  // WalletConnect connection
-  const connectWalletConnect = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError("")
-      toast.info("WalletConnect support coming soon!")
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to connect WalletConnect"
-      setError(message)
-      toast.error(message)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
 
   // Manual secret key connection
   const connectWithSecretKey = useCallback(async () => {
@@ -330,27 +299,15 @@ export function WalletConnection() {
           </div>
         </div>
 
-        {/* Freighter Button */}
+        {/* Connect Stellar Wallet Button */}
         <Button
-          onClick={connectFreighter}
+          onClick={connectStellarWallet}
           disabled={isLoading || isGenerating}
-          className="w-full h-12 text-base font-semibold"
+          className="w-full h-12 text-base font-semibold bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white border-0 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300"
           size="lg"
         >
           <Wallet className="mr-2 h-5 w-5" />
-          {isLoading ? "Connecting..." : "Connect with Freighter"}
-        </Button>
-
-        {/* WalletConnect Button */}
-        <Button
-          onClick={connectWalletConnect}
-          disabled={isLoading || isGenerating}
-          variant="outline"
-          className="w-full h-12 text-base font-semibold"
-          size="lg"
-        >
-          <Wallet className="mr-2 h-5 w-5" />
-          {isLoading ? "Connecting..." : "Connect with WalletConnect"}
+          {isLoading ? "Connecting..." : "Connect Stellar Wallet"}
         </Button>
 
         {/* Divider */}

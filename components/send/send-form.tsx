@@ -34,8 +34,72 @@ export function SendForm() {
     e.preventDefault()
     if (!canSubmit || !secretKey) return
 
-    // Freighter signing flow
-    if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
+    // StellarWalletsKit signing flow
+    if (walletType === "kit" || (secretKey && secretKey.startsWith("kit:"))) {
+      setLoading(true)
+      try {
+        // Step 1: Prepare transaction to get unsigned XDR from server
+        const resPrepare = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sender: publicKey, destination, amount, memo, network }),
+        })
+        if (!resPrepare.ok) {
+          const errData = await resPrepare.json().catch(() => ({}))
+          throw new Error(errData.error || `Prepare request failed with status ${resPrepare.status}`)
+        }
+        const { unsignedTxXdr } = await resPrepare.json()
+
+        // Step 2: Request user to sign via StellarWalletsKit
+        const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
+        const networkPassphrase = network === "mainnet"
+          ? "Public Global Stellar Network ; September 2015"
+          : "Test SDF Network ; September 2015"
+        const { signedTxXdr } = await StellarWalletsKit.signTransaction(unsignedTxXdr, {
+          networkPassphrase,
+          address: publicKey || undefined,
+        })
+
+        if (!signedTxXdr) {
+          throw new Error("Failed to retrieve signature from the wallet.")
+        }
+
+        // Step 3: Submit signed transaction XDR back to the server
+        const resSubmit = await fetch("/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ signedXdr: signedTxXdr, network }),
+        })
+        if (!resSubmit.ok) {
+          const errData = await resSubmit.json().catch(() => ({}))
+          throw new Error(errData.error || `Submission failed with status ${resSubmit.status}`)
+        }
+        const { hash } = await resSubmit.json()
+
+        setTxHash(hash)
+        toast.success("Payment sent successfully via wallet")
+        if (publicKey) {
+          mutate(["balance", publicKey, network])
+          mutate(["transactions", publicKey, network])
+        }
+      } catch (err: any) {
+        let msg = "Payment failed. Please try again."
+        if (err instanceof Error) {
+          msg = err.message
+        } else if (err && typeof err === "object") {
+          msg = err.message || err.error || JSON.stringify(err)
+        } else if (typeof err === "string") {
+          msg = err
+        }
+        toast.error(msg)
+      } finally {
+        setLoading(false)
+      }
+      return
+    }
+
+    // Freighter signing flow (legacy compatibility)
+    if (walletType === "freighter" || (secretKey && secretKey.startsWith("freighter:"))) {
       setLoading(true)
       try {
         // Step 1: Prepare transaction to get unsigned XDR from server

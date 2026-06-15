@@ -7,9 +7,9 @@ interface WalletState {
   secretKey: string | null
   isConnected: boolean
   isInitialized: boolean
-  walletType: "freighter" | "walletconnect" | "manual" | null
+  walletType: "freighter" | "walletconnect" | "manual" | "kit" | null
   network: "testnet" | "mainnet"
-  setWallet: (keys: { publicKey: string; secretKey: string }, walletType?: "freighter" | "walletconnect" | "manual") => void
+  setWallet: (keys: { publicKey: string; secretKey: string }, walletType?: "freighter" | "walletconnect" | "manual" | "kit") => void
   setNetwork: (network: "testnet" | "mainnet") => void
   disconnect: () => void
 }
@@ -20,7 +20,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   // Wallet credentials persisted to localStorage.
   const [publicKey, setPublicKey] = useState<string | null>(null)
   const [secretKey, setSecretKey] = useState<string | null>(null)
-  const [walletType, setWalletType] = useState<"freighter" | "walletconnect" | "manual" | null>(null)
+  const [walletType, setWalletType] = useState<"freighter" | "walletconnect" | "manual" | "kit" | null>(null)
   const [network, setNetworkState] = useState<"testnet" | "mainnet">("testnet")
   const [isInitialized, setIsInitialized] = useState(false)
 
@@ -28,9 +28,26 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("lumen_network")
+      let currentNetwork: "testnet" | "mainnet" = "testnet"
       if (saved === "mainnet" || saved === "testnet") {
         setNetworkState(saved)
+        currentNetwork = saved
       }
+
+      // Initialize StellarWalletsKit
+      const initKit = async () => {
+        try {
+          const { StellarWalletsKit, Networks } = await import("@creit.tech/stellar-wallets-kit")
+          const { defaultModules } = await import("@creit.tech/stellar-wallets-kit/modules/utils")
+          StellarWalletsKit.init({
+            modules: defaultModules(),
+            network: currentNetwork === "testnet" ? Networks.TESTNET : Networks.PUBLIC,
+          })
+        } catch (e) {
+          console.error("Failed to initialize StellarWalletsKit:", e)
+        }
+      }
+      initKit()
 
       const savedPublicKey = localStorage.getItem("lumen_publicKey")
       const savedSecretKey = localStorage.getItem("lumen_secretKey")
@@ -39,7 +56,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       if (savedPublicKey && savedSecretKey) {
         setPublicKey(savedPublicKey)
         setSecretKey(savedSecretKey)
-        if (savedWalletType === "freighter" || savedWalletType === "walletconnect" || savedWalletType === "manual") {
+        if (
+          savedWalletType === "freighter" ||
+          savedWalletType === "walletconnect" ||
+          savedWalletType === "manual" ||
+          savedWalletType === "kit"
+        ) {
           setWalletType(savedWalletType)
         }
       }
@@ -47,7 +69,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  const setWallet = useCallback((keys: { publicKey: string; secretKey: string }, type: "freighter" | "walletconnect" | "manual" = "manual") => {
+  const setWallet = useCallback((keys: { publicKey: string; secretKey: string }, type: "freighter" | "walletconnect" | "manual" | "kit" = "manual") => {
     setPublicKey(keys.publicKey)
     setSecretKey(keys.secretKey)
     setWalletType(type)
@@ -62,6 +84,10 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setNetworkState(net)
     if (typeof window !== "undefined") {
       localStorage.setItem("lumen_network", net)
+      // Update StellarWalletsKit network
+      import("@creit.tech/stellar-wallets-kit").then(({ StellarWalletsKit, Networks }) => {
+        StellarWalletsKit.setNetwork(net === "testnet" ? Networks.TESTNET : Networks.PUBLIC)
+      }).catch((e) => console.error("Failed to update kit network:", e))
     }
   }, [])
 
@@ -73,8 +99,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem("lumen_publicKey")
       localStorage.removeItem("lumen_secretKey")
       localStorage.removeItem("lumen_walletType")
+      
+      if (walletType === "kit") {
+        import("@creit.tech/stellar-wallets-kit").then(({ StellarWalletsKit }) => {
+          StellarWalletsKit.disconnect().catch((e) => console.error("Failed to disconnect kit:", e))
+        }).catch((e) => console.error("Failed to load kit for disconnect:", e))
+      }
     }
-  }, [])
+  }, [walletType])
 
   return (
     <WalletContext.Provider
