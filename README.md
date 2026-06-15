@@ -46,6 +46,25 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ---
 
+## 📸 Screenshots
+
+### Wallet Connected & Balance Displayed
+> Dashboard showing wallet connected state with public address, XLM balance, and testnet indicator.
+
+![Wallet Connected & Balance](public/screenshots/wallet-connected.png)
+
+### Successful Testnet Transaction
+> Payment sent successfully via Freighter on Stellar Testnet, with transaction hash and confirmation.
+
+![Successful Transaction](public/screenshots/transaction-success.png)
+
+### Transaction History
+> Complete transaction history showing all sent and received payments with status indicators.
+
+![Transaction History](public/screenshots/transaction-history.png)
+
+---
+
 ## 📜 Smart Contract
 
 ### Mainnet Smart Contract ID
