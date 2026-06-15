@@ -5,7 +5,8 @@
 ![Soroban](https://img.shields.io/badge/Soroban-Smart%20Contract-purple)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Live Demo**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)
+> **Live Demo**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)  
+> **Demo Video (1-2 Min)**: `[USER_TO_REPLACE_WITH_YOUR_DEMO_VIDEO_LINK]` *(e.g. YouTube or Loom link)*
 
 Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blockchain network. It supports native XLM payments, Soroban smart contract token management, built-in DEX swap trading via Stellar Path Payments, multi-signature account management, and seamless network switching between Testnet and Mainnet — all wrapped in a sleek, glassmorphic UI.
 
@@ -62,6 +63,11 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 > Complete transaction history showing all sent and received payments with status indicators.
 
 ![Transaction History](public/screenshots/transaction-history.png)
+
+### Mobile Responsive UI
+> Mobile responsive view of the wallet interface on mobile device screen width.
+
+![Mobile Responsive UI](public/screenshots/mobile-responsive.png)
 
 ---
 
@@ -241,6 +247,34 @@ npx vercel --prod
 ```
 
 **Live URL**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+The project features an automated CI/CD pipeline implemented via **GitHub Actions** (`.github/workflows/ci.yml`).
+
+The pipeline runs on every push and pull request to the `main` branch, ensuring:
+- **Smart Contract Verification**: Automatically runs the Rust/Cargo tests for the Soroban smart contract.
+- **Frontend Quality Assurance**: Runs Next.js build compilation checks and lint checks.
+
+![CI/CD Pipeline Running](public/screenshots/cicd-pipeline.png)
+
+---
+
+## 🧪 Testing
+
+We have comprehensive unit tests written for the Soroban smart contract to ensure token security and proper behavior.
+
+### Running Tests Locally
+
+To run the smart contract unit tests:
+```bash
+cd contracts/custom-token
+cargo test
+```
+
+![Test Output](public/screenshots/test-output.png)
 
 ---
 
