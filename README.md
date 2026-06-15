@@ -74,7 +74,7 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD
 ```
 * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD)
-* **Transaction Hash of Contract Call (e.g. Mint/Transfer)**: `[USER_TO_REPLACE_WITH_YOUR_CONTRACT_CALL_TX_HASH]` *(Contoh: 8a6fdf3b...)*
+* **Transaction Hash of Contract Call (e.g. Mint/Transfer)**: [9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea](https://stellar.expert/explorer/testnet/tx/9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea)
 
 #### Mainnet Smart Contract ID
 ```
