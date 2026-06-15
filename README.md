@@ -67,22 +67,31 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ## 📜 Smart Contract
 
-### Mainnet Smart Contract ID
+### Deployed Contract Addresses
 
+#### Testnet Contract ID (Soroban SEP-41 Custom Token)
+```
+CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD
+```
+* **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD)
+* **Transaction Hash of Contract Call (e.g. Mint/Transfer)**: `[USER_TO_REPLACE_WITH_YOUR_CONTRACT_CALL_TX_HASH]` *(Contoh: 8a6fdf3b...)*
+
+#### Mainnet Smart Contract ID
 ```
 CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 ```
+* **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
 
-![Alt Text](public/smartcontract.png)
+---
 
-| Detail | Value |
-|--------|-------|
-| **Token Name** | Lumen Token |
-| **Token Symbol** | LMT |
-| **Decimals** | 7 |
-| **Network** | Stellar Mainnet |
-| **Type** | Custom Soroban Token — SEP-41 |
-| **Explorer** | [View on Stellar Expert](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT) |
+## 📸 Screenshots
+
+### Wallet Connection Options
+> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
+
+![Wallet Options](public/screenshots/wallet-options.png)
+
+### Wallet Connected & Balance Displayed
 
 ### Contract Interface
 
