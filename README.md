@@ -1,4 +1,4 @@
-# ✨ Lumen Wallet — Stellar Blockchain Wallet & DEX
+# ✨ Lumen Wallet: Stellar Blockchain Wallet & DEX
 
 ![Stellar](https://img.shields.io/badge/Stellar-Blockchain-blue?logo=stellar&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
@@ -104,17 +104,17 @@ CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 
 | Method | Auth | Description |
 |--------|------|-------------|
-| `initialize(admin, decimal, name, symbol)` | — | One-time token setup |
+| `initialize(admin, decimal, name, symbol)` | - | One-time token setup |
 | `mint(to, amount)` | admin | Create new tokens |
 | `transfer(from, to, amount)` | from | Move tokens between accounts |
-| `balance(id)` | — | Read account balance |
+| `balance(id)` | - | Read account balance |
 | `approve(from, spender, amount, expiration)` | from | Set spending allowance |
-| `allowance(from, spender)` | — | Read allowance |
+| `allowance(from, spender)` | - | Read allowance |
 | `transfer_from(spender, from, to, amount)` | spender | Spend via allowance |
 | `burn(from, amount)` | from | Destroy tokens |
 | `burn_from(spender, from, amount)` | spender | Burn via allowance |
 | `set_admin(new_admin)` | admin | Transfer admin rights |
-| `decimals()` / `name()` / `symbol()` | — | Read token metadata |
+| `decimals()` / `name()` / `symbol()` | - | Read token metadata |
 
 > **Note**: Amounts are integers in base units. A balance of `1000000000` on a token with `decimal = 7` represents `100.0` tokens. The wallet UI handles this conversion automatically.
 
@@ -294,7 +294,7 @@ GitHub: [@MuhamadHamzah](https://github.com/MuhamadHamzah)
 
 ## 🙏 Acknowledgments
 
-- [Stellar Development Foundation](https://stellar.org/) — Blockchain infrastructure
-- [Soroban](https://soroban.stellar.org/) — Smart contract platform
-- [shadcn/ui](https://ui.shadcn.com/) — UI component library
-- [Vercel](https://vercel.com/) — Deployment platform
+- [Stellar Development Foundation](https://stellar.org/) - Blockchain infrastructure
+- [Soroban](https://soroban.stellar.org/) - Smart contract platform
+- [shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Vercel](https://vercel.com/) - Deployment platform
