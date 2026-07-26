@@ -9,7 +9,7 @@
 > **Demo Video**: [https://youtu.be/S4Q9k6fgdDY](https://youtu.be/S4Q9k6fgdDY)  
 
 
-Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blockchain network. It supports native XLM payments, Soroban smart contract token management, built-in DEX swap trading via Stellar Path Payments, multi-signature account management, and seamless network switching between Testnet and Mainnet — all wrapped in a sleek, glassmorphic UI.
+Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blockchain network. It supports native XLM payments, Soroban smart contract token management, built-in DEX swap trading via Stellar Path Payments, multi-signature account management, and seamless network switching between Testnet and Mainnet all wrapped in a sleek, glassmorphic UI.
 
 ---
 
