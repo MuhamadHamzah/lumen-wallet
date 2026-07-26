@@ -29,7 +29,7 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 - **Automatic trustline management**: Detects and creates trustlines before swap execution
 - **Real-time price quotes**: Live pathfinding with estimated output amounts
 
-### 🪙 Soroban Smart Contract — Custom Token (SEP-41)
+### 🪙 Soroban Smart Contract Custom Token (SEP-41)
 - **SEP-41 compliant**: Full fungible token implementation deployed on Soroban
 - **Admin-controlled minting**: Mint new tokens with admin authorization
 - **Token transfers**: Transfer custom tokens between any Stellar accounts
