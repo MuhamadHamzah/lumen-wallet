@@ -48,7 +48,7 @@ export function BalanceCard() {
         <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase">Wallet Address</span>
         <div className="flex items-center gap-2 rounded-full border border-border bg-muted/30 px-3 py-1.5 w-fit">
           <Wallet className="size-4 text-muted-foreground" />
-          <span className="font-mono text-sm font-medium">{publicKey ? truncate(publicKey, 6, 6) : "—"}</span>
+          <span className="font-mono text-sm font-medium">{publicKey ? truncate(publicKey, 6, 6) : ""}</span>
           {publicKey && <CopyButton value={publicKey} label="Address copied" className="size-5" />}
         </div>
       </div>

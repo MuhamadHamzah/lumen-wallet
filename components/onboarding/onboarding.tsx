@@ -34,8 +34,8 @@ export function Onboarding() {
       )}>
         <span className="flex-1 text-center">
           {network === "mainnet"
-            ? "Stellar Mainnet — Transactions use real funds"
-            : "Stellar Testnet — For development & testing only"}
+            ? "Stellar Mainnet - Transactions use real funds"
+            : "Stellar Testnet - For development & testing only"}
         </span>
       </div>
 

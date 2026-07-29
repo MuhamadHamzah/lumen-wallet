@@ -165,7 +165,7 @@ export function TestnetBanner() {
   return (
     <div className="flex items-center justify-center gap-2 bg-amber-500/10 border-b border-amber-500/20 px-4 py-1.5 text-center text-xs font-medium text-amber-500">
       <span className="size-1.5 rounded-full bg-amber-500" />
-      Stellar Testnet — funds have no real value
+      Stellar Testnet - funds have no real value
     </div>
   )
 }

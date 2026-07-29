@@ -116,7 +116,7 @@ export default function TokensPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold">Stellar Lumens</p>
-              <p className="text-sm text-muted-foreground">XLM — Native asset</p>
+              <p className="text-sm text-muted-foreground">XLM (Native asset)</p>
             </div>
             <div className="text-right">
               <p className="text-xs text-muted-foreground">Native token</p>
