@@ -165,9 +165,9 @@ export function FeedbackAnalytics() {
               <CheckCircle className="size-4 text-primary" />
               Proof of Wallet Interactions
             </h2>
-            <div className="border border-border rounded-lg overflow-hidden">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-muted text-muted-foreground">
+            <div className="border border-border rounded-lg overflow-hidden max-h-[350px] overflow-y-auto">
+              <table className="w-full text-left text-xs relative">
+                <thead className="bg-muted text-muted-foreground sticky top-0 z-10">
                   <tr>
                     <th className="px-4 py-2 font-medium">Address</th>
                     <th className="px-4 py-2 font-medium">Action & Hash</th>
