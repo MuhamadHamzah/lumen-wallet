@@ -248,6 +248,33 @@ vercel logs --follow
 - [Vercel Docs](https://vercel.com/docs)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 
+## Deploying Escrow Contract (Soroban)
+
+To compile and deploy the LumenFlow Escrow smart contract to Stellar Testnet:
+
+### Prerequisites
+Make sure you have Rust, Cargo, and the `stellar` CLI installed.
+```bash
+# Verify stellar CLI is installed
+stellar --version
+```
+
+### Compile Contract
+```bash
+cd contracts/escrow
+cargo build --target wasm32-unknown-unknown --release
+```
+
+### Deploy to Stellar Testnet
+```bash
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/lumenflow_escrow.wasm \
+  --source default \
+  --network testnet
+```
+
+This command will output the **Contract ID** (e.g. `CC...`). Copy and paste this ID into the Lumen Wallet Escrow creation tab or your frontend configuration files.
+
 ## Contact & Support
 
 For issues and support:
@@ -257,6 +284,6 @@ For issues and support:
 
 ---
 
-**Last Updated**: June 2026  
+**Last Updated**: July 2026  
 **Maintained By**: Lumen Team  
-**Version**: 1.0.0
+**Version**: 1.1.0

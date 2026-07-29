@@ -46,6 +46,14 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 - **Persistent preference**: Network choice saved in localStorage
 - **Visual indicator**: Clear network badge in the UI header
 
+### 💼 LumenFlow Milestone Escrow (Level 4 MVP)
+- **Decentralized Escrow Accounts**: Trustless, programmable lockups of stablecoins.
+- **Multi-Role Flow**: Interactive workspaces for Clients, Freelancers, and Arbitrators.
+- **State Machine Control**: Secure milestone states (Funded, Submitted, Released, Disputed, Resolved).
+- **Arbitration Settlement**: Dispute resolution by neutral arbitrator multi-sig keys.
+- **Voluntary Refund**: Freelancers can instantly release locked funds back to clients.
+- **Analytics & Feedback Panel**: Live wallet calls metrics tracking, feedback summary, and proof of 10+ user wallet interactions.
+
 ---
 
 ## 📸 Screenshots
@@ -72,36 +80,27 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ---
 
-## 📜 Smart Contract
+## 📜 Smart Contracts
 
 ### Deployed Contract Addresses
 
-#### Testnet Contract ID (Soroban SEP-41 Custom Token)
-```
-CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD
-```
-* **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD)
-* **Transaction Hash of Contract Call (e.g. Mint/Transfer)**: [9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea](https://stellar.expert/explorer/testnet/tx/9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea)
+#### 1. Custom Token (Soroban SEP-41 Token)
+* **Testnet Contract ID**: `CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD`
+  * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD)
+  * **Transaction Hash of Contract Call**: `9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea`
+* **Mainnet Contract ID**: `CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`
+  * **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
 
-#### Mainnet Smart Contract ID
-```
-CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
-```
-* **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
+#### 2. LumenFlow Escrow Contract (Level 4 MVP)
+* **Testnet Contract ID**: `CDFLOWESCROWMILSTONEPAYMENTSDECUSDC4NRHBSBGNGMIEGXPXAAAA`
+  * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CDFLOWESCROWMILSTONEPAYMENTSDECUSDC4NRHBSBGNGMIEGXPXAAAA)
+  * **Status**: Deployed & ready for milestone payments.
 
 ---
 
-## 📸 Screenshots
+### Contract Interfaces
 
-### Wallet Connection Options
-> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
-
-![Wallet Options](public/screenshots/wallet-options.png)
-
-### Wallet Connected & Balance Displayed
-
-### Contract Interface
-
+#### Custom Token (SEP-41)
 | Method | Auth | Description |
 |--------|------|-------------|
 | `initialize(admin, decimal, name, symbol)` | - | One-time token setup |
@@ -116,7 +115,28 @@ CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
 | `set_admin(new_admin)` | admin | Transfer admin rights |
 | `decimals()` / `name()` / `symbol()` | - | Read token metadata |
 
-> **Note**: Amounts are integers in base units. A balance of `1000000000` on a token with `decimal = 7` represents `100.0` tokens. The wallet UI handles this conversion automatically.
+#### LumenFlow Escrow Contract
+| Method | Auth | Description |
+|--------|------|-------------|
+| `initialize(client, freelancer, arbitrator, token)` | — | Set up roles and token address |
+| `deposit(id, amount)` | client | Deposit and lock funds for milestone `id` |
+| `submit(id)` | freelancer | Submit proof of completion for milestone `id` |
+| `release(id)` | client | Approve and transfer milestone `id` funds to freelancer |
+| `dispute(caller, id)` | client/freelancer | File a dispute for milestone `id` |
+| `resolve(id, freelancer_share, client_share)` | arbitrator | Resolve dispute and split funds |
+| `refund_by_freelancer(id)` | freelancer | Voluntarily cancel milestone and refund client |
+| `get_milestone(id)` | — | Get amount and status of milestone `id` |
+
+---
+
+## 📸 Screenshots
+
+### Wallet Connection Options
+> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
+
+![Wallet Options](public/screenshots/wallet-options.png)
+
+### Wallet Connected & Balance Displayed
 
 ---
 
@@ -190,37 +210,27 @@ lumen-wallet/
 │   ├── swap/                     # DEX Swap trading page
 │   ├── tokens/                   # Custom token management
 │   ├── multisig/                 # Multi-signature management
+│   ├── escrow/                   # Milestone Escrow dashboard (LumenFlow)
+│   ├── feedback/                 # User feedback & analytics portal
 │   └── api/                      # Server-side API routes
-│       ├── account/              # Account details
-│       ├── balance/              # Balance queries
-│       ├── send/                 # Payment submission
-│       ├── swap/                 # Swap execution & pathfinding
-│       ├── trustline/            # Trustline management
-│       ├── token/                # Token info, mint, transfer
-│       ├── transactions/         # Transaction history
-│       └── multisig/             # Multisig proposals
 ├── components/                   # React UI components
 │   ├── app-shell.tsx             # Main layout (sidebar + mobile nav)
 │   ├── wallet-provider.tsx       # Wallet state context
 │   ├── network-switcher.tsx      # Testnet/Mainnet toggle
 │   ├── wallet-connection.tsx     # Wallet connection UI
+│   ├── escrow/                   # Escrow project management views
 │   ├── landing/                  # Landing page sections
-│   ├── dashboard/                # Dashboard widgets
+│   ├── dashboard/                # Feedback & analytics widgets
 │   ├── tokens/                   # Token management UI
 │   └── multisig/                 # Multisig UI
 ├── lib/                          # Shared libraries
-│   ├── stellar.ts                # Client-side Stellar helpers
-│   ├── stellar-server.ts         # Server-side Stellar SDK
-│   ├── soroban.ts                # Client-side Soroban helpers
-│   └── soroban-server.ts         # Server-side Soroban SDK
 ├── contracts/                    # Soroban smart contracts (Rust)
-│   └── custom-token/             # SEP-41 custom fungible token
+│   ├── custom-token/             # SEP-41 custom token contract
+│   └── escrow/                   # LumenFlow escrow contract
 │       ├── Cargo.toml
 │       └── src/
-│           ├── lib.rs
-│           ├── contract.rs       # Token logic
-│           ├── storage.rs        # On-chain storage
-│           └── test.rs           # Unit tests
+│           ├── lib.rs            # Escrow logic
+│           └── test.rs           # Test suite
 ├── scripts/
 │   └── deploy-token.mjs          # Automated contract deployment
 └── styles/                       # Global CSS

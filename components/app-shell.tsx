@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 import { useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, MoreHorizontal } from "lucide-react"
+import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, MoreHorizontal, DollarSign, BarChart2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWallet } from "@/components/wallet-provider"
 import { Logo } from "@/components/logo"
@@ -24,6 +24,8 @@ const NAV = [
   { href: "/receive", label: "Receive", icon: ArrowDownLeft },
   { href: "/swap", label: "Swap", icon: RefreshCw },
   { href: "/tokens", label: "Tokens", icon: Coins },
+  { href: "/escrow", label: "Escrow", icon: DollarSign },
+  { href: "/feedback", label: "Feedback & Analytics", icon: BarChart2 },
   { href: "/history", label: "History", icon: History },
   { href: "/multisig", label: "Multisig Safe", icon: ShieldCheck },
 ]
@@ -37,6 +39,8 @@ const MOBILE_PRIMARY = [
 
 const MOBILE_SECONDARY = [
   { href: "/receive", label: "Receive", icon: ArrowDownLeft },
+  { href: "/escrow", label: "Escrow", icon: DollarSign },
+  { href: "/feedback", label: "Feedback & Analytics", icon: BarChart2 },
   { href: "/history", label: "History", icon: History },
   { href: "/multisig", label: "Multisig Safe", icon: ShieldCheck },
 ]
