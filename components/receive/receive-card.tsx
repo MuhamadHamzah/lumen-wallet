@@ -20,7 +20,21 @@ export function ReceiveCard() {
 
         <div className="rounded-xl border border-border bg-white p-4 shadow-sm">
           {publicKey && (
-            <QRCodeSVG value={publicKey} size={200} level="M" bgColor="#ffffff" fgColor="#000000" />
+            <QRCodeSVG
+              value={publicKey}
+              size={200}
+              level="H"
+              bgColor="#ffffff"
+              fgColor="#000000"
+              imageSettings={{
+                src: "/logo_lumen.png",
+                x: undefined,
+                y: undefined,
+                height: 36,
+                width: 36,
+                excavate: true,
+              }}
+            />
           )}
         </div>
 
