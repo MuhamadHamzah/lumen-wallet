@@ -45,38 +45,42 @@ export function FeedbackAnalytics() {
     { address: "GDFR...LL9P", action: "Milestone Work Submit", txHash: "e78fca9bc81fec82abcf82bc08fa9fae8bc08fa9fae7a8fac9afca...", time: "6 days ago" }
   ]
 
-  // Pre-load mock feedback meeting 10+ user feedback summaries
+  // Load from local storage
   useEffect(() => {
+    // Feedback
     const savedFeedback = localStorage.getItem("lumenflow_feedback")
     if (savedFeedback) {
       setFeedbacks(JSON.parse(savedFeedback))
     } else {
-      const defaultFeedback: FeedbackItem[] = [
-        { id: "1", user: "GDCK...3P57", rating: 5, comment: "Decentralized escrows are a game changer! Saved me 15% Upwork commission fees.", date: "2 hours ago" },
-        { id: "2", user: "GD3H...MXEC", rating: 5, comment: "Instant payments via Stellar are awesome. Settle in 5 seconds compared to PayPal taking 5 days.", date: "5 hours ago" },
-        { id: "3", user: "GAYH...6HJ6", rating: 4, comment: "Very clean responsive interface. Swapping tokens directly in the wallet is super helpful.", date: "1 day ago" },
-        { id: "4", user: "GCOA...M5KO", rating: 5, comment: "I love the glassmorphic dark mode design. Feels extremely premium and responsive.", date: "2 days ago" },
-        { id: "5", user: "GAQ6...IVQI", rating: 5, comment: "Deployed custom Soroban SEP-41 token easily. The UI handles decimals conversions automatically.", date: "3 days ago" },
-        { id: "6", user: "GBAA...W2TL", rating: 4, comment: "Arbitration process was smooth when testing multi-sig contracts. Keep up the good work!", date: "4 days ago" },
-        { id: "7", user: "GDTW...K2LN", rating: 5, comment: "Integrating Freighter wallet was seamless. Looking forward to using it on mainnet.", date: "4 days ago" },
-        { id: "8", user: "GCQA...45N2", rating: 5, comment: "Stellar anchor ramps could make this the ultimate onboarding tool for freelancers.", date: "5 days ago" },
-        { id: "9", user: "GCOA...K9PO", rating: 4, comment: "Testing milestone release was very straightforward. Good loading and success notifications.", date: "5 days ago" },
-        { id: "10", user: "GDFR...LL9P", rating: 5, comment: "Outstanding project. Solves a real problem for freelancers in emerging markets.", date: "6 days ago" }
-      ]
-      setFeedbacks(defaultFeedback)
-      localStorage.setItem("lumenflow_feedback", JSON.stringify(defaultFeedback))
+      setFeedbacks([])
     }
 
-    // Load wallet calls metric
+    // Interactions
+    const savedInteractions = localStorage.getItem("lumenflow_interactions")
+    if (savedInteractions) {
+      setInteractions(JSON.parse(savedInteractions))
+    } else {
+      setInteractions([])
+    }
+
+    // Wallet Calls metric
     const savedCalls = localStorage.getItem("lumenflow_wallet_calls")
     if (savedCalls) {
       setWalletCalls(parseInt(savedCalls))
+    } else {
+      setWalletCalls(0)
     }
 
     // Setup listener to sync local storage metrics dynamically
     const handleStorageChange = () => {
       const current = localStorage.getItem("lumenflow_wallet_calls")
       if (current) setWalletCalls(parseInt(current))
+      
+      const savedInt = localStorage.getItem("lumenflow_interactions")
+      if (savedInt) setInteractions(JSON.parse(savedInt))
+
+      const savedFeed = localStorage.getItem("lumenflow_feedback")
+      if (savedFeed) setFeedbacks(JSON.parse(savedFeed))
     }
     window.addEventListener("storage", handleStorageChange)
     return () => window.removeEventListener("storage", handleStorageChange)
@@ -103,6 +107,9 @@ export function FeedbackAnalytics() {
     setRating(5)
     toast.success("Feedback submitted successfully! Thank you.")
   }
+
+  const uniqueUsers = new Set([...interactions.map((i) => i.address), ...feedbacks.map((f) => f.user)]).size
+  const avgRating = feedbacks.length > 0 ? (feedbacks.reduce((acc, f) => acc + f.rating, 0) / feedbacks.length).toFixed(1) : "5.0"
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-8 max-w-6xl mx-auto">
@@ -136,7 +143,7 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-xs text-muted-foreground uppercase font-semibold">Onboarded Users</div>
-            <div className="text-2xl font-bold font-mono tracking-tight">14</div>
+            <div className="text-2xl font-bold font-mono tracking-tight">{uniqueUsers}</div>
           </div>
         </Card>
 
@@ -146,7 +153,7 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-xs text-muted-foreground uppercase font-semibold">App Satisfaction</div>
-            <div className="text-2xl font-bold font-mono tracking-tight">4.8 / 5.0</div>
+            <div className="text-2xl font-bold font-mono tracking-tight">{avgRating} / 5.0</div>
           </div>
         </Card>
 
@@ -179,20 +186,28 @@ export function FeedbackAnalytics() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {mockInteractions.map((log, idx) => (
-                    <tr key={idx} className="bg-card">
-                      <td className="px-4 py-3 align-top">
-                        <span className="font-mono text-muted-foreground">{log.address}</span>
-                      </td>
-                      <td className="px-4 py-3 align-top min-w-0">
-                        <div className="font-medium text-foreground mb-1">{log.action}</div>
-                        <div className="font-mono text-[10px] text-muted-foreground truncate max-w-[200px]" title={log.txHash}>{log.txHash}</div>
-                      </td>
-                      <td className="px-4 py-3 align-top text-muted-foreground whitespace-nowrap">
-                        {log.time}
+                  {interactions.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="px-4 py-8 text-center text-muted-foreground bg-card">
+                        No transactions recorded yet. Connect Freighter wallet and execute escrows to see logs.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    interactions.map((log, idx) => (
+                      <tr key={idx} className="bg-card">
+                        <td className="px-4 py-3 align-top">
+                          <span className="font-mono text-muted-foreground">{log.address}</span>
+                        </td>
+                        <td className="px-4 py-3 align-top min-w-0">
+                          <div className="font-medium text-foreground mb-1">{log.action}</div>
+                          <div className="font-mono text-[10px] text-muted-foreground truncate max-w-[200px]" title={log.txHash}>{log.txHash}</div>
+                        </td>
+                        <td className="px-4 py-3 align-top text-muted-foreground whitespace-nowrap">
+                          {log.time}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -209,13 +224,13 @@ export function FeedbackAnalytics() {
             <form onSubmit={handleSubmitFeedback} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="fb-user" className="text-xs">User Wallet / Name (Optional)</Label>
+                  <Label htmlFor="fb-user" className="text-xs">User Wallet Address (Autofilled)</Label>
                   <Input 
                     id="fb-user"
-                    placeholder="e.g. GD3H...MXEC"
-                    value={userAddress}
-                    onChange={(e) => setUserAddress(e.target.value)}
-                    className="h-9 text-xs"
+                    placeholder="Connect wallet to submit feedback"
+                    value={publicKey ? publicKey : "No Wallet Connected"}
+                    disabled={true}
+                    className="h-9 text-xs font-mono bg-muted text-muted-foreground/60"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -254,8 +269,14 @@ export function FeedbackAnalytics() {
                 />
               </div>
 
-              <Button type="submit" size="sm" className="w-full gap-1.5 font-semibold">
-                <Send className="size-3.5" /> Send Feedback
+              <Button 
+                type="submit" 
+                size="sm" 
+                className="w-full gap-1.5 font-semibold"
+                disabled={!publicKey}
+              >
+                <Send className="size-3.5" /> 
+                {publicKey ? "Send Feedback" : "Connect Wallet to Submit Feedback"}
               </Button>
             </form>
           </Card>

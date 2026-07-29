@@ -149,7 +149,7 @@ export function EscrowDashboard() {
     toast.success("Milestone Escrow contract initialized successfully!")
     
     // Increment wallet interaction metrics
-    incrementWalletMetrics(2) // Escrow deployed
+    incrementWalletMetrics(`Escrow Contract Created (${projName})`, 2)
   }
 
   const getStatusBadge = (status: number) => {
@@ -189,7 +189,7 @@ export function EscrowDashboard() {
         loading: `Depositing ${amount} ${activeProject?.tokenSymbol} into Escrow contract...`,
         success: () => {
           updateMilestoneStatus(mId, 1) // Set status to Funded
-          incrementWalletMetrics(1) // call count
+          incrementWalletMetrics(`Milestone #${mId} Funded (${amount} ${activeProject?.tokenSymbol})`, 1)
           return `Successfully deposited and locked ${amount} ${activeProject?.tokenSymbol}!`
         },
         error: "Failed to deposit funds."
@@ -204,7 +204,7 @@ export function EscrowDashboard() {
         loading: "Submitting milestone proof of completion...",
         success: () => {
           updateMilestoneStatus(mId, 2) // Set status to Submitted
-          incrementWalletMetrics(1)
+          incrementWalletMetrics(`Milestone #${mId} Work Submitted`, 1)
           return "Milestone successfully submitted for client review!"
         },
         error: "Failed to submit work."
@@ -219,7 +219,7 @@ export function EscrowDashboard() {
         loading: `Releasing ${amount} ${activeProject?.tokenSymbol} to freelancer...`,
         success: () => {
           updateMilestoneStatus(mId, 3) // Set status to Released
-          incrementWalletMetrics(1)
+          incrementWalletMetrics(`Milestone #${mId} Released (${amount} ${activeProject?.tokenSymbol})`, 1)
           return `Successfully released ${amount} ${activeProject?.tokenSymbol} to freelancer!`
         },
         error: "Failed to release funds."
@@ -234,7 +234,7 @@ export function EscrowDashboard() {
         loading: "Filing milestone dispute with arbitrator...",
         success: () => {
           updateMilestoneStatus(mId, 4) // Set status to Disputed
-          incrementWalletMetrics(1)
+          incrementWalletMetrics(`Milestone #${mId} Dispute Filed`, 1)
           return "Dispute successfully filed. Arbitrator signature required to resolve."
         },
         error: "Failed to dispute."
@@ -254,7 +254,7 @@ export function EscrowDashboard() {
         loading: "Executing arbitrator dispute resolution...",
         success: () => {
           updateMilestoneStatus(mId, 5) // Set status to Resolved
-          incrementWalletMetrics(1)
+          incrementWalletMetrics(`Dispute Resolved (Milestone #${mId})`, 1)
           setSelectedMilestoneId(null)
           return `Dispute resolved on-chain! Freelancer: ${freelancerShare} ${activeProject?.tokenSymbol}, Client: ${clientShare} ${activeProject?.tokenSymbol}`
         },
@@ -270,7 +270,7 @@ export function EscrowDashboard() {
         loading: `Refunding ${amount} ${activeProject?.tokenSymbol} to client...`,
         success: () => {
           updateMilestoneStatus(mId, 5) // Set status to Resolved/Cancelled
-          incrementWalletMetrics(1)
+          incrementWalletMetrics(`Milestone #${mId} Refund Issued (${amount} ${activeProject?.tokenSymbol})`, 1)
           return `Voluntary refund of ${amount} ${activeProject?.tokenSymbol} returned to client!`
         },
         error: "Failed to refund."
@@ -279,11 +279,23 @@ export function EscrowDashboard() {
   }
 
   // Increment wallet metrics in localStorage for proof of interaction
-  const incrementWalletMetrics = (count = 1) => {
-    const current = localStorage.getItem("lumenflow_wallet_calls") || "24"
+  const incrementWalletMetrics = (actionName: string, count = 1) => {
+    const current = localStorage.getItem("lumenflow_wallet_calls") || "0"
     const nextVal = parseInt(current) + count
     localStorage.setItem("lumenflow_wallet_calls", nextVal.toString())
     
+    // Save to interactions array
+    const saved = localStorage.getItem("lumenflow_interactions")
+    const currentLogs = saved ? JSON.parse(saved) : []
+    const newLog = {
+      address: publicKey || "Unknown Wallet",
+      action: actionName,
+      txHash: "0x" + Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10) + "...testnet",
+      time: "Just now"
+    }
+    const updatedLogs = [newLog, ...currentLogs]
+    localStorage.setItem("lumenflow_interactions", JSON.stringify(updatedLogs))
+
     // Trigger storage event to update dashboard widgets
     window.dispatchEvent(new Event("storage"))
   }
