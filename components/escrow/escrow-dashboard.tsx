@@ -29,7 +29,8 @@ interface EscrowProject {
   milestones: Milestone[];
 }
 
-const STORAGE_KEY = "lumenflow_escrows"
+
+
 
 export function EscrowDashboard() {
   const { publicKey } = useWallet()
@@ -56,27 +57,36 @@ export function EscrowDashboard() {
   // Simulation mode
   const [isSimulated, setIsSimulated] = useState(true)
 
-  // Load from local storage
+  // Load from server-side API
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
+    const loadProjects = async () => {
       try {
-        const parsed = JSON.parse(saved)
-        setProjects(parsed)
-        if (parsed.length > 0) setActiveProject(parsed[0])
-      } catch (e) {
-        console.error(e)
+        const res = await fetch("/api/escrow")
+        if (res.ok) {
+          const data = await res.json()
+          const parsed = data.projects || []
+          setProjects(parsed)
+          if (parsed.length > 0) setActiveProject(parsed[0])
+        }
+      } catch (err) {
+        console.error("Failed to load escrow projects:", err)
       }
-    } else {
-      setProjects([])
-      setActiveProject(null)
     }
+    loadProjects()
   }, [publicKey])
 
-  // Update projects to local storage
-  const saveProjects = (updated: EscrowProject[]) => {
+  // Save projects to server
+  const saveProjects = async (updated: EscrowProject[]) => {
     setProjects(updated)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+    try {
+      await fetch("/api/escrow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "save_all", projects: updated }),
+      })
+    } catch (err) {
+      console.error("Failed to save escrow projects:", err)
+    }
   }
 
   // Set default client to logged-in user
@@ -261,26 +271,21 @@ export function EscrowDashboard() {
     )
   }
 
-  // Increment wallet metrics in localStorage for proof of interaction
-  const incrementWalletMetrics = (actionName: string, count = 1) => {
-    const current = localStorage.getItem("lumenflow_wallet_calls") || "0"
-    const nextVal = parseInt(current) + count
-    localStorage.setItem("lumenflow_wallet_calls", nextVal.toString())
-    
-    // Save to interactions array
-    const saved = localStorage.getItem("lumenflow_interactions")
-    const currentLogs = saved ? JSON.parse(saved) : []
-    const newLog = {
-      address: publicKey || "Unknown Wallet",
-      action: actionName,
-      txHash: "0x" + Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10) + "...testnet",
-      time: "Just now"
+  // Log wallet interaction to server-side API for persistence
+  const incrementWalletMetrics = async (actionName: string, _count = 1) => {
+    try {
+      await fetch("/api/interactions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          address: publicKey || "Unknown Wallet",
+          action: actionName,
+          txHash: "0x" + Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10) + "...testnet",
+        }),
+      })
+    } catch (err) {
+      console.error("Failed to log interaction:", err)
     }
-    const updatedLogs = [newLog, ...currentLogs]
-    localStorage.setItem("lumenflow_interactions", JSON.stringify(updatedLogs))
-
-    // Trigger storage event to update dashboard widgets
-    window.dispatchEvent(new Event("storage"))
   }
 
   // Check roles

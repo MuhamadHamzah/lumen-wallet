@@ -29,73 +29,71 @@ export function FeedbackAnalytics() {
   const { publicKey } = useWallet()
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState("")
-  const [userAddress, setUserAddress] = useState("")
   
   const [feedbacks, setFeedbacks] = useState<FeedbackItem[]>([])
   const [interactions, setInteractions] = useState<InteractionLog[]>([])
   const [walletCalls, setWalletCalls] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Load from local storage
+  // Load from server-side API
+  const fetchData = async () => {
+    try {
+      const [fbRes, intRes] = await Promise.all([
+        fetch("/api/feedback"),
+        fetch("/api/interactions"),
+      ])
+      if (fbRes.ok) {
+        const fbData = await fbRes.json()
+        setFeedbacks(fbData.feedbacks || [])
+      }
+      if (intRes.ok) {
+        const intData = await intRes.json()
+        setInteractions(intData.interactions || [])
+        setWalletCalls(intData.walletCalls || 0)
+      }
+    } catch (err) {
+      console.error("Failed to fetch analytics data:", err)
+    }
+  }
+
   useEffect(() => {
-    // Feedback
-    const savedFeedback = localStorage.getItem("lumenflow_feedback")
-    if (savedFeedback) {
-      setFeedbacks(JSON.parse(savedFeedback))
-    } else {
-      setFeedbacks([])
-    }
-
-    // Interactions
-    const savedInteractions = localStorage.getItem("lumenflow_interactions")
-    if (savedInteractions) {
-      setInteractions(JSON.parse(savedInteractions))
-    } else {
-      setInteractions([])
-    }
-
-    // Wallet Calls metric
-    const savedCalls = localStorage.getItem("lumenflow_wallet_calls")
-    if (savedCalls) {
-      setWalletCalls(parseInt(savedCalls))
-    } else {
-      setWalletCalls(0)
-    }
-
-    // Setup listener to sync local storage metrics dynamically
-    const handleStorageChange = () => {
-      const current = localStorage.getItem("lumenflow_wallet_calls")
-      if (current) setWalletCalls(parseInt(current))
-      
-      const savedInt = localStorage.getItem("lumenflow_interactions")
-      if (savedInt) setInteractions(JSON.parse(savedInt))
-
-      const savedFeed = localStorage.getItem("lumenflow_feedback")
-      if (savedFeed) setFeedbacks(JSON.parse(savedFeed))
-    }
-    window.addEventListener("storage", handleStorageChange)
-    return () => window.removeEventListener("storage", handleStorageChange)
+    fetchData()
+    // Poll every 15 seconds to keep data fresh
+    const interval = setInterval(fetchData, 15000)
+    return () => clearInterval(interval)
   }, [])
 
-  const handleSubmitFeedback = (e: React.FormEvent) => {
+  const handleSubmitFeedback = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!comment) return
+    if (!comment || !publicKey) return
 
-    const newFeedback: FeedbackItem = {
-      id: Math.random().toString(),
-      user: userAddress || "Anonymous User",
-      rating,
-      comment,
-      date: "Just now"
+    setIsSubmitting(true)
+    try {
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: publicKey,
+          rating,
+          comment,
+        }),
+      })
+
+      if (res.ok) {
+        const newFeedback = await res.json()
+        setFeedbacks((prev) => [newFeedback, ...prev])
+        setComment("")
+        setRating(5)
+        toast.success("Feedback submitted successfully! Thank you.")
+      } else {
+        toast.error("Failed to submit feedback.")
+      }
+    } catch (err) {
+      console.error("Submit feedback error:", err)
+      toast.error("Network error. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    const updated = [newFeedback, ...feedbacks]
-    setFeedbacks(updated)
-    localStorage.setItem("lumenflow_feedback", JSON.stringify(updated))
-    
-    setComment("")
-    setUserAddress("")
-    setRating(5)
-    toast.success("Feedback submitted successfully! Thank you.")
   }
 
   const uniqueUsers = new Set([...interactions.map((i) => i.address), ...feedbacks.map((f) => f.user)]).size
@@ -263,10 +261,10 @@ export function FeedbackAnalytics() {
                 type="submit" 
                 size="sm" 
                 className="w-full gap-1.5 font-semibold"
-                disabled={!publicKey}
+                disabled={!publicKey || isSubmitting}
               >
                 <Send className="size-3.5" /> 
-                {publicKey ? "Send Feedback" : "Connect Wallet to Submit Feedback"}
+                {!publicKey ? "Connect Wallet to Submit Feedback" : isSubmitting ? "Submitting..." : "Send Feedback"}
               </Button>
             </form>
           </Card>
