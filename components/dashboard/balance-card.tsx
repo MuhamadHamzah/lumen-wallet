@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import useSWR, { useSWRConfig } from "swr"
-import { ArrowDownLeft, ArrowUpRight, Droplets, Loader2 } from "lucide-react"
+import { ArrowDownLeft, ArrowUpRight, Droplets, Loader2, Wallet } from "lucide-react"
 import { toast } from "sonner"
 import { getBalance, fundAccount, truncate } from "@/lib/stellar"
 import { useWallet } from "@/components/wallet-provider"
@@ -43,22 +43,12 @@ export function BalanceCard() {
   }
 
   return (
-    <Card className="overflow-hidden border border-border/50 bg-gradient-to-br from-card via-card to-muted/20 p-5 sm:p-8 shadow-lg">
+    <Card className="overflow-hidden border border-border bg-card p-6 sm:p-8">
       <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-            <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2.5 5 6v6c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6l-7-3.5Z" fill="currentColor" opacity="0.25" />
-              <path d="M6 9.5 18 14.5M18 9.5 6 14.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Wallet Address</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="font-mono text-sm font-medium">{publicKey ? truncate(publicKey, 6, 6) : "—"}</span>
-              {publicKey && <CopyButton value={publicKey} label="Address copied" className="size-6" />}
-            </div>
-          </div>
+        <div className="flex items-center gap-2 rounded-full border border-border bg-muted/30 px-3 py-1.5">
+          <Wallet className="size-4 text-muted-foreground" />
+          <span className="font-mono text-sm font-medium">{publicKey ? truncate(publicKey, 6, 6) : "—"}</span>
+          {publicKey && <CopyButton value={publicKey} label="Address copied" className="size-5" />}
         </div>
       </div>
 
@@ -70,8 +60,8 @@ export function BalanceCard() {
           <p className="text-base font-medium text-destructive">Couldn&apos;t load balance</p>
         ) : (
           <div className="flex items-baseline gap-2">
-            <span className="font-mono text-5xl font-bold tracking-tighter tabular-nums bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{balance}</span>
-            <span className="text-2xl font-semibold text-muted-foreground">XLM</span>
+            <span className="font-mono text-5xl font-bold tracking-tighter tabular-nums text-foreground">{balance}</span>
+            <span className="text-lg font-semibold text-muted-foreground">XLM</span>
           </div>
         )}
         {isLoading ? (
@@ -86,22 +76,22 @@ export function BalanceCard() {
       </div>
 
       {unfunded && isTestnet && (
-        <div className="mt-8 flex items-start gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
+        <div className="mt-6 flex items-start gap-3 rounded-lg border border-border bg-muted/50 p-4">
           <Droplets className="mt-0.5 size-4 shrink-0 text-primary" />
           <div className="flex-1">
-            <p className="text-sm font-semibold">Account not funded yet</p>
-            <p className="text-xs text-muted-foreground text-pretty mt-1">
+            <p className="text-sm font-medium">Account not funded</p>
+            <p className="text-xs text-muted-foreground mt-1">
               Get free testnet XLM from Friendbot to start sending payments.
             </p>
-            <Button size="sm" variant="default" className="mt-3 gap-2" onClick={handleFund} disabled={funding}>
+            <Button size="sm" variant="outline" className="mt-3 gap-2" onClick={handleFund} disabled={funding}>
               {funding ? (
                 <>
-                  <Loader2 className="size-4 animate-spin" />
+                  <Loader2 className="size-3 animate-spin" />
                   Funding…
                 </>
               ) : (
                 <>
-                  <Droplets className="size-4" />
+                  <Droplets className="size-3" />
                   Fund with testnet XLM
                 </>
               )}
@@ -111,13 +101,13 @@ export function BalanceCard() {
       )}
 
       <div className="mt-8 flex gap-3">
-        <Button asChild size="lg" className="flex-1 gap-2 h-11 rounded-lg font-semibold">
+        <Button asChild size="lg" className="flex-1 gap-2 font-medium">
           <Link href="/send">
             <ArrowUpRight className="size-4" />
             Send
           </Link>
         </Button>
-        <Button asChild variant="secondary" size="lg" className="flex-1 gap-2 h-11 rounded-lg font-semibold">
+        <Button asChild variant="outline" size="lg" className="flex-1 gap-2 font-medium">
           <Link href="/receive">
             <ArrowDownLeft className="size-4" />
             Receive

@@ -21,14 +21,14 @@ function formatDate(iso: string) {
 export function TransactionRow({ tx }: { tx: StellarTransaction }) {
   const received = tx.type === "received"
   return (
-    <div className="flex items-center gap-3 py-3">
+    <div className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-lg hover:bg-muted/50 transition-colors">
       <span
         className={cn(
-          "flex size-10 shrink-0 items-center justify-center rounded-full",
-          received ? "bg-success/15 text-success" : "bg-muted text-muted-foreground",
+          "flex size-8 shrink-0 items-center justify-center rounded-full",
+          received ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground",
         )}
       >
-        {received ? <ArrowDownLeft className="size-5" /> : <ArrowUpRight className="size-5" />}
+        {received ? <ArrowDownLeft className="size-4" /> : <ArrowUpRight className="size-4" />}
       </span>
 
       <div className="min-w-0 flex-1">
@@ -42,7 +42,7 @@ export function TransactionRow({ tx }: { tx: StellarTransaction }) {
       <div className="flex flex-col items-end gap-1">
         <span
           className={cn(
-            "font-mono text-sm font-semibold tabular-nums",
+            "font-mono text-sm font-medium tabular-nums",
             received ? "text-success" : "text-foreground",
           )}
         >

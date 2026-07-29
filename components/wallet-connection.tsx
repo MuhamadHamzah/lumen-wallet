@@ -148,7 +148,7 @@ export function WalletConnection() {
   if (generatedKeypair) {
     return (
       <div className="space-y-5 w-full max-w-md">
-        <div className="flex items-center gap-2 text-sm font-medium text-emerald-500">
+        <div className="flex items-center gap-2 text-sm font-medium text-primary">
           <Sparkles className="h-4 w-4" />
           <span>Testnet Keypair Generated!</span>
         </div>
@@ -159,7 +159,7 @@ export function WalletConnection() {
             Public Key
           </label>
           <div className="flex items-center gap-2">
-            <code className="flex-1 text-xs font-mono bg-muted/50 border border-border rounded-lg px-3 py-2.5 break-all select-all">
+            <code className="flex-1 text-xs font-mono bg-muted rounded-lg p-3 break-all select-all">
               {generatedKeypair.publicKey}
             </code>
             <Button
@@ -169,7 +169,7 @@ export function WalletConnection() {
               onClick={() => copyToClipboard(generatedKeypair.publicKey, "public")}
             >
               {copiedField === "public" ? (
-                <Check className="h-4 w-4 text-emerald-500" />
+                <Check className="h-4 w-4 text-primary" />
               ) : (
                 <Copy className="h-4 w-4" />
               )}
@@ -183,7 +183,7 @@ export function WalletConnection() {
             Secret Key
           </label>
           <div className="flex items-center gap-2">
-            <code className="flex-1 text-xs font-mono bg-muted/50 border border-border rounded-lg px-3 py-2.5 break-all select-all">
+            <code className="flex-1 text-xs font-mono bg-muted rounded-lg p-3 break-all select-all">
               {showSecret
                 ? generatedKeypair.secretKey
                 : "S" + "•".repeat(54)}
@@ -207,7 +207,7 @@ export function WalletConnection() {
               onClick={() => copyToClipboard(generatedKeypair.secretKey, "secret")}
             >
               {copiedField === "secret" ? (
-                <Check className="h-4 w-4 text-emerald-500" />
+                <Check className="h-4 w-4 text-primary" />
               ) : (
                 <Copy className="h-4 w-4" />
               )}
@@ -220,10 +220,10 @@ export function WalletConnection() {
           {generatedKeypair.funded ? (
             <>
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-emerald-500 font-medium">Funded — 10,000 XLM (Testnet)</span>
+              <span className="text-primary font-medium">Funded — 10,000 XLM (Testnet)</span>
             </>
           ) : (
             <>
@@ -237,9 +237,9 @@ export function WalletConnection() {
         </div>
 
         {/* Warning */}
-        <Alert className="border-amber-500/30 bg-amber-500/5">
-          <AlertCircle className="h-4 w-4 text-amber-500" />
-          <AlertDescription className="text-xs text-amber-200/80">
+        <Alert className="border-border bg-muted">
+          <AlertCircle className="h-4 w-4 text-foreground" />
+          <AlertDescription className="text-xs text-foreground">
             Save your secret key! It will not be shown again after you connect. This is a <strong>testnet</strong> account.
           </AlertDescription>
         </Alert>
@@ -277,70 +277,59 @@ export function WalletConnection() {
         </Alert>
       )}
 
-      <div className="grid gap-3">
-        {/* Generate Testnet Keypair — Primary action */}
-        <Button
-          onClick={generateTestnetKeypair}
-          disabled={isGenerating || isLoading}
-          className="w-full h-12 text-base font-semibold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white border-0 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all duration-300"
-          size="lg"
+      <div className="flex flex-col gap-3">
+        {/* Generate Testnet Keypair Card */}
+        <div 
+          onClick={(!isGenerating && !isLoading) ? generateTestnetKeypair : undefined}
+          className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <Sparkles className="mr-2 h-5 w-5" />
-          {isGenerating ? "Generating..." : "Generate Testnet Keypair"}
-        </Button>
-
-        {/* Divider */}
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-muted" />
+          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
+            <Sparkles className="size-5 text-primary" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or connect existing</span>
+          <div className="flex flex-col flex-1">
+            <span className="font-semibold text-sm">Generate Testnet Keypair</span>
+            <span className="text-xs text-muted-foreground">Create a fresh funded account for testing</span>
           </div>
         </div>
 
-        {/* Connect Stellar Wallet Button */}
-        <Button
-          onClick={connectStellarWallet}
-          disabled={isLoading || isGenerating}
-          className="w-full h-12 text-base font-semibold bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white border-0 shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300"
-          size="lg"
+        {/* Connect Stellar Wallet Card */}
+        <div 
+          onClick={(!isGenerating && !isLoading) ? connectStellarWallet : undefined}
+          className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <Wallet className="mr-2 h-5 w-5" />
-          {isLoading ? "Connecting..." : "Connect Stellar Wallet"}
-        </Button>
-
-        {/* Divider */}
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-muted" />
+          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
+            <Wallet className="size-5 text-primary" />
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or</span>
+          <div className="flex flex-col flex-1">
+            <span className="font-semibold text-sm">Connect Stellar Wallet</span>
+            <span className="text-xs text-muted-foreground">Connect with Freighter or other wallets</span>
           </div>
         </div>
 
-        {/* Secret Key Button */}
+        {/* Secret Key Card */}
         {!showSecretKeyForm ? (
-          <Button
+          <div 
             onClick={() => setShowSecretKeyForm(true)}
-            variant="secondary"
-            className="w-full h-12 text-base font-semibold"
-            size="lg"
+            className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <Lock className="mr-2 h-5 w-5" />
-            Import Secret Key
-          </Button>
+            <div className="size-10 rounded-full bg-muted flex items-center justify-center mr-4 shrink-0">
+              <Lock className="size-5 text-muted-foreground" />
+            </div>
+            <div className="flex flex-col flex-1">
+              <span className="font-semibold text-sm">Import Secret Key</span>
+              <span className="text-xs text-muted-foreground">Manually enter a secret key to connect</span>
+            </div>
+          </div>
         ) : (
-          <Card className="p-4 space-y-3">
-            <p className="text-sm text-muted-foreground font-medium">Enter your Stellar secret key (starts with S)</p>
+          <Card className="p-4 space-y-3 border border-border bg-card rounded-xl">
+            <p className="text-sm text-foreground font-medium">Enter your Stellar secret key (starts with S)</p>
             <Input
               type="password"
               placeholder="SXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
               value={secretKeyInput}
               onChange={(e) => setSecretKeyInput(e.target.value)}
               disabled={isLoading}
-              className="font-mono text-sm"
+              className="font-mono text-sm bg-muted border-none"
             />
             <div className="flex gap-2">
               <Button
@@ -364,7 +353,7 @@ export function WalletConnection() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              ⚠️ Only import secret keys from wallets you control. Never share your secret key.
+              Only import secret keys from wallets you control. Never share your secret key.
             </p>
           </Card>
         )}

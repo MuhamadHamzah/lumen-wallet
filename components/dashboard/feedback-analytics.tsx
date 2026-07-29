@@ -111,7 +111,7 @@ export function FeedbackAnalytics() {
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <BarChart2 className="size-4" />
           </span>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Feedback & Analytics</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Feedback & Analytics</h1>
         </div>
         <p className="text-muted-foreground text-sm mt-1">
           Real-time metrics, wallet interactions, and user feedback summary.
@@ -120,8 +120,8 @@ export function FeedbackAnalytics() {
 
       {/* Analytics widgets */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="border border-border/50 p-5 bg-card/40 flex items-center gap-4">
-          <div className="size-10 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center">
+        <Card className="border border-border bg-card p-4 flex items-center gap-4">
+          <div className="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <Activity className="size-5" />
           </div>
           <div>
@@ -130,8 +130,8 @@ export function FeedbackAnalytics() {
           </div>
         </Card>
 
-        <Card className="border border-border/50 p-5 bg-card/40 flex items-center gap-4">
-          <div className="size-10 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center">
+        <Card className="border border-border bg-card p-4 flex items-center gap-4">
+          <div className="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <Users className="size-5" />
           </div>
           <div>
@@ -140,8 +140,8 @@ export function FeedbackAnalytics() {
           </div>
         </Card>
 
-        <Card className="border border-border/50 p-5 bg-card/40 flex items-center gap-4">
-          <div className="size-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+        <Card className="border border-border bg-card p-4 flex items-center gap-4">
+          <div className="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <Award className="size-5" />
           </div>
           <div>
@@ -150,13 +150,13 @@ export function FeedbackAnalytics() {
           </div>
         </Card>
 
-        <Card className="border border-border/50 p-5 bg-card/40 flex items-center gap-4">
-          <div className="size-10 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center">
+        <Card className="border border-border bg-card p-4 flex items-center gap-4">
+          <div className="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <Shield className="size-5" />
           </div>
           <div>
             <div className="text-xs text-muted-foreground uppercase font-semibold">Network State</div>
-            <div className="text-sm font-bold text-green-500">Active Testnet</div>
+            <div className="text-sm font-bold text-foreground">Active Testnet</div>
           </div>
         </Card>
       </div>
@@ -164,33 +164,46 @@ export function FeedbackAnalytics() {
       <div className="grid md:grid-cols-2 gap-6">
         {/* Wallet interaction log (10+ wallet interactions proof) */}
         <div className="space-y-4">
-          <Card className="border border-border/50 p-5 bg-card/60">
+          <Card className="border border-border bg-card p-5">
             <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-              <CheckCircle className="size-4 text-green-500" />
+              <CheckCircle className="size-4 text-primary" />
               Proof of Wallet Interactions
             </h2>
-            <div className="space-y-3">
-              {mockInteractions.map((log, idx) => (
-                <div key={idx} className="flex justify-between items-start gap-4 p-3 bg-muted/20 rounded-lg text-xs">
-                  <div className="space-y-1 flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-mono bg-muted px-1.5 py-0.5 rounded font-semibold text-muted-foreground">{log.address}</span>
-                      <span className="text-muted-foreground">{log.time}</span>
-                    </div>
-                    <div className="font-semibold truncate">{log.action}</div>
-                    <div className="text-[10px] text-muted-foreground font-mono truncate">Hash: {log.txHash}</div>
-                  </div>
-                </div>
-              ))}
+            <div className="border border-border rounded-lg overflow-hidden">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-muted text-muted-foreground">
+                  <tr>
+                    <th className="px-4 py-2 font-medium">Address</th>
+                    <th className="px-4 py-2 font-medium">Action & Hash</th>
+                    <th className="px-4 py-2 font-medium">Time</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {mockInteractions.map((log, idx) => (
+                    <tr key={idx} className="bg-card">
+                      <td className="px-4 py-3 align-top">
+                        <span className="font-mono text-muted-foreground">{log.address}</span>
+                      </td>
+                      <td className="px-4 py-3 align-top min-w-0">
+                        <div className="font-medium text-foreground mb-1">{log.action}</div>
+                        <div className="font-mono text-[10px] text-muted-foreground truncate max-w-[200px]" title={log.txHash}>{log.txHash}</div>
+                      </td>
+                      <td className="px-4 py-3 align-top text-muted-foreground whitespace-nowrap">
+                        {log.time}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </Card>
         </div>
 
         {/* User feedback collection */}
         <div className="space-y-6">
-          <Card className="border border-border/50 p-5 bg-card/60">
+          <Card className="border border-border bg-card p-5">
             <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
-              <MessageSquare className="size-4 text-blue-500" />
+              <MessageSquare className="size-4 text-primary" />
               Submit Product Feedback
             </h2>
             <form onSubmit={handleSubmitFeedback} className="space-y-4">
@@ -242,19 +255,19 @@ export function FeedbackAnalytics() {
           <div className="space-y-3">
             <h3 className="text-base font-bold">Feedback Feed</h3>
             <div className="space-y-3 max-h-[350px] overflow-y-auto pr-1">
-              {feedbacks.map((f) => (
-                <Card key={f.id} className="border border-border/50 p-4 bg-card/40 relative">
-                  <div className="flex justify-between items-start gap-2">
-                    <span className="text-xs font-mono bg-muted/80 px-1.5 py-0.5 rounded text-muted-foreground font-semibold">{f.user}</span>
+              {feedbacks.map((f, i) => (
+                <div key={f.id} className={`pb-3 ${i !== feedbacks.length - 1 ? 'border-b border-border' : ''}`}>
+                  <div className="flex justify-between items-start gap-2 mb-1.5">
+                    <span className="text-xs font-mono font-medium text-foreground">{f.user}</span>
                     <div className="flex gap-0.5 text-amber-500">
                       {Array.from({ length: f.rating }).map((_, i) => (
                         <Star key={i} className="size-3 fill-current" />
                       ))}
                     </div>
                   </div>
-                  <p className="text-xs mt-2 text-balance leading-relaxed">{f.comment}</p>
-                  <div className="text-[10px] text-muted-foreground text-right mt-1.5">{f.date}</div>
-                </Card>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{f.comment}</p>
+                  <div className="text-[10px] text-muted-foreground mt-1.5">{f.date}</div>
+                </div>
               ))}
             </div>
           </div>

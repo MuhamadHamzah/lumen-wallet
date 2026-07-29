@@ -301,24 +301,24 @@ export function EscrowDashboard() {
             <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Sparkles className="size-4" />
             </span>
-            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">LumenFlow Escrow</h1>
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">LumenFlow Escrow</h1>
           </div>
           <p className="text-muted-foreground text-sm mt-1">
             Secure, milestone-based decentralized payment flow on Stellar Soroban.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-lg border border-border/50 bg-card p-1.5 shadow-sm">
+        <div className="flex items-center gap-1 rounded-full border border-border bg-card p-1 shadow-sm">
           <Button 
-            variant={isSimulated ? "default" : "ghost"} 
+            variant="ghost" 
             size="sm"
             onClick={() => setIsSimulated(true)}
-            className="text-xs h-8"
+            className={`text-xs h-8 rounded-full px-4 ${isSimulated ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
           >
             Simulated Sandbox
           </Button>
           <Button 
-            variant={!isSimulated ? "default" : "ghost"} 
+            variant="ghost" 
             size="sm"
             onClick={() => {
               if (!publicKey) {
@@ -327,7 +327,7 @@ export function EscrowDashboard() {
               }
               setIsSimulated(false)
             }}
-            className="text-xs h-8"
+            className={`text-xs h-8 rounded-full px-4 ${!isSimulated ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
           >
             Live Stellar Testnet
           </Button>
@@ -337,7 +337,7 @@ export function EscrowDashboard() {
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left Side: Escrow Projects List */}
         <div className="md:col-span-1 space-y-4">
-          <Card className="border border-border/50 p-4 bg-gradient-to-b from-card to-card/50">
+          <Card className="border border-border bg-card p-4">
             <h2 className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-3 flex items-center justify-between">
               <span>My Projects</span>
               <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">{projects.length}</span>
@@ -353,8 +353,8 @@ export function EscrowDashboard() {
                     onClick={() => setActiveProject(proj)}
                     className={`w-full text-left p-3 rounded-lg border text-sm transition-all duration-200 ${
                       activeProject?.id === proj.id 
-                        ? "border-primary/50 bg-primary/5 shadow-md shadow-primary/5" 
-                        : "border-border/50 bg-card/40 hover:bg-muted/40"
+                        ? "border-primary bg-primary/5" 
+                        : "border-border bg-card hover:bg-muted"
                     }`}
                   >
                     <div className="font-semibold truncate">{proj.name}</div>
@@ -385,7 +385,7 @@ export function EscrowDashboard() {
               {activeProject ? (
                 <div className="space-y-6">
                   {/* Escrow Meta info */}
-                  <Card className="border border-border/50 p-6 bg-gradient-to-r from-card to-muted/20">
+                  <Card className="border border-border bg-card p-6">
                     <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                       <div>
                         <h2 className="text-xl font-bold">{activeProject.name}</h2>
@@ -402,24 +402,24 @@ export function EscrowDashboard() {
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border/40 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border text-xs">
                       <div>
                         <div className="text-muted-foreground font-medium mb-1">Client Address:</div>
-                        <div className="font-mono bg-muted/50 p-1.5 rounded truncate flex items-center justify-between">
+                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
                           <span>{activeProject.client}</span>
                           {userIsClient && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
                         </div>
                       </div>
                       <div>
                         <div className="text-muted-foreground font-medium mb-1">Freelancer Address:</div>
-                        <div className="font-mono bg-muted/50 p-1.5 rounded truncate flex items-center justify-between">
+                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
                           <span>{activeProject.freelancer}</span>
                           {userIsFreelancer && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
                         </div>
                       </div>
                       <div>
                         <div className="text-muted-foreground font-medium mb-1">Arbitrator Address:</div>
-                        <div className="font-mono bg-muted/50 p-1.5 rounded truncate flex items-center justify-between">
+                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
                           <span>{activeProject.arbitrator}</span>
                           {userIsArbitrator && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
                         </div>
@@ -431,7 +431,7 @@ export function EscrowDashboard() {
                   <div className="space-y-4">
                     <h3 className="text-lg font-bold">Project Milestones</h3>
                     {activeProject.milestones.map((m) => (
-                      <Card key={m.id} className="border border-border/50 p-5 bg-card/60 relative overflow-hidden">
+                      <Card key={m.id} className="border border-border bg-card p-4 relative overflow-hidden">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
@@ -450,19 +450,19 @@ export function EscrowDashboard() {
                           <div className="flex items-center gap-2 flex-wrap">
                             {/* CLIENT actions */}
                             {userIsClient && m.status === 0 && (
-                              <Button size="sm" onClick={() => handleDeposit(m.id, m.amount)} className="gap-1.5">
+                              <Button size="sm" variant="default" onClick={() => handleDeposit(m.id, m.amount)} className="gap-1.5">
                                 <Plus className="size-3.5" /> Deposit & Lock
                               </Button>
                             )}
 
                             {userIsFreelancer && m.status === 1 && (
-                              <Button size="sm" onClick={() => handleSubmitWork(m.id)} className="gap-1.5 bg-amber-600 hover:bg-amber-700">
+                              <Button size="sm" variant="default" onClick={() => handleSubmitWork(m.id)} className="gap-1.5">
                                 <Plus className="size-3.5" /> Submit Work
                               </Button>
                             )}
 
                             {userIsClient && (m.status === 1 || m.status === 2 || m.status === 4) && (
-                              <Button size="sm" onClick={() => handleRelease(m.id, m.amount)} className="gap-1.5 bg-green-600 hover:bg-green-700">
+                              <Button size="sm" variant="default" onClick={() => handleRelease(m.id, m.amount)} className="gap-1.5">
                                 <Check className="size-3.5" /> Release Funds
                               </Button>
                             )}
@@ -476,7 +476,7 @@ export function EscrowDashboard() {
 
                             {/* Voluntary refund by freelancer */}
                             {userIsFreelancer && (m.status === 1 || m.status === 2) && (
-                              <Button size="sm" variant="outline" onClick={() => handleRefund(m.id, m.amount)} className="gap-1.5 text-destructive hover:bg-destructive/10">
+                              <Button size="sm" variant="outline" onClick={() => handleRefund(m.id, m.amount)} className="gap-1.5">
                                 <Ban className="size-3.5" /> Refund Client
                               </Button>
                             )}
@@ -485,13 +485,13 @@ export function EscrowDashboard() {
                             {userIsArbitrator && m.status === 4 && (
                               <Button 
                                 size="sm" 
-                                variant="secondary" 
+                                variant="outline" 
                                 onClick={() => {
                                   setSelectedMilestoneId(m.id)
                                   setFreelancerShare(m.amount / 2)
                                   setClientShare(m.amount / 2)
                                 }}
-                                className="gap-1.5 border border-primary/20"
+                                className="gap-1.5"
                               >
                                 <ShieldAlert className="size-3.5" /> Resolve Dispute
                               </Button>
@@ -501,7 +501,7 @@ export function EscrowDashboard() {
 
                         {/* Interactive Arbitrator Dispute resolution overlay */}
                         {selectedMilestoneId === m.id && (
-                          <div className="mt-4 pt-4 border-t border-border/40 space-y-3 bg-muted/10 p-3 rounded-lg">
+                          <div className="mt-4 pt-4 border-t border-border space-y-3 bg-muted p-3 rounded-lg">
                             <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 mb-1">
                               <Info className="size-3.5" />
                               Arbitrator Panel: Allocate the {m.amount} {activeProject.tokenSymbol} between client and freelancer.
@@ -537,8 +537,8 @@ export function EscrowDashboard() {
                               </div>
                             </div>
                             <div className="flex justify-end gap-2 mt-2">
-                              <Button size="xs" variant="ghost" onClick={() => setSelectedMilestoneId(null)}>Cancel</Button>
-                              <Button size="xs" className="bg-primary" onClick={() => handleResolve(m.id, m.amount)}>Confirm Resolution</Button>
+                              <Button size="sm" variant="ghost" onClick={() => setSelectedMilestoneId(null)}>Cancel</Button>
+                              <Button size="sm" variant="default" onClick={() => handleResolve(m.id, m.amount)}>Confirm Resolution</Button>
                             </div>
                           </div>
                         )}
@@ -547,8 +547,8 @@ export function EscrowDashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-12 border border-dashed rounded-lg border-border/60">
-                  <h3 className="font-bold">No active project selected</h3>
+                <div className="text-center py-12 border border-dashed rounded-lg border-border">
+                  <h3 className="font-bold text-foreground">No active project selected</h3>
                   <p className="text-sm text-muted-foreground mt-1">Please select an escrow project from the sidebar list or initialize a new one.</p>
                 </div>
               )}
@@ -556,7 +556,7 @@ export function EscrowDashboard() {
 
             {/* CREATE ESCROW CONTRACT */}
             <TabsContent value="create">
-              <Card className="border border-border/50 p-6 bg-card/60">
+              <Card className="border border-border bg-card p-6">
                 <form onSubmit={handleCreateProject} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="proj-name">Project Name</Label>
@@ -620,7 +620,7 @@ export function EscrowDashboard() {
                   </div>
 
                   {/* Milestones Builder */}
-                  <div className="space-y-3 pt-3 border-t border-border/40">
+                  <div className="space-y-3 pt-3 border-t border-border">
                     <div className="flex justify-between items-center">
                       <Label className="text-base font-semibold">Contract Milestones</Label>
                       <Button type="button" variant="outline" size="sm" onClick={handleAddMilestone} className="gap-1 text-xs">
@@ -630,7 +630,7 @@ export function EscrowDashboard() {
 
                     <div className="space-y-3">
                       {milestones.map((m, idx) => (
-                        <div key={idx} className="flex items-center gap-3 bg-muted/20 p-3 rounded-lg">
+                        <div key={idx} className="flex items-center gap-3 bg-muted p-3 rounded-lg">
                           <span className="text-xs font-bold text-muted-foreground shrink-0">#{idx + 1}</span>
                           <Input 
                             value={m.description}
@@ -663,7 +663,7 @@ export function EscrowDashboard() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full gap-2 mt-4 font-semibold">
+                  <Button type="submit" variant="default" className="w-full gap-2 mt-4 font-semibold">
                     <Loader2 className="size-4 animate-spin hidden" />
                     Deploy & Initialize Escrow Contract
                   </Button>

@@ -208,25 +208,25 @@ export function SendForm() {
 
   if (txHash) {
     return (
-      <Card className="border-border p-6">
-        <div className="flex flex-col items-center gap-4 py-4 text-center">
-          <span className="flex size-14 items-center justify-center rounded-full bg-success/15 text-success">
-            <CheckCircle2 className="size-8" />
+      <Card className="border border-border bg-card p-6">
+        <div className="flex flex-col items-center gap-5 py-4 text-center">
+          <span className="flex size-14 items-center justify-center rounded-full bg-success/10 text-success">
+            <CheckCircle2 className="size-7" />
           </span>
-          <div>
-            <h2 className="text-lg font-semibold">Payment sent</h2>
+          <div className="space-y-1">
+            <h2 className="text-xl font-medium">Payment sent</h2>
             <p className="text-sm text-muted-foreground">
               You sent {Number(amount).toLocaleString(undefined, { maximumFractionDigits: 4 })} XLM to{" "}
               <span className="font-mono">{truncate(destination)}</span>
             </p>
           </div>
 
-          <div className="flex w-full items-center justify-between gap-2 rounded-lg border border-border bg-muted/40 p-3">
-            <span className="min-w-0 truncate font-mono text-xs text-muted-foreground">{txHash}</span>
-            <CopyButton value={txHash} label="Hash copied" className="size-7 shrink-0" />
+          <div className="flex w-full items-center justify-between gap-3 rounded-lg border border-border bg-muted/30 p-3">
+            <span className="min-w-0 truncate font-mono text-sm text-muted-foreground">{txHash}</span>
+            <CopyButton value={txHash} label="Hash copied" className="size-8 shrink-0" />
           </div>
 
-          <div className="flex w-full flex-col gap-2 sm:flex-row">
+          <div className="flex w-full flex-col gap-3 sm:flex-row mt-2">
             <Button asChild variant="outline" className="flex-1 gap-2 bg-transparent">
               <a href={stellarExpertUrl(txHash, network)} target="_blank" rel="noreferrer">
                 View on Stellar Expert
@@ -243,9 +243,9 @@ export function SendForm() {
   }
 
   return (
-    <Card className="border-border p-6">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
+    <Card className="border border-border bg-card p-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <div className="space-y-2">
           <Label htmlFor="destination">Recipient address</Label>
           <Input
             id="destination"
@@ -260,7 +260,7 @@ export function SendForm() {
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="space-y-2">
           <Label htmlFor="amount">Amount</Label>
           <div className="relative">
             <Input
@@ -274,15 +274,15 @@ export function SendForm() {
               onChange={(e) => setAmount(e.target.value)}
               className="pr-16 font-mono"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
               XLM
             </span>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="space-y-2">
           <Label htmlFor="memo">
-            Memo <span className="text-muted-foreground">(optional)</span>
+            Memo <span className="text-muted-foreground font-normal">(optional)</span>
           </Label>
           <Textarea
             id="memo"
@@ -290,33 +290,36 @@ export function SendForm() {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             rows={2}
+            className="resize-none"
           />
         </div>
 
-        <Separator />
+        <Separator className="my-2" />
 
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">Network fee</span>
-          <span className="font-mono">~{fee} XLM</span>
+          <span className="font-mono font-medium">~{fee} XLM</span>
         </div>
 
-        <Button type="submit" disabled={!canSubmit} className="gap-2">
-          {loading ? (
-            <>
-              <Loader2 className="size-4 animate-spin" />
-              Sending…
-            </>
-          ) : (
-            <>
-              <Send className="size-4" />
-              Confirm &amp; send
-            </>
-          )}
-        </Button>
+        <div className="flex flex-col gap-3 pt-2">
+          <Button type="submit" disabled={!canSubmit} className="gap-2 w-full">
+            {loading ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Sending…
+              </>
+            ) : (
+              <>
+                <Send className="size-4" />
+                Confirm &amp; send
+              </>
+            )}
+          </Button>
 
-        <Button asChild variant="ghost" type="button" className="text-muted-foreground">
-          <Link href="/">Cancel</Link>
-        </Button>
+          <Button asChild variant="ghost" type="button" className="text-muted-foreground w-full">
+            <Link href="/">Cancel</Link>
+          </Button>
+        </div>
       </form>
     </Card>
   )
