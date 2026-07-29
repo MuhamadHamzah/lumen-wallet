@@ -20,9 +20,9 @@ export function LandingShell({ children, onConnectClick }: LandingShellProps) {
         <Web3Background />
       </div>
 
-      {/* Sticky navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-background/70 backdrop-blur-xl">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+      {/* Floating Modern Web3 Navbar */}
+      <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-card/65 backdrop-blur-xl shadow-xl shadow-black/10">
+        <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <Logo />
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <NetworkSwitcher />
@@ -30,7 +30,7 @@ export function LandingShell({ children, onConnectClick }: LandingShellProps) {
             {onConnectClick && (
               <Button
                 onClick={onConnectClick}
-                className="rounded-xl px-4 sm:px-6 py-2 font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-[1.02]"
+                className="rounded-xl px-4 sm:px-5 py-2 font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white border-0 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-all duration-300 hover:scale-[1.02] text-xs sm:text-sm h-9"
                 size="sm"
               >
                 <span className="hidden sm:inline">Connect Wallet</span>
@@ -42,7 +42,7 @@ export function LandingShell({ children, onConnectClick }: LandingShellProps) {
       </header>
 
       {/* Spacer for fixed header */}
-      <div className="h-14" />
+      <div className="h-20" />
 
       {/* Main content */}
       <main className="flex-1 relative z-10">

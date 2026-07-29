@@ -10,7 +10,7 @@ interface HeroProps {
 
 export function Hero({ onConnectClick }: HeroProps) {
   return (
-    <div className="relative overflow-hidden py-20 sm:py-32">
+    <div className="relative overflow-hidden pt-0 pb-16 sm:pt-2 sm:pb-24">
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
           {/* Left column */}
@@ -27,12 +27,12 @@ export function Hero({ onConnectClick }: HeroProps) {
 
             <FadeIn delay={250}>
               <div className="space-y-4">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-balance leading-[1.1]">
-                  Your Gateway to{" "}
-                  <span className="relative inline-block">
-                    <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-amber-400 bg-clip-text text-transparent animate-gradient-x bg-[length:200%_auto]">
-                      Stellar Payments
-                    </span>
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] max-w-sm sm:max-w-md">
+                  Your <br />
+                  Gateway to <br />
+                  <span className="bg-gradient-to-r from-blue-400 via-blue-300 to-amber-400 bg-clip-text text-transparent animate-gradient-x bg-[length:200%_auto] inline-block w-fit mt-2">
+                    Stellar <br />
+                    Payments
                   </span>
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-lg">

@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
 import { useWallet } from "@/components/wallet-provider"
 import { AppShell } from "@/components/app-shell"
 import { BalanceCard } from "@/components/dashboard/balance-card"
@@ -14,24 +13,17 @@ import { AuthModal } from "@/components/landing/auth-modal"
 export default function Page() {
   const { isConnected, isInitialized } = useWallet()
   const [authModalOpen, setAuthModalOpen] = useState(false)
-  const router = useRouter()
+  const [hasWallet, setHasWallet] = useState<boolean | null>(null)
 
-  if (!isInitialized) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-3">
-          <span className="relative flex h-10 w-10">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-            <span className="relative inline-flex rounded-full h-10 w-10 bg-primary" />
-          </span>
-          <p className="text-sm font-medium text-muted-foreground animate-pulse">Initializing wallet...</p>
-        </div>
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const key = localStorage.getItem("lumen_publicKey")
+      setHasWallet(Boolean(key))
+    }
+  }, [])
 
-  // If connected, show dashboard
-  if (isConnected) {
+  // If we are initialized and connected, render the dashboard
+  if (isInitialized && isConnected) {
     return (
       <AppShell>
         <div className="space-y-6">
@@ -46,7 +38,20 @@ export default function Page() {
     )
   }
 
-  // If not connected, show landing page
+  // If we detect a wallet in localStorage but are not initialized yet, 
+  // show a clean background loader instead of flashing the landing page
+  if (hasWallet === true && !isInitialized) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-[#070b19]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          <p className="text-sm text-muted-foreground">Opening wallet...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Otherwise, render landing page
   return (
     <LandingShell onConnectClick={() => setAuthModalOpen(true)}>
       <Hero onConnectClick={() => setAuthModalOpen(true)} />
