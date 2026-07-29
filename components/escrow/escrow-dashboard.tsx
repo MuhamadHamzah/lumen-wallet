@@ -68,25 +68,8 @@ export function EscrowDashboard() {
         console.error(e)
       }
     } else {
-      // Default mock projects to demonstrate UI
-      const mockProjects: EscrowProject[] = [
-        {
-          id: "CCESCROW1234567890TESTNET",
-          name: "Soroban DeFi Web Dashboard",
-          client: publicKey || "GDCLIENT123456789012345678901234567890123456789012345678",
-          freelancer: "GDFREELANCER9999999999999999999999999999999999999999999",
-          arbitrator: "GDARBITRATOR8888888888888888888888888888888888888888888",
-          tokenAddress: "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD",
-          tokenSymbol: "USDC",
-          milestones: [
-            { id: 1, description: "Milestone 1: Prototype Frontend", amount: 500, status: 3 }, // Released
-            { id: 2, description: "Milestone 2: Contract Integration", amount: 800, status: 2 }, // Submitted
-            { id: 3, description: "Milestone 3: Deployment & Delivery", amount: 1000, status: 1 } // Funded
-          ]
-        }
-      ]
-      setProjects(mockProjects)
-      setActiveProject(mockProjects[0])
+      setProjects([])
+      setActiveProject(null)
     }
   }, [publicKey])
 
