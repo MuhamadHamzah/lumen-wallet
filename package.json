@@ -41,6 +41,7 @@
     "@stellar/freighter-api": "^6.0.1",
     "@stellar/stellar-sdk": "^15.1.0",
     "@vercel/analytics": "1.6.1",
+    "@vercel/kv": "^3.0.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -77,8 +78,6 @@
     "typescript": "5.7.3"
   },
   "engines": {
-
-  "node": ">=20"
-
- }
+    "node": ">=20"
+  }
 }
