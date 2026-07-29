@@ -276,42 +276,47 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
       </div>
     )
   }
-
   return (
-    <div className="space-y-6 w-full max-w-md">
+    <div className="space-y-6 w-full">
       {error && (
-        <Alert variant="destructive">
+        <Alert variant="destructive" className="border-destructive/30 bg-destructive/10">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription className="text-xs">{error}</AlertDescription>
         </Alert>
       )}
 
       <div className="flex flex-col gap-3">
-        {/* Generate Testnet Keypair Card */}
+        {/* Connect Stellar Wallet Card (Primary/Recommended) */}
         <div 
-          onClick={(!isGenerating && !isLoading) ? generateTestnetKeypair : undefined}
-          className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          onClick={(!isGenerating && !isLoading) ? connectStellarWallet : undefined}
+          className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
-            <Sparkles className="size-5 text-primary" />
+          <div className="size-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+            <Wallet className="size-5" />
           </div>
           <div className="flex flex-col flex-1">
-            <span className="font-semibold text-sm">Generate Testnet Keypair</span>
-            <span className="text-xs text-muted-foreground">Create a fresh funded account for testing</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-foreground">Connect Stellar Wallet</span>
+              <span className="text-[9px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Recommended</span>
+            </div>
+            <span className="text-xs text-muted-foreground mt-0.5">Use Freighter or other browser wallets</span>
           </div>
         </div>
 
-        {/* Connect Stellar Wallet Card */}
+        {/* Generate Testnet Keypair Card */}
         <div 
-          onClick={(!isGenerating && !isLoading) ? connectStellarWallet : undefined}
-          className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          onClick={(!isGenerating && !isLoading) ? generateTestnetKeypair : undefined}
+          className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center mr-4 shrink-0">
-            <Wallet className="size-5 text-primary" />
+          <div className="size-10 rounded-xl bg-blue-500/10 text-blue-300 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+            <Sparkles className="size-5" />
           </div>
           <div className="flex flex-col flex-1">
-            <span className="font-semibold text-sm">Connect Stellar Wallet</span>
-            <span className="text-xs text-muted-foreground">Connect with Freighter or other wallets</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm text-foreground">Generate Testnet Keypair</span>
+              <span className="text-[9px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Developer Faucet</span>
+            </div>
+            <span className="text-xs text-muted-foreground mt-0.5">Instantly create and fund a test account</span>
           </div>
         </div>
 
@@ -319,34 +324,34 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
         {!showSecretKeyForm ? (
           <div 
             onClick={() => setShowSecretKeyForm(true)}
-            className={`flex items-center p-4 border border-border bg-card hover:border-primary/50 rounded-xl cursor-pointer transition-colors ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <div className="size-10 rounded-full bg-muted flex items-center justify-center mr-4 shrink-0">
-              <Lock className="size-5 text-muted-foreground" />
+            <div className="size-10 rounded-xl bg-white/5 text-muted-foreground flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+              <Lock className="size-5" />
             </div>
             <div className="flex flex-col flex-1">
-              <span className="font-semibold text-sm">Import Secret Key</span>
-              <span className="text-xs text-muted-foreground">Manually enter a secret key to connect</span>
+              <span className="font-semibold text-sm text-foreground">Import Secret Key</span>
+              <span className="text-xs text-muted-foreground mt-0.5">Manually paste a secret key to sign transactions</span>
             </div>
           </div>
         ) : (
-          <Card className="p-4 space-y-3 border border-border bg-card rounded-xl">
-            <p className="text-sm text-foreground font-medium">Enter your Stellar secret key (starts with S)</p>
+          <div className="p-4 space-y-3.5 border border-white/[0.08] bg-white/[0.02] rounded-xl">
+            <p className="text-xs text-foreground font-semibold">Enter your Stellar secret key (starts with S)</p>
             <Input
               type="password"
               placeholder="SXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
               value={secretKeyInput}
               onChange={(e) => setSecretKeyInput(e.target.value)}
               disabled={isLoading}
-              className="font-mono text-sm bg-muted border-none"
+              className="font-mono text-xs bg-muted border-none placeholder:text-muted-foreground/40 h-9"
             />
             <div className="flex gap-2">
               <Button
                 onClick={connectWithSecretKey}
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 h-9 text-xs font-semibold"
               >
-                {isLoading ? "Connecting..." : "Connect"}
+                {isLoading ? "Connecting..." : "Connect Key"}
               </Button>
               <Button
                 onClick={() => {
@@ -356,15 +361,15 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
                 }}
                 disabled={isLoading}
                 variant="outline"
-                className="flex-1"
+                className="flex-1 h-9 text-xs font-semibold"
               >
                 Cancel
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[10px] text-muted-foreground mt-2">
               Only import secret keys from wallets you control. Never share your secret key.
             </p>
-          </Card>
+          </div>
         )}
       </div>
     </div>
