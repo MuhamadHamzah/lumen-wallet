@@ -294,7 +294,7 @@ export function EscrowDashboard() {
   const userIsArbitrator = activeProject?.arbitrator === publicKey
 
   return (
-    <div className="flex flex-col gap-6 p-4 md:p-8 max-w-6xl mx-auto">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2">
@@ -397,7 +397,7 @@ export function EscrowDashboard() {
                       
                       {isSimulated && (
                         <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">
-                          <sparkles className="size-3" /> Sandbox Mode
+                            <Sparkles className="size-3" /> Sandbox Mode
                         </div>
                       )}
                     </div>
