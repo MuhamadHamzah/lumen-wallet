@@ -164,14 +164,17 @@ export async function readInteractions(): Promise<InteractionLog[]> {
 export async function writeInteractions(data: InteractionLog[]): Promise<void> {
   if (hasSupabase) {
     try {
-      const formatted = data.map((item, index) => ({
-        address: item.address,
-        action: item.action,
-        tx_hash: item.txHash,
-        time: item.time,
-      }))
-      const { error } = await supabase.from("interactions").upsert(formatted, { onConflict: 'address,action,time' })
-      if (error) throw error
+      const newItem = data[0]
+      if (newItem) {
+        const formatted = {
+          address: newItem.address,
+          action: newItem.action,
+          tx_hash: newItem.txHash,
+          time: newItem.time,
+        }
+        const { error } = await supabase.from("interactions").insert([formatted])
+        if (error) throw error
+      }
       return
     } catch (err) {
       console.error("Kesalahan Supabase writeInteractions, menulis ke lokal:", err)
