@@ -56,27 +56,55 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots & Proof of Submission (Level 4 MVP)
 
-### Wallet Connected & Balance Displayed
+### 1. Wallet Connection Options
+> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
+![Wallet Options](public/screenshots/wallet-options.png)
+
+### 2. Wallet Connected & Balance
 > Dashboard showing wallet connected state with public address, XLM balance, and testnet indicator.
-
 ![Wallet Connected & Balance](public/screenshots/wallet-connected.png)
 
-### Successful Testnet Transaction
+### 3. Successful Testnet Transaction
 > Payment sent successfully via Freighter on Stellar Testnet, with transaction hash and confirmation.
-
 ![Successful Transaction](public/screenshots/transaction-success.png)
 
-### Transaction History
+### 4. Transaction History
 > Complete transaction history showing all sent and received payments with status indicators.
-
 ![Transaction History](public/screenshots/transaction-history.png)
 
-### Mobile Responsive UI
-> Mobile responsive view of the wallet interface on mobile device screen width.
+### 5. QR Code Receive
+> Receive XLM modal showing the Stellar address and auto-generated QR code.
+![QR Code Receive](public/screenshots/Receive.png)
 
+### 6. DEX Swap Trading
+> Swap interface showing optimal path payment route detection for swapping assets.
+![DEX Swap Trading](public/screenshots/Swap%20Assets.png)
+
+### 7. Custom Soroban Tokens
+> Soroban compliance interface for managing SEP-41 custom token minting and transfers.
+![Custom Soroban Tokens](public/screenshots/Tokens.png)
+
+### 8. LumenFlow Escrow Dashboard
+> Decentalized multi-role milestone escrow workspace (Client, Freelancer, and Arbitrator roles).
+![LumenFlow Escrow Dashboard](public/screenshots/LumenFlow%20Escrow.png)
+
+### 9. Proof of 10+ User Wallet Interactions
+> Verified database log showing 10+ unique Stellar wallet address interaction records (21 interactions).
+![Proof of Wallet Interactions](public/screenshots/Proof%20of%2010+%20user%20wallet%20interactions.png)
+
+### 10. Basic User Feedback Summary
+> Live satisfaction index and structured user feedback review comments retrieved dynamically from Supabase.
+![User Feedback Summary](public/screenshots/Basic%20user%20feedback%20summary.png)
+
+### 11. Mobile Responsive UI
+> Mobile responsive view of the wallet interface on mobile device screen width.
 ![Mobile Responsive UI](public/screenshots/mobile-responsive.png)
+
+### 12. Monitoring & CI/CD Pipeline
+> Vercel CI/CD automatic deployment pipeline and Analytics setup.
+![Monitoring & CI/CD](public/screenshots/cicd-pipeline.png)
 
 ---
 
@@ -127,18 +155,7 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 | `refund_by_freelancer(id)` | freelancer | Voluntarily cancel milestone and refund client |
 | `get_milestone(id)` | — | Get amount and status of milestone `id` |
 
----
 
-## 📸 Screenshots
-
-### Wallet Connection Options
-> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
-
-![Wallet Options](public/screenshots/wallet-options.png)
-
-### Wallet Connected & Balance Displayed
-
----
 
 ## 🛠️ Tech Stack
 
