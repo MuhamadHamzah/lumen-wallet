@@ -1,6 +1,6 @@
 "use client"
 
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { WalletConnection } from "@/components/wallet-connection"
 import { Logo } from "@/components/logo"
 import { ShieldCheck, HelpCircle } from "lucide-react"
@@ -14,6 +14,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-3xl p-0 overflow-hidden border border-white/[0.08] bg-card gap-0">
+        <DialogTitle className="sr-only">Connect Your Wallet</DialogTitle>
         <div className="flex flex-col md:flex-row min-h-[460px]">
           {/* Left Column - Brand Sidebar */}
           <div className="hidden md:flex flex-col justify-between p-8 bg-gradient-to-b from-blue-950/20 via-background to-amber-950/10 border-r border-white/[0.06] w-72 shrink-0">

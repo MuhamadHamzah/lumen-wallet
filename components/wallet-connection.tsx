@@ -291,8 +291,12 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
           onClick={(!isGenerating && !isLoading) ? connectStellarWallet : undefined}
           className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <div className="size-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
-            <Wallet className="size-5" />
+          <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+            <svg viewBox="0 0 24 24" className="size-5 text-blue-400 fill-none stroke-[1.8]" stroke="currentColor">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13" />
+              <circle cx="12" cy="12" r="3" className="fill-blue-500/20" />
+            </svg>
           </div>
           <div className="flex flex-col flex-1">
             <div className="flex items-center gap-2">
@@ -308,8 +312,11 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
           onClick={(!isGenerating && !isLoading) ? generateTestnetKeypair : undefined}
           className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <div className="size-10 rounded-xl bg-blue-500/10 text-blue-300 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
-            <Sparkles className="size-5" />
+          <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+            <svg viewBox="0 0 24 24" className="size-5 text-blue-300 fill-none stroke-[1.8]" stroke="currentColor">
+              <circle cx="12" cy="12" r="4" className="fill-blue-400/25" />
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.636 5.636l2.122 2.122M16.242 16.242l2.122 2.122M18.364 5.636l-2.122 2.122M7.758 16.242l-2.122 2.122" />
+            </svg>
           </div>
           <div className="flex flex-col flex-1">
             <div className="flex items-center gap-2">
@@ -326,8 +333,10 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
             onClick={() => setShowSecretKeyForm(true)}
             className={`group flex items-center p-4 border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.05] hover:border-blue-500/30 rounded-xl cursor-pointer transition-all duration-200 active:scale-[0.98] ${isGenerating || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <div className="size-10 rounded-xl bg-white/5 text-muted-foreground flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
-              <Lock className="size-5" />
+            <div className="size-10 rounded-xl bg-white/5 flex items-center justify-center mr-4 shrink-0 transition-transform group-hover:scale-105">
+              <svg viewBox="0 0 24 24" className="size-5 text-muted-foreground fill-none stroke-[1.8]" stroke="currentColor">
+                <path d="M12 15v3M8 11V7a4 4 0 1 1 8 0v4M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1-2-2z" className="fill-white/5" />
+              </svg>
             </div>
             <div className="flex flex-col flex-1">
               <span className="font-semibold text-sm text-foreground">Import Secret Key</span>
