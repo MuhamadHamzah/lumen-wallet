@@ -219,16 +219,25 @@ export function FeedbackAnalytics() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="fb-rating" className="text-xs">Product Rating (1 to 5 Stars)</Label>
-                  <Input 
-                    id="fb-rating"
-                    type="number"
-                    min={1}
-                    max={5}
-                    value={rating}
-                    onChange={(e) => setRating(Number(e.target.value))}
-                    className="h-9 text-xs"
-                  />
+                  <span className="text-xs font-medium text-foreground">Product Rating (1 to 5 Stars)</span>
+                  <div className="flex items-center gap-1.5 h-9">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        className="p-1 -ml-1 transition-all active:scale-95 focus:outline-none"
+                      >
+                        <Star
+                          className={`size-6 transition-colors ${
+                            star <= rating
+                              ? "fill-amber-400 text-amber-400"
+                              : "text-muted-foreground/30 hover:text-amber-400/70"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
