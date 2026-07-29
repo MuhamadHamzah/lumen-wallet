@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { useWallet } from "@/components/wallet-provider"
 
 interface FeedbackItem {
   id: string;
@@ -25,25 +26,14 @@ interface InteractionLog {
 }
 
 export function FeedbackAnalytics() {
+  const { publicKey } = useWallet()
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState("")
   const [userAddress, setUserAddress] = useState("")
   
   const [feedbacks, setFeedbacks] = useState<FeedbackItem[]>([])
-  const [walletCalls, setWalletCalls] = useState(42)
-
-  const mockInteractions: InteractionLog[] = [
-    { address: "GDCK...3P57", action: "Escrow Contract Deposit (500 USDC)", txHash: "2f9993cf5e05f0306f0bc81b5f109a8fd3532217d59abb2fe17972...", time: "2 hours ago" },
-    { address: "GD3H...MXEC", action: "Milestone Release (300 USDC)", txHash: "a687f827d098e98bc0192bc58a01f92e8fa9f72bc01201bc89afae...", time: "5 hours ago" },
-    { address: "GAYH...6HJ6", action: "Freighter Connection", txHash: "None (Auth)", time: "1 day ago" },
-    { address: "GCOA...M5KO", action: "DEX Swap (XLM to USDC)", txHash: "8e7fa9bc819e0bc87afae9bc238fa89fbca9e72bc08fa9fae9bc8a...", time: "2 days ago" },
-    { address: "GAQ6...IVQI", action: "Soroban Token Mint", txHash: "9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea", time: "3 days ago" },
-    { address: "GBAA...W2TL", action: "Escrow Contract Dispute", txHash: "b89fac871be98bfca89e72bcf82abcf89fac712bc0912bc89fac72...", time: "4 days ago" },
-    { address: "GDTW...K2LN", action: "Open USDC Trustline", txHash: "c018face82be98bcfa98faec72abcf82fbca712bc09fac72bca8fa...", time: "4 days ago" },
-    { address: "GCQA...45N2", action: "Escrow Resolution (Arbitrated)", txHash: "d89face918be92bfca89ecf82abce89fac712bc091a2bc89fac72a...", time: "5 days ago" },
-    { address: "GCOA...K9PO", action: "Escrow Contract Deposit (120 USDC)", txHash: "f999bcfa98feca72abcf82bfca712bc08fa9fae8bc0812bc89afca...", time: "5 days ago" },
-    { address: "GDFR...LL9P", action: "Milestone Work Submit", txHash: "e78fca9bc81fec82abcf82bc08fa9fae8bc08fa9fae7a8fac9afca...", time: "6 days ago" }
-  ]
+  const [interactions, setInteractions] = useState<InteractionLog[]>([])
+  const [walletCalls, setWalletCalls] = useState(0)
 
   // Load from local storage
   useEffect(() => {
