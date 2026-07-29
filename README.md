@@ -92,8 +92,8 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
   * **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
 
 #### 2. LumenFlow Escrow Contract (Level 4 MVP)
-* **Testnet Contract ID**: `CDFLOWESCROWMILSTONEPAYMENTSDECUSDC4NRHBSBGNGMIEGXPXAAAA`
-  * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CDFLOWESCROWMILSTONEPAYMENTSDECUSDC4NRHBSBGNGMIEGXPXAAAA)
+* **Testnet Contract ID**: `CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364`
+  * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364)
   * **Status**: Deployed & ready for milestone payments.
 
 ---
