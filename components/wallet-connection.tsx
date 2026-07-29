@@ -15,7 +15,11 @@ interface GeneratedKeypair {
   funded: boolean
 }
 
-export function WalletConnection() {
+interface WalletConnectionProps {
+  onClose?: () => void
+}
+
+export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
   const { setWallet } = useWallet()
   const [secretKeyInput, setSecretKeyInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -90,6 +94,11 @@ export function WalletConnection() {
       setIsLoading(true)
       setError("")
 
+      // Close the parent dialog first so it doesn't overlap/block interaction with StellarWalletsKit modal
+      if (onClose) {
+        onClose()
+      }
+
       const { StellarWalletsKit } = await import("@creit.tech/stellar-wallets-kit")
       const { address } = await StellarWalletsKit.authModal()
 
@@ -106,7 +115,7 @@ export function WalletConnection() {
     } finally {
       setIsLoading(false)
     }
-  }, [setWallet])
+  }, [setWallet, onClose])
 
   // Manual secret key connection
   const connectWithSecretKey = useCallback(async () => {

@@ -16,7 +16,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           <DialogTitle className="text-2xl">Connect Your Wallet</DialogTitle>
         </DialogHeader>
         <div className="py-6">
-          <WalletConnection />
+          <WalletConnection onClose={() => onOpenChange(false)} />
         </div>
         <p className="text-xs text-muted-foreground text-center">
           By connecting, you agree to our Terms of Service and Privacy Policy

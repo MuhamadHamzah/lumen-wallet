@@ -80,88 +80,88 @@ export function Hero({ onConnectClick }: HeroProps) {
             </FadeIn>
           </div>
 
-          {/* Right column - Card visual */}
+          {/* Right column - Interactive Wallet Mockup */}
           <FadeIn delay={300} direction="left">
             <div className="relative">
               {/* Outer glow matching logo */}
               <div className="absolute -inset-4 bg-gradient-to-br from-blue-500/15 via-blue-600/10 to-amber-500/10 blur-3xl rounded-3xl animate-pulse-glow" />
 
-              {/* Main card */}
-              <div className="relative bg-gradient-to-br from-card/95 to-card/70 rounded-3xl border border-white/[0.08] p-8 shadow-2xl backdrop-blur-xl">
-                {/* Subtle top accent line */}
-                <div className="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
-
-                <div className="space-y-4">
-                  {[
-                    {
-                      icon: Coins,
-                      title: "Your Wallet",
-                      subtitle: "Balance",
-                      iconBg: "bg-blue-500/10",
-                      iconColor: "text-blue-400",
-                      delay: 0,
-                    },
-                    {
-                      icon: Shield,
-                      title: "Top Priority",
-                      subtitle: "Security",
-                      iconBg: "bg-amber-500/10",
-                      iconColor: "text-amber-400",
-                      delay: 1,
-                    },
-                    {
-                      icon: Zap,
-                      title: "Instant Transfer",
-                      subtitle: "Speed",
-                      iconBg: "bg-blue-500/10",
-                      iconColor: "text-blue-300",
-                      delay: 2,
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={item.title}
-                      className="group flex items-center gap-4 rounded-2xl bg-white/[0.03] p-4 border border-white/[0.06] hover:border-blue-500/20 hover:bg-white/[0.06] transition-all duration-500"
-                      style={{
-                        animation: `slide-in-card 600ms cubic-bezier(0.16, 1, 0.3, 1) ${600 + index * 150}ms both`,
-                      }}
-                    >
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${item.iconBg} ${item.iconColor} group-hover:scale-110 transition-transform duration-300`}>
-                        <item.icon className="h-6 w-6" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-muted-foreground">{item.subtitle}</div>
-                        <div className="text-lg font-semibold">{item.title}</div>
-                      </div>
-                      <div className="h-8 w-16 rounded-lg overflow-hidden opacity-40">
-                        <svg viewBox="0 0 64 32" className="w-full h-full">
-                          <path
-                            d={`M0,${20 + index * 2} Q16,${8 - index * 3} 32,${16 + index} T64,${10 - index * 2}`}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            className="text-blue-400"
-                            style={{
-                              strokeDasharray: 100,
-                              strokeDashoffset: 100,
-                              animation: `draw-line 1.5s ease-out ${1000 + index * 200}ms forwards`,
-                            }}
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  ))}
+              {/* Main container */}
+              <div className="relative bg-card rounded-3xl border border-white/[0.08] p-6 shadow-2xl backdrop-blur-xl">
+                {/* Header Mock */}
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.06]">
+                  <div className="flex items-center gap-2">
+                    <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-xs font-mono text-muted-foreground">GCBFQ3...SCDVY6</span>
+                  </div>
+                  <span className="text-[10px] font-semibold bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full uppercase tracking-wider">Testnet</span>
                 </div>
 
-                {/* Bottom status */}
-                <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
-                    </span>
-                    Connected to Stellar
+                {/* Balance Sneak Peek Card */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600/20 to-amber-500/10 border border-white/[0.08] p-5 mb-6">
+                  {/* Subtle top light reflection */}
+                  <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  
+                  <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase">Estimated Balance</span>
+                  <div className="text-3xl font-extrabold font-mono tracking-tight mt-1 flex items-baseline gap-1 text-foreground">
+                    12,450.85 <span className="text-xs text-muted-foreground font-semibold">XLM</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium mt-0.5">≈ $1,369.59 USD</div>
+
+                  <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/[0.06] text-xs">
+                    <div>
+                      <span className="text-muted-foreground font-medium block">USDC Token</span>
+                      <span className="font-mono font-bold mt-0.5 block text-foreground">1,250.00 USDC</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground font-medium block">Active Escrows</span>
+                      <span className="font-mono font-bold mt-0.5 block text-amber-400">3 Milestones</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Simulated Web3 Escrow Contract Live Feed */}
+                <div className="space-y-3">
+                  <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase block mb-1">Contract Execution Flow</span>
+
+                  {/* Step 1 */}
+                  <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.04] rounded-xl p-3 text-xs">
+                    <div className="size-6 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">1</div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-foreground">Milestone 1 Funded</div>
+                      <div className="text-[10px] text-muted-foreground font-mono mt-0.5">500 USDC locked on-chain</div>
+                    </div>
+                    <span className="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">Completed</span>
+                  </div>
+
+                  {/* Step 2 */}
+                  <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.04] rounded-xl p-3 text-xs">
+                    <div className="size-6 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">2</div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-foreground">Work Submitted</div>
+                      <div className="text-[10px] text-muted-foreground font-mono mt-0.5">Freelancer submitted deliverables</div>
+                    </div>
+                    <span className="text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">Under Review</span>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.04] rounded-xl p-3 text-xs opacity-50">
+                    <div className="size-6 rounded-lg bg-white/5 text-muted-foreground flex items-center justify-center font-bold">3</div>
+                    <div className="flex-1">
+                      <div className="font-semibold">Funds Released</div>
+                      <div className="text-[10px] text-muted-foreground font-mono mt-0.5">Payment disbursed to freelancer</div>
+                    </div>
+                    <span className="text-[10px] font-semibold bg-white/5 text-muted-foreground px-2 py-0.5 rounded-full">Pending</span>
+                  </div>
+                </div>
+
+                {/* Bottom Status bar */}
+                <div className="mt-5 pt-3 border-t border-white/[0.06] flex items-center justify-between text-[10px] text-muted-foreground font-medium">
+                  <span className="flex items-center gap-1">
+                    <span className="size-1.5 rounded-full bg-emerald-500" />
+                    Freighter Connected
                   </span>
-                  <span className="font-mono text-blue-400/60">v2.0</span>
+                  <span>v2.0.4</span>
                 </div>
               </div>
             </div>
