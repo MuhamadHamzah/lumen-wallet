@@ -1,43 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
-import fs from "fs"
-import path from "path"
 import type { MultisigProposal } from "@/lib/multisig"
+import { readProposals, writeProposals } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
-
-const DATA_DIR = path.join(process.cwd(), "data")
-const DATA_FILE = path.join(DATA_DIR, "multisig_proposals.json")
-
-// Helper function to read proposals safely
-function readProposals(): MultisigProposal[] {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true })
-    }
-    if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify([]))
-      return []
-    }
-    const data = fs.readFileSync(DATA_FILE, "utf-8")
-    return JSON.parse(data) as MultisigProposal[]
-  } catch (err) {
-    console.error("Error reading proposals:", err)
-    return []
-  }
-}
-
-// Helper function to write proposals safely
-function writeProposals(proposals: MultisigProposal[]) {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true })
-    }
-    fs.writeFileSync(DATA_FILE, JSON.stringify(proposals, null, 2))
-  } catch (err) {
-    console.error("Error writing proposals:", err)
-  }
-}
 
 export async function GET(request: NextRequest) {
   const account = request.nextUrl.searchParams.get("account")
@@ -47,7 +13,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing 'account' query parameter." }, { status: 400 })
   }
 
-  const proposals = readProposals()
+  const proposals = await readProposals()
   const filtered = proposals.filter(
     (p) => p.targetAccount === account && p.network === network
   )
@@ -71,7 +37,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing proposal details or XDR." }, { status: 400 })
     }
 
-    const proposals = readProposals()
+    const proposals = await readProposals()
     const newProposal: MultisigProposal = {
       ...proposal,
       id: Math.random().toString(36).substring(2, 11),
@@ -82,7 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     proposals.push(newProposal)
-    writeProposals(proposals)
+    await writeProposals(proposals)
 
     return NextResponse.json(newProposal)
   }
@@ -93,7 +59,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing 'id', 'signer', or 'signedXdr'." }, { status: 400 })
     }
 
-    const proposals = readProposals()
+    const proposals = await readProposals()
     const index = proposals.findIndex((p) => p.id === id)
     if (index === -1) {
       return NextResponse.json({ error: "Proposal not found." }, { status: 404 })
@@ -111,7 +77,7 @@ export async function POST(request: NextRequest) {
     proposal.currentWeight = newWeight
 
     proposals[index] = proposal
-    writeProposals(proposals)
+    await writeProposals(proposals)
 
     return NextResponse.json(proposal)
   }
@@ -122,7 +88,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing 'id' or 'txHash'." }, { status: 400 })
     }
 
-    const proposals = readProposals()
+    const proposals = await readProposals()
     const index = proposals.findIndex((p) => p.id === id)
     if (index === -1) {
       return NextResponse.json({ error: "Proposal not found." }, { status: 404 })
@@ -134,7 +100,7 @@ export async function POST(request: NextRequest) {
     proposal.executedAt = new Date().toISOString()
 
     proposals[index] = proposal
-    writeProposals(proposals)
+    await writeProposals(proposals)
 
     return NextResponse.json(proposal)
   }
