@@ -86,7 +86,8 @@ export function FeedbackAnalytics() {
         setRating(5)
         toast.success("Feedback submitted successfully! Thank you.")
       } else {
-        toast.error("Failed to submit feedback.")
+        const errData = await res.json().catch(() => ({}))
+        toast.error(errData.error || "Failed to submit feedback.")
       }
     } catch (err) {
       console.error("Submit feedback error:", err)
