@@ -1,10 +1,10 @@
 "use client"
 
 import type { ReactNode } from "react"
-import { useEffect } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, DollarSign, BarChart2 } from "lucide-react"
+import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, DollarSign, BarChart2, MoreHorizontal, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWallet } from "@/components/wallet-provider"
 import { Logo } from "@/components/logo"
@@ -26,24 +26,44 @@ const NAV = [
   { href: "/multisig", label: "Multisig", icon: ShieldCheck },
 ]
 
-const MOBILE_NAV = [
+/* Primary tabs shown directly in the bottom bar */
+const MOBILE_PRIMARY = [
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/send", label: "Send", icon: ArrowUpRight },
   { href: "/swap", label: "Swap", icon: RefreshCw },
-  { href: "/escrow", label: "Escrow", icon: DollarSign },
   { href: "/history", label: "History", icon: History },
+]
+
+/* Secondary items shown inside the "More" panel */
+const MOBILE_MORE = [
+  { href: "/receive", label: "Receive", icon: ArrowDownLeft },
+  { href: "/tokens", label: "Tokens", icon: Coins },
+  { href: "/escrow", label: "Escrow", icon: DollarSign },
+  { href: "/feedback", label: "Analytics", icon: BarChart2 },
+  { href: "/multisig", label: "Multisig", icon: ShieldCheck },
 ]
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { isConnected, isInitialized, disconnect, publicKey } = useWallet()
   const pathname = usePathname()
   const router = useRouter()
+  const [moreOpen, setMoreOpen] = useState(false)
+
+  /* Close "More" panel on route change */
+  useEffect(() => {
+    setMoreOpen(false)
+  }, [pathname])
 
   useEffect(() => {
     if (isInitialized && !isConnected) {
       router.replace("/")
     }
   }, [isInitialized, isConnected, router])
+
+  const closeMore = useCallback(() => setMoreOpen(false), [])
+
+  /* Check if current page is one of the "More" items (to highlight the More button) */
+  const isMoreActive = MOBILE_MORE.some((item) => item.href === pathname)
 
   if (!isInitialized) {
     return (
@@ -134,10 +154,64 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </div>
 
+      {/* Mobile "More" overlay backdrop */}
+      {moreOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
+          onClick={closeMore}
+        />
+      )}
+
+      {/* Mobile "More" slide-up panel */}
+      <div
+        className={cn(
+          "fixed inset-x-0 bottom-[52px] z-50 lg:hidden transition-all duration-300 ease-out",
+          moreOpen
+            ? "translate-y-0 opacity-100 pointer-events-auto"
+            : "translate-y-4 opacity-0 pointer-events-none",
+        )}
+      >
+        <div className="mx-3 mb-2 rounded-2xl border border-border bg-card/98 backdrop-blur-xl shadow-2xl overflow-hidden">
+          {/* Panel header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">More</span>
+            <button
+              onClick={closeMore}
+              className="size-6 flex items-center justify-center rounded-full hover:bg-muted/50 text-muted-foreground transition-colors"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+
+          {/* Panel grid */}
+          <div className="grid grid-cols-3 gap-1 p-3">
+            {MOBILE_MORE.map((item) => {
+              const active = pathname === item.href
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMore}
+                  className={cn(
+                    "flex flex-col items-center gap-1.5 rounded-xl py-3 px-2 text-[11px] font-medium transition-colors",
+                    active
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  )}
+                >
+                  <item.icon className="size-5" />
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur-sm lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card/95 backdrop-blur-sm lg:hidden">
         <div className="mx-auto flex max-w-md items-center justify-around px-2 py-1">
-          {MOBILE_NAV.map((item) => {
+          {MOBILE_PRIMARY.map((item) => {
             const active = pathname === item.href
             return (
               <Link
@@ -153,6 +227,17 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             )
           })}
+          {/* More button */}
+          <button
+            onClick={() => setMoreOpen((prev) => !prev)}
+            className={cn(
+              "flex flex-col items-center gap-0.5 py-1.5 px-2 text-[10px] font-medium transition-colors",
+              moreOpen || isMoreActive ? "text-primary" : "text-muted-foreground",
+            )}
+          >
+            <MoreHorizontal className="size-5" />
+            More
+          </button>
         </div>
       </nav>
     </div>
