@@ -20,6 +20,22 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+  try {
+    await fetch("/api/interactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        address: pubKey,
+        action: actionName,
+        txHash,
+      }),
+    })
+  } catch (err) {
+    console.error("Failed to log interaction:", err)
+  }
+}
+
 interface TokenActionDialogProps {
   mode: "transfer" | "mint"
   token: TokenInfo
@@ -60,6 +76,11 @@ export function TokenActionDialog({ mode, token, network, open, onOpenChange }: 
       const { hash } = await action(secretKey, token.contractId, recipient, amount, network)
       setTxHash(hash)
       toast.success(isMint ? "Tokens minted successfully" : "Tokens sent successfully")
+      logInteraction(
+        publicKey || "Unknown",
+        isMint ? `Mint ${amount} ${token.symbol}` : `Send ${amount} ${token.symbol} (Soroban)`,
+        hash
+      )
       if (publicKey) mutate(["token", token.contractId, publicKey, network])
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Transaction failed. Please try again.")

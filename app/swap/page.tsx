@@ -64,6 +64,22 @@ async function fetchAccount(address: string, net: string) {
   return await res.json()
 }
 
+const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+  try {
+    await fetch("/api/interactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        address: pubKey,
+        action: actionName,
+        txHash,
+      }),
+    })
+  } catch (err) {
+    console.error("Failed to log interaction:", err)
+  }
+}
+
 export default function SwapPage() {
   const { publicKey, secretKey, network, walletType } = useWallet()
   const { mutate } = useSWRConfig()
@@ -274,6 +290,7 @@ export default function SwapPage() {
 
       toast.dismiss(loadingToast)
       toast.success(`Trustline for ${destAsset.code} opened successfully!`)
+      logInteraction(publicKey || "Unknown", `Open Trustline (${destAsset.code})`, "N/A (Trustline)")
       mutateAccount()
     } catch (err: any) {
       toast.dismiss(loadingToast)
@@ -292,6 +309,7 @@ export default function SwapPage() {
     const destMinAmount = (Number(destAmount) * (1 - slippage / 100)).toFixed(7)
 
     const loadingToast = toast.loading(`Executing swap of ${sourceAmount} ${sourceAsset.code}...`)
+    let successHash = ""
 
     try {
       if (walletType === "kit" || secretKey.startsWith("kit:")) {
@@ -342,6 +360,7 @@ export default function SwapPage() {
         }
         const { hash } = await submitRes.json()
         setTxHash(hash)
+        successHash = hash
       } else if (walletType === "freighter" || secretKey.startsWith("freighter:")) {
         // Direct execution (Manual/Secret Key)
         const result = await executeSwap({
@@ -357,11 +376,17 @@ export default function SwapPage() {
         })
         if (result.hash) {
           setTxHash(result.hash)
+          successHash = result.hash
         }
       }
 
       toast.dismiss(loadingToast)
       toast.success("Assets swapped successfully!")
+      logInteraction(
+        publicKey || "Unknown",
+        `Swap ${sourceAmount} ${sourceAsset.code} to ${destAsset.code}`,
+        successHash || "Success"
+      )
       
       // Mutate relevant details
       mutateAccount()

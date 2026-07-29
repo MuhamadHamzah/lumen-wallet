@@ -15,6 +15,22 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator"
 
+const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+  try {
+    await fetch("/api/interactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        address: pubKey,
+        action: actionName,
+        txHash,
+      }),
+    })
+  } catch (err) {
+    console.error("Failed to log interaction:", err)
+  }
+}
+
 export function SendForm() {
   const { secretKey, publicKey, network, walletType } = useWallet()
   const { mutate } = useSWRConfig()
@@ -78,6 +94,7 @@ export function SendForm() {
 
         setTxHash(hash)
         toast.success("Payment sent successfully via wallet")
+        logInteraction(publicKey || "Unknown", "Send XLM", hash)
         if (publicKey) {
           mutate(["balance", publicKey, network])
           mutate(["transactions", publicKey, network])
@@ -154,6 +171,7 @@ export function SendForm() {
 
         setTxHash(hash)
         toast.success("Payment sent successfully via Freighter")
+        logInteraction(publicKey || "Unknown", "Send XLM", hash)
         if (publicKey) {
           mutate(["balance", publicKey, network])
           mutate(["transactions", publicKey, network])
@@ -179,6 +197,7 @@ export function SendForm() {
       const { hash } = await sendPayment(secretKey, destination, amount, memo, network)
       setTxHash(hash)
       toast.success("Payment sent successfully")
+      logInteraction(publicKey || "Unknown", "Send XLM", hash)
       // Refresh on-chain balance and history for this wallet.
       if (publicKey) {
         mutate(["balance", publicKey, network])

@@ -13,6 +13,7 @@ import {
   Keypair,
   BASE_FEE,
 } from "@stellar/stellar-sdk"
+import { logInteraction } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -49,6 +50,12 @@ export async function POST(request: NextRequest) {
       const server = getServer(network)
       const tx = TransactionBuilder.fromXDR(signedXdr, getNetworkPassphrase(network))
       const result = await server.submitTransaction(tx)
+      try {
+        const senderPubKey = tx.source
+        await logInteraction(senderPubKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash)
+      } catch (err) {
+        console.error("Failed to log interaction for signed XDR trustline:", err)
+      }
       return NextResponse.json({ hash: result.hash })
     } catch (error) {
       return NextResponse.json({ error: describeStellarError(error) }, { status: 422 })
@@ -126,6 +133,11 @@ export async function POST(request: NextRequest) {
       tx.sign(sourceKeypair)
 
       const result = await server.submitTransaction(tx)
+      try {
+        await logInteraction(senderPublicKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash)
+      } catch (err) {
+        console.error("Failed to log interaction for direct trustline:", err)
+      }
       return NextResponse.json({ hash: result.hash })
     } catch (error) {
       return NextResponse.json({ error: describeStellarError(error) }, { status: 422 })

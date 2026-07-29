@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type { MultisigProposal } from "@/lib/multisig"
-import { readProposals, writeProposals } from "@/lib/db"
+import { readProposals, writeProposals, logInteraction } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -49,6 +49,11 @@ export async function POST(request: NextRequest) {
 
     proposals.push(newProposal)
     await writeProposals(proposals)
+    try {
+      await logInteraction(proposal.creator, `Create Multisig Proposal: ${proposal.title || "Untitled"}`, "N/A (Proposal)")
+    } catch (err) {
+      console.error("Failed to log interaction for multisig create:", err)
+    }
 
     return NextResponse.json(newProposal)
   }
@@ -78,6 +83,11 @@ export async function POST(request: NextRequest) {
 
     proposals[index] = proposal
     await writeProposals(proposals)
+    try {
+      await logInteraction(signer, `Sign Multisig Proposal: ${proposal.title || "Untitled"}`, "N/A (Proposal)")
+    } catch (err) {
+      console.error("Failed to log interaction for multisig sign:", err)
+    }
 
     return NextResponse.json(proposal)
   }
@@ -101,6 +111,11 @@ export async function POST(request: NextRequest) {
 
     proposals[index] = proposal
     await writeProposals(proposals)
+    try {
+      await logInteraction(proposal.creator || "Multisig", `Execute Multisig Proposal: ${proposal.title || "Untitled"}`, txHash)
+    } catch (err) {
+      console.error("Failed to log interaction for multisig execute:", err)
+    }
 
     return NextResponse.json(proposal)
   }

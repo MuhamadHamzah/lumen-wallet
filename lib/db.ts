@@ -356,3 +356,19 @@ export async function writeProposals(data: MultisigProposal[]): Promise<void> {
     console.error("Gagal menulis berkas proposals lokal:", err)
   }
 }
+
+export async function logInteraction(address: string, action: string, txHash: string): Promise<void> {
+  try {
+    const list = await readInteractions()
+    list.unshift({
+      address,
+      action,
+      txHash,
+      time: new Date().toISOString(),
+    })
+    await writeInteractions(list.slice(0, 100))
+  } catch (err) {
+    console.error("Gagal mencatat interaksi:", err)
+  }
+}
+

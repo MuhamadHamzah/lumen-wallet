@@ -6,7 +6,10 @@ import {
   isValidPublicKey,
   isValidSecretKey,
   describeStellarError,
+  getNetworkPassphrase,
 } from "@/lib/stellar-server"
+import { TransactionBuilder, Keypair } from "@stellar/stellar-sdk"
+import { logInteraction } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -36,6 +39,13 @@ export async function POST(request: NextRequest) {
   if (signedXdr) {
     try {
       const { hash } = await submitSignedTransaction({ signedXdr, network })
+      try {
+        const tx = TransactionBuilder.fromXDR(signedXdr, getNetworkPassphrase(network))
+        const senderPubKey = tx.source
+        await logInteraction(senderPubKey, "Send XLM", hash)
+      } catch (err) {
+        console.error("Failed to log interaction for signed XDR payment:", err)
+      }
       return NextResponse.json({ hash })
     } catch (error) {
       return NextResponse.json({ error: describeStellarError(error) }, { status: 422 })
@@ -90,6 +100,12 @@ export async function POST(request: NextRequest) {
 
     try {
       const { hash } = await submitPayment({ secret, destination, amount, memo, network })
+      try {
+        const senderPubKey = Keypair.fromSecret(secret).publicKey()
+        await logInteraction(senderPubKey, "Send XLM", hash)
+      } catch (err) {
+        console.error("Failed to log interaction for direct payment:", err)
+      }
       return NextResponse.json({ hash })
     } catch (error) {
       return NextResponse.json({ error: describeStellarError(error) }, { status: 422 })

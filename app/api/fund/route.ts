@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { fundAccount, isValidPublicKey, describeStellarError } from "@/lib/stellar-server"
+import { logInteraction } from "@/lib/db"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -17,6 +18,11 @@ export async function GET(request: NextRequest) {
 
   try {
     const { hash } = await fundAccount(address, network)
+    try {
+      await logInteraction(address, "Fund Account (Friendbot)", hash || "Friendbot")
+    } catch (err) {
+      console.error("Failed to log interaction for fundAccount:", err)
+    }
     return NextResponse.json({ hash })
   } catch (error) {
     return NextResponse.json({ error: describeStellarError(error) }, { status: 422 })
