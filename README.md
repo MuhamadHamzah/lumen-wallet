@@ -235,12 +235,17 @@ Create a `.env` file in the root directory:
 ```env
 NEXT_PUBLIC_STELLAR_NETWORK=testnet
 STELLAR_NETWORK=testnet
+
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NEXT_PUBLIC_STELLAR_NETWORK` | `testnet` | Default network for client-side |
 | `STELLAR_NETWORK` | `testnet` | Default network for server-side API routes |
+| `NEXT_PUBLIC_SUPABASE_URL` | — | Supabase project URL for database persistence (feedbacks, interactions, escrows) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | — | Supabase anonymous public key for client-side database access |
 
 > Users can switch between testnet and mainnet at runtime via the Network Switcher in the UI.
 
