@@ -9,7 +9,7 @@
 > **Live Application**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)  
 > **Demo Video Walkthrough**: [https://youtu.be/F8JIcWFxsIQ](https://youtu.be/F8JIcWFxsIQ)  
 > **Executive Pitch Deck**: [PITCH_DECK.md](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
-> **User Onboarding Excel Export (.xlsx)**: [docs/user_onboarding_responses.xlsx](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx) | [CSV Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.csv)  
+> **User Onboarding Excel Export (.xlsx)**: [docs/user_onboarding_responses.xlsx](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx)  
 
 ---
 
@@ -22,7 +22,7 @@ Lumen Wallet has evolved from an MVP into a **scaled Web3 payment & Soroban mile
 - **Recorded Testnet Transactions**: **128+ On-Chain & Soroban Contract Actions**
 - **User Satisfaction Rating**: **4.8 / 5.0** (Based on collected user feedback)
 - **User Onboarding Responses Spreadsheet**: All collected user details (Name, Email, Wallet Address, Rating, and Feedback) have been exported into an Excel spreadsheet for audit:  
-  📁 **[Download User Onboarding Excel Sheet (.xlsx)](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx)** | **[View CSV Dataset](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.csv)**
+  📁 **[Download User Onboarding Excel Sheet (.xlsx)](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx)**
 
 ---
 
@@ -33,10 +33,10 @@ In accordance with Level 5 requirements, product features were iteratively built
 | No | User Feedback / Pain Point | Implemented Product Improvement | Git Commit Link |
 | :--- | :--- | :--- | :--- |
 | **1** | *"New Web3 users find wallet connection and initial testnet funding confusing."* | Built an **Interactive Onboarding Guided Tour Modal** (`components/onboarding-wizard.tsx`) to walk new users through wallet connection, Friendbot testnet funding, DEX swap execution, and feedback submission. | [`acc2a4e`](https://github.com/MuhamadHamzah/lumen-wallet/commit/acc2a4e) |
-| **2** | *"Users want to export feedback and wallet growth data directly from the dApp."* | Added **Direct CSV / Excel Data Exporter Button** on the `/feedback` analytics dashboard with real-time interaction logs. | [`acc2a4e`](https://github.com/MuhamadHamzah/lumen-wallet/commit/acc2a4e) |
+| **2** | *"Users want to export feedback and wallet growth data directly from the dApp."* | Added **Direct Excel Data Exporter Button** on the `/feedback` analytics dashboard with real-time interaction logs. | [`acc2a4e`](https://github.com/MuhamadHamzah/lumen-wallet/commit/acc2a4e) |
 | **3** | *"Escrow milestone status needs clear visual progress bars and status completion tracking."* | Implemented a **Visual Milestone Progress Tracker Bar** and completion percentages in the **LumenFlow Escrow** workspace (`components/escrow/escrow-dashboard.tsx`). | [`5be6467`](https://github.com/MuhamadHamzah/lumen-wallet/commit/5be6467) |
 | **4** | *"Project presentation needs structured Web3 business, market, and architecture breakdown."* | Created an executive **Pitch Deck Document** (`PITCH_DECK.md`) covering Problem, Solution, Market Opportunity, Architecture, Growth Strategy, and Future Roadmap. | [`874fb73`](https://github.com/MuhamadHamzah/lumen-wallet/commit/874fb73) |
-| **5** | *"User onboarding responses need structured Excel record-keeping."* | Added **User Onboarding Responses Dataset Structure** in `docs/user_onboarding_responses.csv` & `.xlsx` format. | [`ede1aea`](https://github.com/MuhamadHamzah/lumen-wallet/commit/ede1aea) |
+| **5** | *"User onboarding responses need structured Excel record-keeping."* | Added **User Onboarding Responses Dataset Structure** in `.xlsx` format. | [`ede1aea`](https://github.com/MuhamadHamzah/lumen-wallet/commit/ede1aea) |
 
 ### 🔮 Next Phase Evolving Plan (Future Improvements)
 Based on additional feedback collected from our 50+ testnet users, we plan to implement the following features in the next release phase:

@@ -59,7 +59,7 @@ Lumen Wallet offers a unified, zero-friction Web3 wallet experience powered by S
 ## 📈 5. Growth Strategy & User Traction
 
 - **Level 5 Onboarding Campaign**: Onboarded **50+ active testnet users** executing real Stellar testnet transactions and providing structured feedback.
-- **Feedback-Driven Iteration Loop**: Real-time user feedback collected directly in dApp, exported via CSV/Excel, and mapped directly to Git commit releases.
+- **Feedback-Driven Iteration Loop**: Real-time user feedback collected directly in dApp, exported to Excel, and mapped directly to Git commit releases.
 - **Ecosystem Partnerships & Developer Grants**: Partnering with Web3 freelance DAOs and applying for Stellar Community Fund (SCF) growth grants.
 
 ---

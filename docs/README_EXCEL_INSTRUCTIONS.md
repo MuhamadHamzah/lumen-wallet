@@ -4,7 +4,6 @@ This directory (`docs/`) is designated for storing the exported Google Form user
 
 ### File Name & Path:
 - **`docs/user_onboarding_responses.xlsx`** (Excel format)
-- **`docs/user_onboarding_responses.csv`** (CSV format)
 
 ### Instructions for User:
 1. Open your Google Form response dashboard.
