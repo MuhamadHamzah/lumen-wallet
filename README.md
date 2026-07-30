@@ -38,6 +38,12 @@ In accordance with Level 5 requirements, product features were iteratively built
 | **4** | *"Project presentation needs structured Web3 business, market, and architecture breakdown."* | Created an executive **Pitch Deck Document** (`PITCH_DECK.md`) covering Problem, Solution, Market Opportunity, Architecture, Growth Strategy, and Future Roadmap. | [`874fb73`](https://github.com/MuhamadHamzah/lumen-wallet/commit/874fb73) |
 | **5** | *"User onboarding responses need structured Excel record-keeping."* | Added **User Onboarding Responses Dataset Structure** in `docs/user_onboarding_responses.csv` & `.xlsx` format. | [`ede1aea`](https://github.com/MuhamadHamzah/lumen-wallet/commit/ede1aea) |
 
+### 🔮 Next Phase Evolving Plan (Future Improvements)
+Based on additional feedback collected from our 50+ testnet users, we plan to implement the following features in the next release phase:
+1. **Automated Escrow Expiry & Claimbacks**: Allow clients to automatically claw back funds if a freelancer fails to submit work within a defined timeline.
+2. **Mobile Progressive Web App (PWA)**: Package the dApp as a PWA with optimized touch gestures for seamless mobile Web3 interactions.
+3. **Multi-signature Escrow Approvals**: Enable multi-sig requirements for releasing milestone funds to support DAO treasury operations.
+
 ---
 
 Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blockchain network. It supports native XLM payments, Soroban smart contract token management, built-in DEX swap trading via Stellar Path Payments, multi-signature account management, and seamless network switching between Testnet and Mainnet all wrapped in a sleek, glassmorphic UI.
