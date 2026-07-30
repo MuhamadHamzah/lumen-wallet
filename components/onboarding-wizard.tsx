@@ -64,7 +64,7 @@ export function OnboardingWizard({ open, onOpenChange }: OnboardingWizardProps) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[560px] border border-cyan-500/20 bg-slate-950/90 backdrop-blur-2xl text-foreground p-7 rounded-3xl shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-md border border-cyan-500/20 bg-slate-950/95 backdrop-blur-2xl text-foreground p-5 sm:p-6 rounded-2xl shadow-[0_0_40px_rgba(6,182,212,0.12)] overflow-hidden">
         {/* Decorative Glow Elements */}
         <div className="absolute -top-24 -right-24 size-48 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 size-48 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
@@ -130,24 +130,24 @@ export function OnboardingWizard({ open, onOpenChange }: OnboardingWizardProps) 
 
             {/* Contextual Action Cards */}
             {step === 1 && (
-              <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs gap-3">
-                <div className="space-y-0.5 min-w-0">
-                  <div className="text-[10px] uppercase font-semibold text-slate-400">Wallet Address</div>
-                  <div className="font-mono text-cyan-300 text-xs truncate">
-                    {publicKey ? publicKey : "No Wallet Connected"}
+              <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs gap-2 overflow-hidden">
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <div className="text-[10px] uppercase font-semibold text-slate-500">Wallet Address</div>
+                  <div className="font-mono text-cyan-300 text-[11px] truncate">
+                    {publicKey ? `${publicKey.slice(0, 10)}...${publicKey.slice(-6)}` : "Not connected"}
                   </div>
                 </div>
                 {!publicKey ? (
                   <Button
                     size="sm"
                     onClick={() => connectWallet("freighter")}
-                    className="h-8 text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shrink-0 gap-1.5 shadow-[0_0_15px_rgba(6,182,212,0.4)]"
+                    className="h-7 text-[11px] font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shrink-0 gap-1 px-3"
                   >
-                    <Wallet className="size-3.5" /> Connect Freighter
+                    <Wallet className="size-3" /> Connect
                   </Button>
                 ) : (
-                  <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold shrink-0">
-                    <CheckCircle2 className="size-4" /> Ready
+                  <span className="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold shrink-0">
+                    <CheckCircle2 className="size-3.5" /> Ready
                   </span>
                 )}
               </div>
