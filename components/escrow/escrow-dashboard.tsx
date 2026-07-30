@@ -147,12 +147,12 @@ export function EscrowDashboard() {
 
   const getStatusBadge = (status: number) => {
     switch (status) {
-      case 0: return <span className="rounded-full bg-muted text-muted-foreground px-2.5 py-0.5 text-xs font-medium">Created</span>
-      case 1: return <span className="rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20 px-2.5 py-0.5 text-xs font-medium">Funded</span>
-      case 2: return <span className="rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 px-2.5 py-0.5 text-xs font-medium">Submitted</span>
-      case 3: return <span className="rounded-full bg-green-500/10 text-green-500 border border-green-500/20 px-2.5 py-0.5 text-xs font-medium">Released</span>
-      case 4: return <span className="rounded-full bg-destructive/10 text-destructive border border-destructive/20 px-2.5 py-0.5 text-xs font-medium">Disputed</span>
-      case 5: return <span className="rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20 px-2.5 py-0.5 text-xs font-medium">Resolved / Refunded</span>
+      case 0: return <span className="rounded-full bg-slate-800 text-slate-400 border border-slate-700 px-2.5 py-0.5 text-[11px] font-semibold">Created</span>
+      case 1: return <span className="rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(59,130,246,0.2)]">Funded</span>
+      case 2: return <span className="rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(245,158,11,0.2)]">Submitted</span>
+      case 3: return <span className="rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(52,211,153,0.2)]">Released</span>
+      case 4: return <span className="rounded-full bg-red-500/10 text-red-400 border border-red-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(239,68,68,0.2)]">Disputed</span>
+      case 5: return <span className="rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(139,92,246,0.2)]">Resolved / Refunded</span>
       default: return null
     }
   }
@@ -294,26 +294,26 @@ export function EscrowDashboard() {
   const userIsArbitrator = activeProject?.arbitrator === publicKey
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-800/80">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Sparkles className="size-4" />
+          <div className="flex items-center gap-2.5">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-cyan-400 shadow-inner">
+              <Sparkles className="size-5" />
             </span>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">LumenFlow Escrow</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">LumenFlow Escrow</h1>
           </div>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="text-slate-400 text-xs mt-1 leading-relaxed">
             Secure, milestone-based decentralized payment flow on Stellar Soroban.
           </p>
         </div>
 
-        <div className="flex items-center gap-1 rounded-full border border-border bg-card p-1 shadow-sm">
+        <div className="flex items-center gap-1 rounded-full border border-slate-700 bg-slate-900/80 p-1">
           <Button 
             variant="ghost" 
             size="sm"
             onClick={() => setIsSimulated(true)}
-            className={`text-xs h-8 rounded-full px-4 ${isSimulated ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
+            className={`text-xs h-8 rounded-full px-4 transition-all ${isSimulated ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 shadow-[0_0_10px_rgba(6,182,212,0.15)]" : "text-slate-500 hover:text-slate-300"}`}
           >
             Simulated Sandbox
           </Button>
@@ -327,7 +327,7 @@ export function EscrowDashboard() {
               }
               setIsSimulated(false)
             }}
-            className={`text-xs h-8 rounded-full px-4 ${!isSimulated ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}
+            className={`text-xs h-8 rounded-full px-4 transition-all ${!isSimulated ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 shadow-[0_0_10px_rgba(6,182,212,0.15)]" : "text-slate-500 hover:text-slate-300"}`}
           >
             Live Stellar Testnet
           </Button>
@@ -337,31 +337,31 @@ export function EscrowDashboard() {
       <div className="grid md:grid-cols-3 gap-6">
         {/* Left Side: Escrow Projects List */}
         <div className="md:col-span-1 space-y-4">
-          <Card className="border border-border bg-card p-4">
-            <h2 className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-3 flex items-center justify-between">
+          <Card className="border border-slate-800 bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl">
+            <h2 className="text-[11px] font-semibold tracking-widest uppercase text-slate-400 mb-4 flex items-center justify-between">
               <span>My Projects</span>
-              <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">{projects.length}</span>
+              <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">{projects.length}</span>
             </h2>
             
             {projects.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">No escrow contracts initialized yet.</p>
+              <p className="text-xs text-slate-500 text-center py-10">No escrow contracts initialized yet.</p>
             ) : (
               <div className="space-y-2">
                 {projects.map((proj) => (
                   <button
                     key={proj.id}
                     onClick={() => setActiveProject(proj)}
-                    className={`w-full text-left p-3 rounded-lg border text-sm transition-all duration-200 ${
+                    className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all duration-200 ${
                       activeProject?.id === proj.id 
-                        ? "border-primary bg-primary/5" 
-                        : "border-border bg-card hover:bg-muted"
+                        ? "border-cyan-500/30 bg-cyan-500/5 shadow-[0_0_15px_rgba(6,182,212,0.08)]" 
+                        : "border-slate-800 bg-slate-950/40 hover:bg-slate-800/50 hover:border-slate-700"
                     }`}
                   >
-                    <div className="font-semibold truncate">{proj.name}</div>
-                    <div className="font-mono text-[10px] text-muted-foreground mt-1 truncate">{proj.id}</div>
-                    <div className="flex justify-between items-center mt-2 text-xs">
-                      <span className="text-muted-foreground">Milestones: {proj.milestones.length}</span>
-                      <span className="font-semibold text-primary">
+                    <div className="font-semibold truncate text-slate-100">{proj.name}</div>
+                    <div className="font-mono text-[10px] text-slate-500 mt-1 truncate">{proj.id}</div>
+                    <div className="flex justify-between items-center mt-2.5 text-xs">
+                      <span className="text-slate-400">Milestones: {proj.milestones.length}</span>
+                      <span className="font-bold text-cyan-400 font-mono">
                         {proj.milestones.reduce((acc, m) => acc + m.amount, 0)} {proj.tokenSymbol}
                       </span>
                     </div>
@@ -385,43 +385,43 @@ export function EscrowDashboard() {
               {activeProject ? (
                 <div className="space-y-6">
                   {/* Escrow Meta info */}
-                  <Card className="border border-border bg-card p-6">
-                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                  <Card className="border border-slate-800 bg-slate-900/60 backdrop-blur-xl p-6 rounded-2xl">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
                       <div>
-                        <h2 className="text-xl font-bold">{activeProject.name}</h2>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground font-mono">Contract: {activeProject.id}</span>
+                        <h2 className="text-xl font-bold text-white">{activeProject.name}</h2>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <span className="text-[11px] text-slate-500 font-mono bg-slate-950/60 px-2 py-0.5 rounded border border-slate-800">Contract: {activeProject.id}</span>
                           <CopyButton value={activeProject.id} label="Contract ID copied" className="size-5" />
                         </div>
                       </div>
                       
                       {isSimulated && (
-                        <div className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">
+                        <div className="flex items-center gap-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 text-[11px] font-semibold text-cyan-400">
                             <Sparkles className="size-3" /> Sandbox Mode
                         </div>
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-slate-800 text-xs">
                       <div>
-                        <div className="text-muted-foreground font-medium mb-1">Client Address:</div>
-                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
+                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Client Address:</div>
+                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
                           <span>{activeProject.client}</span>
-                          {userIsClient && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
+                          {userIsClient && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
                         </div>
                       </div>
                       <div>
-                        <div className="text-muted-foreground font-medium mb-1">Freelancer Address:</div>
-                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
+                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Freelancer Address:</div>
+                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
                           <span>{activeProject.freelancer}</span>
-                          {userIsFreelancer && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
+                          {userIsFreelancer && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
                         </div>
                       </div>
                       <div>
-                        <div className="text-muted-foreground font-medium mb-1">Arbitrator Address:</div>
-                        <div className="font-mono bg-muted p-2 rounded-md truncate flex items-center justify-between">
+                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Arbitrator Address:</div>
+                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
                           <span>{activeProject.arbitrator}</span>
-                          {userIsArbitrator && <span className="bg-primary/20 text-primary text-[8px] px-1 rounded ml-1">You</span>}
+                          {userIsArbitrator && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
                         </div>
                       </div>
                     </div>
@@ -446,15 +446,15 @@ export function EscrowDashboard() {
                       })()}
                     </div>
                     {activeProject.milestones.map((m) => (
-                      <Card key={m.id} className="border border-border bg-card p-4 relative overflow-hidden">
+                      <Card key={m.id} className="border border-slate-800 bg-slate-900/50 backdrop-blur-md p-5 rounded-2xl relative overflow-hidden hover:border-slate-700 transition-all">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-muted-foreground">#{m.id}</span>
-                              <h4 className="font-semibold text-base">{m.description}</h4>
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2.5">
+                              <span className="text-xs font-bold text-slate-500 bg-slate-800 px-2 py-0.5 rounded-md font-mono">#{m.id}</span>
+                              <h4 className="font-semibold text-base text-slate-100">{m.description}</h4>
                             </div>
-                            <div className="flex items-center gap-3 mt-1.5">
-                              <span className="font-mono text-sm font-bold text-primary">
+                            <div className="flex items-center gap-3 mt-1">
+                              <span className="font-mono text-sm font-bold text-cyan-400">
                                 {m.amount} {activeProject.tokenSymbol}
                               </span>
                               {getStatusBadge(m.status)}
