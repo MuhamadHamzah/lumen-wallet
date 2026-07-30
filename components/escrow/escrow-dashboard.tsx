@@ -427,9 +427,24 @@ export function EscrowDashboard() {
                     </div>
                   </Card>
 
-                  {/* Milestones list */}
+                  {/* Milestones progress overview */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-bold">Project Milestones</h3>
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-bold">Project Milestones</h3>
+                      {(() => {
+                        const total = activeProject.milestones.length
+                        const released = activeProject.milestones.filter(m => m.status === 3 || m.status === 5).length
+                        const pct = total > 0 ? Math.round((released / total) * 100) : 0
+                        return (
+                          <div className="flex items-center gap-2 text-xs">
+                            <span className="text-muted-foreground font-medium">Progress: {released}/{total} ({pct}%)</span>
+                            <div className="w-24 bg-muted h-2 rounded-full overflow-hidden border border-border">
+                              <div className="bg-primary h-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                            </div>
+                          </div>
+                        )
+                      })()}
+                    </div>
                     {activeProject.milestones.map((m) => (
                       <Card key={m.id} className="border border-border bg-card p-4 relative overflow-hidden">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
