@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare } from "lucide-react"
+import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare, Download, Search } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -29,6 +29,7 @@ export function FeedbackAnalytics() {
   const { publicKey } = useWallet()
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
   
   const [feedbacks, setFeedbacks] = useState<FeedbackItem[]>([])
   const [interactions, setInteractions] = useState<InteractionLog[]>([])
@@ -97,21 +98,66 @@ export function FeedbackAnalytics() {
     }
   }
 
+  const exportToCSV = () => {
+    if (feedbacks.length === 0 && interactions.length === 0) {
+      toast.error("No data available to export.")
+      return
+    }
+
+    const headers = ["Category", "User / Address", "Rating / Action", "Comment / TxHash", "Date / Time"]
+    const feedbackRows = feedbacks.map(f => ["Feedback", f.user, `${f.rating}/5`, `"${f.comment.replace(/"/g, '""')}"`, f.date])
+    const interactionRows = interactions.map(i => ["Interaction", i.address, i.action, i.txHash, i.time])
+
+    const csvContent = [
+      headers.join(","),
+      ...feedbackRows.map(r => r.join(",")),
+      ...interactionRows.map(r => r.join(","))
+    ].join("\n")
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.setAttribute("href", url)
+    link.setAttribute("download", `lumen_wallet_user_growth_${new Date().toISOString().slice(0,10)}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    toast.success("Exported user growth & feedback dataset successfully!")
+  }
+
+  const filteredInteractions = interactions.filter(i => 
+    i.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    i.action.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    i.txHash.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   const uniqueUsers = new Set([...interactions.map((i) => i.address), ...feedbacks.map((f) => f.user)]).size
   const avgRating = feedbacks.length > 0 ? (feedbacks.reduce((acc, f) => acc + f.rating, 0) / feedbacks.length).toFixed(1) : "5.0"
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-8 max-w-6xl mx-auto">
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <BarChart2 className="size-4" />
-          </span>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Feedback & Analytics</h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <BarChart2 className="size-4" />
+            </span>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Feedback & Analytics</h1>
+          </div>
+          <p className="text-muted-foreground text-sm mt-1">
+            Real-time metrics, wallet interactions, and user feedback summary.
+          </p>
         </div>
-        <p className="text-muted-foreground text-sm mt-1">
-          Real-time metrics, wallet interactions, and user feedback summary.
-        </p>
+
+        <Button
+          onClick={exportToCSV}
+          variant="outline"
+          size="sm"
+          className="gap-2 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/10 self-start md:self-auto"
+        >
+          <Download className="size-3.5" />
+          Export User Data (CSV)
+        </Button>
       </div>
 
       {/* Analytics widgets */}

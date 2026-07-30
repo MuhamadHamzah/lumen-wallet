@@ -14,6 +14,9 @@ import { Button } from "@/components/ui/button"
 import { truncate } from "@/lib/stellar"
 import { CopyButton } from "@/components/copy-button"
 
+import { Sparkles } from "lucide-react"
+import { OnboardingWizard } from "@/components/onboarding-wizard"
+
 const NAV = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/send", label: "Send", icon: ArrowUpRight },
@@ -48,6 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const [moreOpen, setMoreOpen] = useState(false)
+  const [wizardOpen, setWizardOpen] = useState(false)
 
   /* Close "More" panel on route change */
   useEffect(() => {
@@ -81,6 +85,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <TestnetBanner />
+      <OnboardingWizard open={wizardOpen} onOpenChange={setWizardOpen} />
 
       <div className="mx-auto flex w-full max-w-6xl gap-0 lg:gap-8 px-4 py-4 lg:px-6 lg:py-6">
         {/* Desktop sidebar */}
@@ -110,9 +115,18 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          <div className="mt-8 pt-4 border-t border-border">
+          <div className="mt-6 pt-4 border-t border-border space-y-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setWizardOpen(true)}
+              className="w-full justify-start gap-2 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/10"
+            >
+              <Sparkles className="size-3.5" />
+              Onboarding Guide
+            </Button>
             {publicKey && (
-              <div className="flex items-center gap-2 mb-3 px-1">
+              <div className="flex items-center gap-2 px-1 pt-1">
                 <div className="size-2 rounded-full bg-success" />
                 <span className="font-mono text-xs text-muted-foreground truncate">{truncate(publicKey, 4, 4)}</span>
                 <CopyButton value={publicKey} label="Copied" className="size-5 ml-auto" />
@@ -136,6 +150,15 @@ export function AppShell({ children }: { children: ReactNode }) {
           <header className="mb-4 flex items-center justify-between lg:hidden">
             <Logo />
             <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setWizardOpen(true)}
+                title="Onboarding Guide"
+                className="size-8 text-primary border-primary/30"
+              >
+                <Sparkles className="size-4" />
+              </Button>
               <NetworkSwitcher />
               <ThemeToggle />
               <Button variant="ghost" size="icon" aria-label="Disconnect" onClick={disconnect} className="text-muted-foreground">
@@ -146,6 +169,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           {/* Desktop top bar */}
           <div className="mb-6 hidden items-center justify-end gap-3 lg:flex">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setWizardOpen(true)}
+              className="gap-1.5 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/10"
+            >
+              <Sparkles className="size-3.5" />
+              Onboarding Guide
+            </Button>
             <NetworkSwitcher />
             <ThemeToggle />
           </div>
