@@ -7,7 +7,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 > **Live Application**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)  
-> **Demo Video Walkthrough**: [https://youtu.be/S4Q9k6fgdDY](https://youtu.be/S4Q9k6fgdDY)  
+> **Demo Video Walkthrough**: [https://youtu.be/F8JIcWFxsIQ](https://youtu.be/F8JIcWFxsIQ)  
 > **Executive Pitch Deck**: [PITCH_DECK.md](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
 > **User Onboarding Excel Export (.xlsx)**: [docs/user_onboarding_responses.xlsx](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx) | [CSV Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.csv)  
 
