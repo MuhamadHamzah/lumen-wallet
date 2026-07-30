@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare, Download, Search, Sparkles, Database } from "lucide-react"
+import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare, Search, Sparkles, Database } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -98,42 +98,6 @@ export function FeedbackAnalytics() {
     }
   }
 
-  const exportToExcel = () => {
-    if (feedbacks.length === 0 && interactions.length === 0) {
-      toast.error("No data available to export.")
-      return
-    }
-
-    const headers = ["Category", "User / Address", "Rating / Action", "Comment / TxHash", "Date / Time"]
-    const feedbackRows = feedbacks.map(f => `<tr><td>Feedback</td><td>${f.user}</td><td>${f.rating}/5</td><td>${f.comment.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</td><td>${f.date}</td></tr>`).join("")
-    const interactionRows = interactions.map(i => `<tr><td>Interaction</td><td>${i.address}</td><td>${i.action}</td><td>${i.txHash}</td><td>${i.time}</td></tr>`).join("")
-
-    const htmlContent = `
-      <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-      <head><meta charset="utf-8" /></head>
-      <body>
-        <table border="1">
-          <tr style="background-color: #06b6d4; color: black; font-weight: bold;">
-            ${headers.map(h => `<th>${h}</th>`).join("")}
-          </tr>
-          ${feedbackRows}
-          ${interactionRows}
-        </table>
-      </body>
-      </html>
-    `
-
-    const blob = new Blob([htmlContent], { type: "application/vnd.ms-excel;charset=utf-8;" })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.setAttribute("href", url)
-    link.setAttribute("download", `lumen_wallet_user_growth_${new Date().toISOString().slice(0,10)}.xls`)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    toast.success("Exported user growth & feedback dataset to Excel successfully!")
-  }
-
   const filteredInteractions = interactions.filter(i => 
     i.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
     i.action.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -160,15 +124,6 @@ export function FeedbackAnalytics() {
             Real-time metric telemetry, active testnet user count, and verified feedback loop.
           </p>
         </div>
-
-        <Button
-          onClick={exportToExcel}
-          size="sm"
-          className="gap-2 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all self-start md:self-auto"
-        >
-          <Download className="size-3.5" />
-          Export User Data (.XLS)
-        </Button>
       </div>
 
       {/* Modern Web3 Metric Cards */}
