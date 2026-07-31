@@ -20,7 +20,7 @@ Lumen Wallet has evolved from an MVP into a **scaled Web3 payment & Soroban mile
 
 ### 📊 User Growth & Active Usage Proof (50+ Testnet Users)
 - **Onboarded Testnet Users**: **52+ Unique Stellar Wallet Addresses**
-- **Recorded Testnet Transactions**: **128+ On-Chain & Soroban Contract Actions**
+- **Recorded Testnet Transactions**: **89 On-Chain & Soroban Contract Actions**
 - **User Satisfaction Rating**: **4.8 / 5.0** (Based on collected user feedback)
 - **User Onboarding Google Form**: [https://forms.gle/D3LD7AwEN5GYzbuG8](https://forms.gle/D3LD7AwEN5GYzbuG8)
 - **User Onboarding Responses Spreadsheet**: All collected user details (Name, Email, Wallet Address, Rating, and Feedback) are synced and accessible via:
