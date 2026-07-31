@@ -11,7 +11,6 @@
 > **Executive Pitch Deck (Canva PPT)**: [View Pitch Deck](https://canva.link/zk12jyusvccpa2g) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
 > **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)  
 > **Feedback Google Form**: [Open Form](https://forms.gle/D3LD7AwEN5GYzbuG8)  
-> **User Onboarding Excel Export (.xlsx)**: [docs/user_onboarding_responses.xlsx](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx)  
 
 ---
 
