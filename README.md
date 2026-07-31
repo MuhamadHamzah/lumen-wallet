@@ -131,7 +131,7 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 > Decentalized multi-role milestone escrow workspace (Client, Freelancer, and Arbitrator roles).
 ![LumenFlow Escrow Dashboard](public/screenshots/LumenFlow%20Escrow.png)
 
-### 9. Proof of 10+ User Wallet Interactions
+### 9. Proof of 50+ User Wallet Interactions
 > Verified database log showing 10+ unique Stellar wallet address interaction records (21 interactions).
 ![Proof of Wallet Interactions](public/screenshots/Proof%20of%2010+%20user%20wallet%20interactions.png)
 
@@ -254,8 +254,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 |----------|---------|-------------|
 | `NEXT_PUBLIC_STELLAR_NETWORK` | `testnet` | Default network for client-side |
 | `STELLAR_NETWORK` | `testnet` | Default network for server-side API routes |
-| `NEXT_PUBLIC_SUPABASE_URL` | — | Supabase project URL for database persistence (feedbacks, interactions, escrows) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | — | Supabase anonymous public key for client-side database access |
+| `NEXT_PUBLIC_SUPABASE_URL` | - | Supabase project URL for database persistence (feedbacks, interactions, escrows) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | - | Supabase anonymous public key for client-side database access |
 
 > Users can switch between testnet and mainnet at runtime via the Network Switcher in the UI.
 
