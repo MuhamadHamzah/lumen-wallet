@@ -182,35 +182,37 @@ function TokenCard({
   const [actionMode, setActionMode] = useState<"transfer" | "mint" | null>(null)
 
   const { data: token, isLoading, error } = useSWR(
-    publicKey ? ["token", contractId, publicKey, network] : null,
-    () => getTokenInfo(contractId, publicKey as string, network),
+    ["token", contractId, publicKey || "", network],
+    () => getTokenInfo(contractId, publicKey || "", network),
     { revalidateOnFocus: false }
   )
 
   if (isLoading) {
     return (
-      <Card className="border border-border/50 bg-card/80 p-5">
+      <Card className="border border-slate-800 bg-slate-900/60 p-5 rounded-2xl">
         <div className="flex items-center gap-4">
-          <Skeleton className="size-12 rounded-xl" />
+          <Skeleton className="size-12 rounded-xl bg-slate-800" />
           <div className="flex-1 space-y-2">
-            <Skeleton className="h-4 w-32" />
-            <Skeleton className="h-3 w-48" />
+            <Skeleton className="h-4 w-32 bg-slate-800" />
+            <Skeleton className="h-3 w-48 bg-slate-800" />
           </div>
-          <Skeleton className="h-8 w-24" />
+          <Skeleton className="h-8 w-24 bg-slate-800" />
         </div>
       </Card>
     )
   }
 
   if (error || !token) {
+    const netName = network === "mainnet" || network === "public" ? "Mainnet" : "Testnet"
     return (
-      <Card className="border border-destructive/30 bg-destructive/5 p-5">
+      <Card className="border border-red-500/20 bg-red-950/10 p-5 rounded-2xl">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-sm font-medium text-destructive">Failed to load token</p>
-            <p className="text-xs text-muted-foreground font-mono truncate">{contractId}</p>
+            <p className="text-sm font-semibold text-red-400">Failed to load token on {netName}</p>
+            <p className="text-[11px] text-slate-400 font-mono truncate max-w-[280px]" title={contractId}>{contractId}</p>
+            <p className="text-[10px] text-slate-500 mt-1">Ensure the contract is deployed on this network.</p>
           </div>
-          <Button variant="ghost" size="sm" onClick={onRemove} className="text-destructive hover:text-destructive shrink-0">
+          <Button variant="ghost" size="sm" onClick={onRemove} className="text-red-400 hover:text-red-300 hover:bg-red-950/20 shrink-0 text-xs font-semibold">
             Remove
           </Button>
         </div>
@@ -243,6 +245,8 @@ function TokenCard({
             variant="outline"
             className="gap-1.5 flex-1 bg-transparent min-w-[80px]"
             onClick={() => setActionMode("transfer")}
+            disabled={!publicKey}
+            title={!publicKey ? "Connect wallet to send tokens" : undefined}
           >
             <ArrowUpRight className="size-3.5" />
             Send
@@ -253,6 +257,8 @@ function TokenCard({
               variant="outline"
               className="gap-1.5 flex-1 bg-transparent min-w-[80px]"
               onClick={() => setActionMode("mint")}
+              disabled={!publicKey}
+              title={!publicKey ? "Connect wallet to mint tokens" : undefined}
             >
               <Plus className="size-3.5" />
               Mint
