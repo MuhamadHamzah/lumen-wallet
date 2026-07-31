@@ -78,4 +78,3 @@ Wallet & SEP-41 Token    Escrow & 50+ Users     Mainnet & Mobile PWA  DAO Govern
 
 ---
 
-*Presented by Muhamad Hamzah — Built for Stellar Web3 Level 5 Blue Belt Submission.*
