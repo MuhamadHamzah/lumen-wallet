@@ -1,4 +1,4 @@
-# 🚀 Lumen Wallet & LumenFlow Escrow — Executive Pitch Deck
+# 🚀 Lumen Wallet & LumenFlow Escrow Executive Pitch Deck
 
 > **Building the Premier Next-Generation Wallet, DEX Swap & Soroban Escrow Infrastructure for the Stellar Blockchain Ecosystem.**
 
