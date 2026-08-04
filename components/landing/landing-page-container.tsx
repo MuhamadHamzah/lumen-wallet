@@ -4,8 +4,13 @@ import { useState, useEffect, useRef } from "react"
 import { LandingShell } from "./landing-shell"
 import { Hero } from "./hero"
 import { Features } from "./features"
+import { Testimonials3D } from "./testimonials-3d"
 import { AuthModal } from "./auth-modal"
 import { Web3Background } from "./web3-background"
+import { Logo } from "@/components/logo"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { NetworkSwitcher } from "@/components/network-switcher"
+import { Button } from "@/components/ui/button"
 
 interface LandingPageContainerProps {
   onConnectClick: () => void
@@ -14,59 +19,23 @@ interface LandingPageContainerProps {
 }
 
 const transitionStyles = `
-  @keyframes page-turn-clip {
-    0% {
-      clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 100%, 0% 100%);
-      -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 100%, 0% 100%);
-    }
-    50% {
-      clip-path: polygon(0% 0%, 0% 0%, 100% 100%, 100% 100%, 0% 100%);
-      -webkit-clip-path: polygon(0% 0%, 0% 0%, 100% 100%, 100% 100%, 0% 100%);
-    }
-    100% {
-      clip-path: polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
-      -webkit-clip-path: polygon(0% 100%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);
-    }
-  }
-
-  @keyframes page-crease-sweep {
-    0% {
-      transform: translate3d(90vw, -90vh, 0) rotate(-45deg);
-    }
-    100% {
-      transform: translate3d(-130vw, 130vh, 0) rotate(-45deg);
-    }
-  }
-
   @keyframes paper-flutter {
     0%, 100% {
       transform: scale(1) rotate(0deg) translate(0, 0);
-      filter: drop-shadow(-6px 6px 10px rgba(0,0,0,0.4));
+      filter: drop-shadow(-4px 4px 6px rgba(0,0,0,0.3));
     }
-    20% {
-      transform: scale(1.02) rotate(-1.5deg) translate(-1px, 2px);
-      filter: drop-shadow(-10px 10px 14px rgba(0,0,0,0.45));
+    25% {
+      transform: scale(1.03) rotate(-2deg) translate(-1px, 2px);
+      filter: drop-shadow(-8px 8px 12px rgba(0,0,0,0.38));
     }
-    40% {
-      transform: scale(0.99) rotate(0.5deg) translate(1px, -1px);
-      filter: drop-shadow(-5px 5px 8px rgba(0,0,0,0.35));
+    50% {
+      transform: scale(0.98) rotate(1deg) translate(1px, -1px);
+      filter: drop-shadow(-3px 3px 5px rgba(0,0,0,0.25));
     }
-    60% {
-      transform: scale(1.03) rotate(-2.5deg) translate(-2px, 3px);
-      filter: drop-shadow(-12px 12px 18px rgba(0,0,0,0.5));
+    75% {
+      transform: scale(1.04) rotate(-3deg) translate(-2px, 3px);
+      filter: drop-shadow(-10px 10px 14px rgba(0,0,0,0.42));
     }
-    80% {
-      transform: scale(0.98) rotate(1deg) translate(2px, -2px);
-      filter: drop-shadow(-4px 4px 7px rgba(0,0,0,0.38));
-    }
-  }
-
-  .page-turn-active {
-    animation: page-turn-clip 950ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-
-  .page-crease-active {
-    animation: page-crease-sweep 950ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
   }
 
   .paper-flutter-active {
@@ -80,39 +49,45 @@ export function LandingPageContainer({
   setAuthModalOpen,
 }: LandingPageContainerProps) {
   const [landingMode, setLandingMode] = useState<"wallet" | "flow">("wallet")
+  const [mounted, setMounted] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [dragOffset, setDragOffset] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const [showTooltip, setShowTooltip] = useState(false)
 
+  // Animated progress state (0 = normal, 1 = fully transitioned)
+  const [progress, setProgress] = useState(0)
+
   const dragStart = useRef({ x: 0, y: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Show tooltip on first visit if they haven't interacted yet
+  // Load saved landing mode from localStorage on mount (prevents hydration mismatch)
   useEffect(() => {
+    setMounted(true)
     if (typeof window !== "undefined") {
-      const hasTorn = localStorage.getItem("lumen_has_torn")
-      if (!hasTorn) {
-        const timer = setTimeout(() => {
-          setShowTooltip(true)
-        }, 3000)
-        return () => clearTimeout(timer)
+      const savedMode = localStorage.getItem("lumen_landing_mode")
+      if (savedMode === "wallet" || savedMode === "flow") {
+        setLandingMode(savedMode)
       }
+    }
+  }, [])
+
+  // Show tooltip on first visit
+  useEffect(() => {
+    const hasTorn = localStorage.getItem("lumen_has_torn")
+    if (!hasTorn) {
+      const timer = setTimeout(() => {
+        setShowTooltip(true)
+      }, 3000)
+      return () => clearTimeout(timer)
     }
   }, [landingMode])
 
-  // Core curl size. Base size is 90px. Max drag is 250px (total 340px).
-  const baseSize = 90
-  const threshold = 180 // drag distance required to trigger tear
-  const maxDrag = 250
-  const currentCurlSize = baseSize + Math.min(dragOffset, maxDrag)
-
-  // Drag handlers
+  // Drag & click trigger handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isTransitioning) return
     setIsDragging(true)
     dragStart.current = { x: e.clientX, y: e.clientY }
-    // Capture pointer to track movements outside the curl element
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
     setShowTooltip(false)
   }
@@ -121,9 +96,12 @@ export function LandingPageContainer({
     if (!isDragging) return
     const deltaX = e.clientX - dragStart.current.x
     const deltaY = e.clientY - dragStart.current.y
-    // Down-left is positive deltaY and negative deltaX
-    const offset = Math.max(0, (deltaY - deltaX) / 1.5)
+    const offset = Math.max(0, (deltaY - deltaX) / 1.1)
     setDragOffset(offset)
+
+    const maxDrag = 250
+    const currentProgress = Math.min(0.45, offset / maxDrag)
+    setProgress(currentProgress)
   }
 
   const handlePointerUp = (e: React.PointerEvent) => {
@@ -131,138 +109,257 @@ export function LandingPageContainer({
     setIsDragging(false)
     ;(e.target as HTMLElement).releasePointerCapture(e.pointerId)
 
-    if (dragOffset >= threshold) {
-      triggerTear()
-    } else {
-      // Elastic snap back
-      setDragOffset(0)
-    }
+    // Ultra-responsive: any click, tap, or drag triggers full paper roll
+    triggerTear()
   }
 
   const triggerTear = () => {
+    if (isTransitioning) return
     setIsTransitioning(true)
     localStorage.setItem("lumen_has_torn", "true")
 
-    // Let the front page roll out completely
-    setTimeout(() => {
-      setLandingMode((prev) => (prev === "wallet" ? "flow" : "wallet"))
-      setDragOffset(0)
-      setIsTransitioning(false)
-    }, 950)
+    let startTime: number | null = null
+    const duration = 2500 // Ultra-calm, slow, elegant 2.5s paper roll
+    const startProgress = progress
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const t = Math.min(1, elapsed / duration)
+
+      // Silky, slow, weightless quintic easeInOut curve
+      const ease = t < 0.5 
+        ? 16 * Math.pow(t, 5) 
+        : 1 - Math.pow(-2 * t + 2, 5) / 2
+      
+      const currentProgress = startProgress + (1.0 - startProgress) * ease
+      setProgress(currentProgress)
+
+      if (t < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        // Complete transition switch with ZERO position jump
+        setLandingMode((prev) => {
+          const nextMode = prev === "wallet" ? "flow" : "wallet"
+          localStorage.setItem("lumen_landing_mode", nextMode)
+          return nextMode
+        })
+        setProgress(0)
+        setDragOffset(0)
+        setIsTransitioning(false)
+      }
+    }
+    requestAnimationFrame(animate)
   }
 
   const handleCurlClick = () => {
     if (isTransitioning) return
     setShowTooltip(false)
-    setDragOffset(threshold)
-    setTimeout(() => {
-      triggerTear()
-    }, 50)
+    triggerTear()
   }
 
-  // Shortcut handler from footer
+  // Header and Footer mode switch buttons trigger the full 3D Paper Roll animation!
   const handleModeSwitch = (mode: "wallet" | "flow") => {
     if (isTransitioning) return
-    setLandingMode(mode)
-    setDragOffset(0)
+    if (mode === landingMode) return // Already in target mode
+    setShowTooltip(false)
+    triggerTear() // Trigger 3D paper roll animation!
   }
 
-  // Back page mode
   const backMode = landingMode === "wallet" ? "flow" : "wallet"
 
+  // 225deg Gradient Direction (Top-Right to Bottom-Left roll reveal):
+  const maskStart = progress * 135 - 20
+  const maskEnd = maskStart + 18
+
+  // Dynamic 3D Paper Roll Math:
+  const creaseX = 75 - progress * 150
+  const creaseY = -75 + progress * 150
+  
+  // 3D paper roll dynamics: 3D perspective tilt + rolling flex
+  const flexAngle = -45 + Math.sin(progress * Math.PI) * 6
+  const rotateX = Math.sin(progress * Math.PI) * 14 // 3D paper lift pitch
+  const rotateY = -Math.sin(progress * Math.PI) * 10 // 3D paper lift yaw
+  const rollScale = 1 + Math.sin(progress * Math.PI) * 0.12 // 3D roll cylinder swells in mid-flight
+
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#070b19]">
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050814]">
       <style dangerouslySetInnerHTML={{ __html: transitionStyles }} />
       
       {/* Background blobs synced to state */}
       <Web3Background mode={landingMode} />
 
-      {/* Render the background (underneath) page */}
-      <div className="absolute inset-0 z-0 pointer-events-none select-none opacity-45 scale-95 filter blur-[2px]">
-        <LandingShell onConnectClick={onConnectClick} mode={backMode}>
-          <Hero onConnectClick={onConnectClick} mode={backMode} />
-          <Features mode={backMode} />
-        </LandingShell>
-      </div>
+      {/* Global Permanent Fixed Navbar - Fades out during transition to let paper roll sweep clean */}
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-[#050814]/75 backdrop-blur-xl shadow-xl shadow-black/10 transition-all duration-300 ${
+        isTransitioning ? "opacity-0 pointer-events-none -translate-y-4" : "opacity-100 translate-y-0"
+      }`}>
+        <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <Logo />
+            {/* Header Mode Switcher (Tab indicator) */}
+            <div className="hidden sm:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] rounded-xl p-0.5 text-[11px]">
+              <button
+                onClick={() => handleModeSwitch("wallet")}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                  mounted && landingMode === "wallet"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                Wallet
+              </button>
+              <button
+                onClick={() => handleModeSwitch("flow")}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                  mounted && landingMode === "flow"
+                    ? "bg-amber-600 text-white shadow-sm"
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                Flow Escrow
+              </button>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <NetworkSwitcher />
+            <ThemeToggle />
+            <Button
+              onClick={onConnectClick}
+              className={`rounded-xl px-4 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-transform duration-200 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
+                !mounted
+                  ? "bg-slate-700 opacity-60"
+                  : landingMode === "wallet"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-blue-500/20 hover:shadow-blue-500/35"
+                  : "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 shadow-amber-500/20 hover:shadow-amber-500/35"
+              }`}
+              size="sm"
+            >
+              <span className="hidden sm:inline">Connect Wallet</span>
+              <span className="inline sm:hidden">Connect</span>
+            </Button>
+          </div>
+        </div>
+      </header>
 
-      {/* Render the active front page with page-peel transformation */}
-      <div
-        className={`relative z-10 transition-transform duration-300 ease-out ${
-          isTransitioning ? "page-turn-active" : ""
-        }`}
-        style={{
-          transformOrigin: "bottom left",
-          transform: !isTransitioning && isDragging
-            ? `rotate(-${Math.min(dragOffset * 0.02, 3)}deg)`
-            : "none",
-          transition: isTransitioning
-            ? "none"
-            : "transform 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-          opacity: isTransitioning ? 0 : 1,
-          clipPath: isTransitioning 
-            ? undefined 
-            : `polygon(0 0, calc(100% - ${currentCurlSize}px) 0, 100% ${currentCurlSize}px, 100% 100%, 0 100%)`,
-          WebkitClipPath: isTransitioning 
-            ? undefined 
-            : `polygon(0 0, calc(100% - ${currentCurlSize}px) 0, 100% ${currentCurlSize}px, 100% 100%, 0 100%)`,
-        }}
-      >
-        <LandingShell onConnectClick={onConnectClick} mode={landingMode} onModeSwitch={handleModeSwitch}>
-          <Hero onConnectClick={onConnectClick} mode={landingMode} />
-          <Features mode={landingMode} />
-        </LandingShell>
-      </div>
-
-      {/* Page Peel 3D Flap (Curl) */}
-      {!isTransitioning && (
-        <div
-          className={`absolute top-0 right-0 z-30 select-none touch-none ${
-            !isDragging ? "paper-flutter-active" : ""
-          }`}
+      {/* Render Page B (Revealed Page Underneath) - Only active during transition */}
+      {isTransitioning && (
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none select-none"
           style={{
-            width: `${currentCurlSize}px`,
-            height: `${currentCurlSize}px`,
+            opacity: Math.min(1, 0.6 + progress * 0.4),
+            transform: `scale(${0.97 + progress * 0.03})`,
+            transformOrigin: "center center",
           }}
         >
+          <LandingShell onConnectClick={onConnectClick} mode={backMode} hideHeader={true}>
+            <Hero key={`hero-${backMode}`} onConnectClick={onConnectClick} mode={backMode} />
+            <Features key={`features-${backMode}`} mode={backMode} />
+            <Testimonials3D key={`testimonials-${backMode}`} mode={backMode} />
+          </LandingShell>
+        </div>
+      )}
+
+      {/* Render Page A (Active Front Page) */}
+      <div
+        className="relative z-10 w-full h-full origin-top-right"
+        style={{
+          maskImage: (progress > 0)
+            ? `linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) ${maskStart}%, rgba(0,0,0,1) ${maskEnd}%, rgba(0,0,0,1) 100%)`
+            : "none",
+          WebkitMaskImage: (progress > 0)
+            ? `linear-gradient(225deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) ${maskStart}%, rgba(0,0,0,1) ${maskEnd}%, rgba(0,0,0,1) 100%)`
+            : "none",
+          transform: progress > 0 
+            ? `perspective(1800px) rotate3d(-0.7, 1, 0.15, ${progress * 25}deg) translateZ(${progress * 20}px)` 
+            : "none",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <LandingShell onConnectClick={onConnectClick} mode={landingMode} onModeSwitch={handleModeSwitch} hideHeader={true}>
+          <Hero key={`hero-${landingMode}`} onConnectClick={onConnectClick} mode={landingMode} />
+          <Features key={`features-${landingMode}`} mode={landingMode} />
+          <Testimonials3D key={`testimonials-${landingMode}`} mode={landingMode} />
+        </LandingShell>
+      </div>
+
+      {/* 3D Rolling Paper Scroll Cylinder (The physical 3D paper cylinder rolling down the screen) */}
+      {(progress > 0 || isTransitioning) && (
+        <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden [perspective:1400px]">
+          <div
+            className="absolute pointer-events-none origin-center"
+            style={{
+              left: "50%",
+              top: "50%",
+              width: "180px",
+              height: "320vh",
+              transform: `translate3d(calc(-50% + ${creaseX}vw), calc(-50% + ${creaseY}vh), ${progress * 20}px) rotateZ(${flexAngle}deg) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${rollScale})`,
+              transformStyle: "preserve-3d",
+            }}
+          >
+            {/* The 3D Rolled Paper Scroll Cylinder */}
+            <div
+              className="h-full w-full"
+              style={{
+                borderRadius: "90px",
+                background: "linear-gradient(90deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.9) 20%, rgba(255,255,255,0.4) 48%, rgba(255,255,255,0.7) 52%, rgba(30,41,59,0.9) 80%, rgba(15,23,42,0) 100%)",
+                boxShadow: "-20px 20px 35px rgba(0,0,0,0.65), inset 4px 0 12px rgba(255,255,255,0.15)",
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Dynamic 3D Page Flip Edge Shadow (casts natural shadow on underlying page as paper rolls) */}
+      {progress > 0 && (
+        <div 
+          className="fixed inset-0 z-20 pointer-events-none transition-none"
+          style={{
+            background: `radial-gradient(circle at 100% 0%, rgba(0,0,0,${Math.sin(progress * Math.PI) * 0.45}) 0%, transparent 65%)`,
+          }}
+        />
+      )}
+
+      {/* Page Peel 3D Corner Hotspot Flap (Enlarged 140px Hotspot area & instant click response) */}
+      {!isTransitioning && !isDragging && (
+        <div
+          className="absolute top-0 right-0 z-40 select-none touch-none paper-flutter-active cursor-pointer"
+          style={{
+            width: "140px",
+            height: "140px",
+          }}
+          onPointerDown={handlePointerDown}
+          onClick={handleCurlClick}
+        >
           <svg
-            className="w-full h-full cursor-grab active:cursor-grabbing transition-shadow duration-300"
+            className="w-full h-full cursor-pointer"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onClick={handleCurlClick}
           >
-            {/* Curled back flap triangle */}
+            {/* Curved back flap corner */}
             <path
               d="M 0,0 Q 25,65 0,100 L 100,100 Z"
               fill="url(#curl-gradient)"
-              stroke="rgba(255,255,255,0.15)"
-              strokeWidth="0.5"
+              stroke="rgba(255,255,255,0.25)"
+              strokeWidth="0.8"
             />
             <defs>
               <linearGradient id="curl-gradient" x1="1" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#1e293b" stopOpacity="0.8" />
-                <stop offset="35%" stopColor="#334155" />
-                <stop offset="60%" stopColor="#475569" />
-                <stop offset="85%" stopColor="#cbd5e1" />
-                <stop offset="100%" stopColor="#f8fafc" />
+                <stop offset="0%" stopColor="#0f172a" stopOpacity="0.95" />
+                <stop offset="45%" stopColor="#1e293b" stopOpacity="0.7" />
+                <stop offset="80%" stopColor="#3b82f6" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.15" />
               </linearGradient>
             </defs>
           </svg>
         </div>
       )}
 
-      {/* 3D Paper Crease / Cylinder Roll Overlay */}
-      {isTransitioning && (
+      {/* Invisible larger drag trigger for hot-spot dragging */}
+      {!isTransitioning && isDragging && (
         <div
-          className="page-crease-active fixed top-0 right-0 z-40 pointer-events-none origin-center"
-          style={{
-            width: "160px",
-            height: "250vh",
-            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 15%, rgba(255,255,255,0.7) 48%, rgba(255,255,255,0.9) 52%, rgba(0,0,0,0.18) 75%, rgba(0,0,0,0) 100%)",
-            boxShadow: "-12px 12px 35px rgba(0,0,0,0.45)",
-          }}
+          className="fixed inset-0 z-50 cursor-grabbing"
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
         />
       )}
 
@@ -271,7 +368,6 @@ export function LandingPageContainer({
         <div className="absolute top-24 right-6 z-40 max-w-xs animate-bounce pointer-events-none">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl border border-white/10 relative">
             <span>Psst... Seret atau klik pojok kertas ini untuk beralih ke {landingMode === "wallet" ? "Lumen Flow Escrow" : "Lumen Wallet"}! 📄✨</span>
-            {/* Triangle indicator */}
             <div className="absolute -top-1.5 right-6 w-3 h-3 bg-blue-600 rotate-45" />
           </div>
         </div>

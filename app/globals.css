@@ -39,6 +39,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --duration: 40s;
+  --gap: 1rem;
 }
 
 .dark {
@@ -76,6 +78,8 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.24 0.015 260);
   --sidebar-ring: oklch(0.5 0.01 260);
+  --duration: 40s;
+  --gap: 1rem;
 }
 
 @theme inline {
@@ -119,6 +123,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
 }
 
 @layer base {
@@ -210,6 +217,47 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* ===== Marquee Animations ===== */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee, [data-slot="marquee"] .animate-marquee {
+  animation-name: marquee !important;
+  animation-duration: var(--duration, 40s) !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+}
+
+.animate-marquee-vertical, [data-slot="marquee"] .animate-marquee-vertical {
+  animation-name: marquee-vertical !important;
+  animation-duration: var(--duration, 40s) !important;
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+}
+
+.reverse-marquee {
+  animation-direction: reverse !important;
+}
+
+.group:hover .pause-on-hover {
+  animation-play-state: paused !important;
 }
 
 /* Smooth scrolling */

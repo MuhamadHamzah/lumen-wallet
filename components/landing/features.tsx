@@ -18,42 +18,42 @@ const walletFeatures = [
   {
     icon: Smartphone,
     title: "Multiple Wallet Support",
-    description: "Connect with Freighter, WalletConnect, or import your secret key. Full flexibility in how you access your wallet.",
+    description: "Connect with Freighter, StellarWalletsKit, or import your custom secret key with complete non-custodial safety.",
     iconBg: "bg-blue-500/10",
     iconColor: "text-blue-400",
   },
   {
     icon: Lock,
-    title: "Bank-Grade Security",
-    description: "Your keys, your funds. We never store or access your secret keys. All data stays encrypted on your device.",
-    iconBg: "bg-amber-500/10",
-    iconColor: "text-amber-400",
-  },
-  {
-    icon: Zap,
-    title: "Instant Transfers",
-    description: "Send and receive XLM instantly on the Stellar network. Transactions confirmed in seconds, not hours.",
+    title: "Bank-Grade Key Security",
+    description: "Your keys, your funds. Private keys stay encrypted locally in memory and are never transmitted to any server.",
     iconBg: "bg-blue-500/10",
     iconColor: "text-blue-300",
   },
   {
+    icon: Zap,
+    title: "Instant Stellar Transfers",
+    description: "Send and receive XLM and custom Stellar tokens with 5-second ledger finality and sub-cent fees.",
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-400",
+  },
+  {
     icon: TrendingUp,
-    title: "Real-Time Updates",
-    description: "Watch your balance update in real-time. Track every transaction with detailed history and status.",
-    iconBg: "bg-amber-500/10",
-    iconColor: "text-amber-400",
+    title: "Real-Time Balance Tracker",
+    description: "Watch your balance update live with Horizon API SSE streaming. Track every payment and trustline instantly.",
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-300",
   },
   {
     icon: Wallet,
-    title: "Token Management",
-    description: "Manage multiple Stellar assets. Add custom tokens and track all your holdings in one place.",
+    title: "Stellar Asset Management",
+    description: "Add trustlines for USDC, EURC, and custom Stellar tokens. Manage all your crypto holdings in one clean dashboard.",
     iconBg: "bg-blue-500/10",
     iconColor: "text-blue-400",
   },
   {
     icon: BarChart3,
-    title: "Transaction History",
-    description: "Complete transaction history with filtering and search. Export your data for accounting or analysis.",
+    title: "Ledger Transaction Explorer",
+    description: "Complete transaction history with instant filtering, explorer hash links, and CSV export for accounting.",
     iconBg: "bg-blue-500/10",
     iconColor: "text-blue-300",
   },
@@ -62,45 +62,45 @@ const walletFeatures = [
 const flowFeatures = [
   {
     icon: ShieldCheck,
-    title: "Soroban Smart Contracts",
-    description: "Automated, non-custodial milestone-based escrow agreements powered by Stellar's high-performance smart contracts.",
+    title: "Soroban Smart Contract Vaults",
+    description: "Non-custodial WASM smart contracts on Stellar that securely lock project funds until contract conditions are met.",
     iconBg: "bg-amber-500/10",
     iconColor: "text-amber-400",
   },
   {
     icon: CalendarRange,
-    title: "Milestone-Based Payments",
-    description: "Break projects down into clear deliverables. Funds are only disbursed once work milestones are verified.",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-400",
-  },
-  {
-    icon: Scale,
-    title: "Decentralized Arbitration",
-    description: "A secure framework for dispute resolution. Designated arbitrators review deliverables and disburse shares fairly.",
+    title: "Milestone Progress Disbursement",
+    description: "Break complex deals into verified stages. Client approves deliverable -> funds auto-disburse to freelancer.",
     iconBg: "bg-amber-500/10",
     iconColor: "text-amber-300",
   },
   {
-    icon: Users,
-    title: "Multi-Role Dashboards",
-    description: "Tailored views and workflows for Clients, Freelancers, and Arbitrators. Complete role-based transparency.",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-300",
+    icon: Scale,
+    title: "Decentralized MultiSig Arbitration",
+    description: "Fair 3-of-5 guardian keypair arbitration panel to resolve disputes and disburse funds without single points of failure.",
+    iconBg: "bg-emerald-500/10",
+    iconColor: "text-emerald-400",
   },
   {
-    icon: Layers,
-    title: "Sub-Cent Gas Fees",
-    description: "Stellar's low-cost infrastructure makes escrow lockups and micro-payments extremely cheap, cost-effective, and fast.",
+    icon: Users,
+    title: "Role-Based Web3 Dashboards",
+    description: "Dedicated interfaces for Clients (Depositors), Freelancers (Beneficiaries), and Arbitrators with full contract audit trails.",
     iconBg: "bg-amber-500/10",
     iconColor: "text-amber-400",
   },
   {
+    icon: Layers,
+    title: "Sub-Cent Soroban Execution",
+    description: "Execute complex smart contract operations on Stellar for less than $0.001 per transaction, making micro-escrows viable.",
+    iconBg: "bg-amber-500/10",
+    iconColor: "text-amber-300",
+  },
+  {
     icon: Award,
-    title: "Secure Fund Lockups",
-    description: "Funds remain securely locked on-chain in the escrow contract address, removing custodial risk completely.",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-400",
+    title: "Time-Locked Safety Refunds",
+    description: "Automatic contract expiration timeouts protecting clients from unresponsive contractors with zero-fee refund claims.",
+    iconBg: "bg-emerald-500/10",
+    iconColor: "text-emerald-400",
   },
 ]
 
@@ -131,7 +131,7 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                 ? "border-blue-500/20 bg-blue-500/10 text-blue-400" 
                 : "border-amber-500/20 bg-amber-500/10 text-amber-400"
             }`}>
-              {isWallet ? "FEATURES" : "LUMEN FLOW"}
+              {isWallet ? "LUMEN WALLET FEATURES" : "SOROBAN SMART CONTRACT ESCROW"}
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
               {isWallet ? (
@@ -144,16 +144,16 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
               ) : (
                 <>
                   On-Chain Milestone{" "}
-                  <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-                    Escrow Management
+                  <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
+                    Escrow Platform
                   </span>
                 </>
               )}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {isWallet 
-                ? "Everything you need to manage your Stellar assets securely and efficiently."
-                : "Establish trustless contract agreements and secure payment workflows on Stellar."
+                ? "Everything you need to manage your Stellar assets, send XLM, and execute non-custodial transactions."
+                : "Establish trustless smart contract agreements, lock funds safely in Soroban vaults, and automate milestone payments."
               }
             </p>
           </div>

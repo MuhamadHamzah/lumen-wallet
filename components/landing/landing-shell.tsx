@@ -11,6 +11,7 @@ interface LandingShellProps {
   onConnectClick?: () => void
   mode?: "wallet" | "flow"
   onModeSwitch?: (mode: "wallet" | "flow") => void
+  hideHeader?: boolean
 }
 
 export function LandingShell({
@@ -18,11 +19,13 @@ export function LandingShell({
   onConnectClick,
   mode = "wallet",
   onModeSwitch,
+  hideHeader = false,
 }: LandingShellProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
       {/* Floating Modern Web3 Navbar */}
-      <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-card/65 backdrop-blur-xl shadow-xl shadow-black/10">
+      {!hideHeader && (
+        <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-card/65 backdrop-blur-xl shadow-xl shadow-black/10">
         <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Logo />
@@ -31,7 +34,7 @@ export function LandingShell({
               <div className="hidden sm:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] rounded-xl p-0.5 text-[11px]">
                 <button
                   onClick={() => onModeSwitch("wallet")}
-                  className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                  className={`px-3 py-1.5 rounded-lg font-semibold ${
                     mode === "wallet"
                       ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
                       : "text-muted-foreground hover:text-white"
@@ -41,7 +44,7 @@ export function LandingShell({
                 </button>
                 <button
                   onClick={() => onModeSwitch("flow")}
-                  className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
+                  className={`px-3 py-1.5 rounded-lg font-semibold ${
                     mode === "flow"
                       ? "bg-amber-600 text-white shadow-lg shadow-amber-600/20"
                       : "text-muted-foreground hover:text-white"
@@ -58,7 +61,7 @@ export function LandingShell({
             {onConnectClick && (
               <Button
                 onClick={onConnectClick}
-                className={`rounded-xl px-4 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-all duration-300 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
+                className={`rounded-xl px-4 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-transform duration-200 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
                   mode === "wallet"
                     ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-blue-500/20 hover:shadow-blue-500/35"
                     : "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 shadow-amber-500/20 hover:shadow-amber-500/35"
@@ -72,6 +75,7 @@ export function LandingShell({
           </div>
         </div>
       </header>
+      )}
 
       {/* Spacer for fixed header */}
       <div className="h-20" />
@@ -127,7 +131,7 @@ export function LandingShell({
                     mode === "wallet" ? "bg-blue-500" : "bg-amber-500"
                   }`} />
                 </span>
-                <span className="text-[11px] text-muted-foreground">Stellar Testnet Active</span>
+                <span className="text-[11px] text-muted-foreground">Stellar Network Active</span>
               </div>
               <p className="text-[11px] text-muted-foreground">
                 © {new Date().getFullYear()} Lumen Wallet

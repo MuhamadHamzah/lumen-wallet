@@ -8,7 +8,7 @@ export function Web3Background({ mode = "wallet" }: { mode?: "wallet" | "flow" }
 
       {/* Ambient blue glow - matches logo's left orbit */}
       <div
-        className={`absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full animate-float transition-opacity duration-700 ${
+        className={`absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full animate-float ${
           mode === "wallet" ? "opacity-35" : "opacity-10"
         }`}
         style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%)' }}
@@ -16,7 +16,7 @@ export function Web3Background({ mode = "wallet" }: { mode?: "wallet" | "flow" }
 
       {/* Amber glow - matches logo's right orbit */}
       <div
-        className={`absolute -bottom-24 -right-24 w-[400px] h-[400px] rounded-full animate-float transition-opacity duration-700 ${
+        className={`absolute -bottom-24 -right-24 w-[400px] h-[400px] rounded-full animate-float ${
           mode === "flow" ? "opacity-35" : "opacity-10"
         }`}
         style={{

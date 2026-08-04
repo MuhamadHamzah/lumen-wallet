@@ -21,14 +21,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [publicKey, setPublicKey] = useState<string | null>(null)
   const [secretKey, setSecretKey] = useState<string | null>(null)
   const [walletType, setWalletType] = useState<"freighter" | "walletconnect" | "manual" | "kit" | null>(null)
-  const [network, setNetworkState] = useState<"testnet" | "mainnet">("testnet")
+  const [network, setNetworkState] = useState<"testnet" | "mainnet">("mainnet")
   const [isInitialized, setIsInitialized] = useState(false)
 
   // Load network and wallet from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("lumen_network")
-      let currentNetwork: "testnet" | "mainnet" = "testnet"
+      let currentNetwork: "testnet" | "mainnet" = "mainnet"
       if (saved === "mainnet" || saved === "testnet") {
         setNetworkState(saved)
         currentNetwork = saved
