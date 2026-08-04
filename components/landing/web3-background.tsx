@@ -1,6 +1,6 @@
 "use client"
 
-export function Web3Background() {
+export function Web3Background({ mode = "wallet" }: { mode?: "wallet" | "flow" }) {
   return (
     <div className="absolute inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
       {/* Main gradient - matches logo's deep navy */}
@@ -8,15 +8,19 @@ export function Web3Background() {
 
       {/* Ambient blue glow - matches logo's left orbit */}
       <div
-        className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full animate-float opacity-30"
-        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)' }}
+        className={`absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full animate-float transition-opacity duration-700 ${
+          mode === "wallet" ? "opacity-35" : "opacity-10"
+        }`}
+        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%)' }}
       />
 
       {/* Amber glow - matches logo's right orbit */}
       <div
-        className="absolute -bottom-24 -right-24 w-[400px] h-[400px] rounded-full animate-float opacity-20"
+        className={`absolute -bottom-24 -right-24 w-[400px] h-[400px] rounded-full animate-float transition-opacity duration-700 ${
+          mode === "flow" ? "opacity-35" : "opacity-10"
+        }`}
         style={{
-          background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%)',
           animationDelay: '4s',
           animationDirection: 'reverse',
         }}

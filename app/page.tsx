@@ -5,9 +5,7 @@ import { useWallet } from "@/components/wallet-provider"
 import { AppShell } from "@/components/app-shell"
 import { BalanceCard } from "@/components/dashboard/balance-card"
 import { RecentTransactions } from "@/components/dashboard/recent-transactions"
-import { LandingShell } from "@/components/landing/landing-shell"
-import { Hero } from "@/components/landing/hero"
-import { Features } from "@/components/landing/features"
+import { LandingPageContainer } from "@/components/landing/landing-page-container"
 import { AuthModal } from "@/components/landing/auth-modal"
 
 export default function Page() {
@@ -51,12 +49,12 @@ export default function Page() {
     )
   }
 
-  // Otherwise, render landing page
+  // Otherwise, render landing page with page-peel transitions
   return (
-    <LandingShell onConnectClick={() => setAuthModalOpen(true)}>
-      <Hero onConnectClick={() => setAuthModalOpen(true)} />
-      <Features />
-      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
-    </LandingShell>
+    <LandingPageContainer
+      onConnectClick={() => setAuthModalOpen(true)}
+      authModalOpen={authModalOpen}
+      setAuthModalOpen={setAuthModalOpen}
+    />
   )
 }
