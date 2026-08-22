@@ -37,7 +37,7 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
   const isWallet = mode === "wallet"
 
   return (
-    <div className="relative overflow-hidden pt-0 pb-16 sm:pt-2 sm:pb-24">
+    <div className="relative overflow-hidden pt-4 pb-16 sm:pt-8 sm:pb-24 lg:pt-10">
       <style dangerouslySetInnerHTML={{ __html: coolAnimationStyles }} />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -93,37 +93,20 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                   </Button>
                 </div>
               </FadeIn>
-
-              {/* Stats */}
-              <FadeIn delay={550}>
-                <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-8 border-t border-white/[0.06]">
-                  {[
-                    { value: "~5s", label: "Settlement" },
-                    { value: "< $0.01", label: "Per Transaction" },
-                    { value: "100%", label: "Non-custodial" },
-                  ].map((stat) => (
-                    <div key={stat.label} className="group cursor-default">
-                      <div className="text-lg sm:text-2xl font-bold text-foreground group-hover:text-blue-400 transition-colors">
-                        {stat.value}
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </FadeIn>
             </div>
 
-            {/* Right column - Personal Wallet Card */}
+            {/* Right column - Personal Wallet Glass Card */}
             <FadeIn delay={300} direction="left">
               <div className="relative">
-                <div className="absolute -inset-4 blur-3xl rounded-3xl bg-gradient-to-br from-blue-500/20 via-blue-600/15 to-cyan-500/15 pointer-events-none" />
+                <div className="absolute -inset-4 blur-3xl rounded-3xl bg-gradient-to-br from-blue-500/25 via-cyan-500/20 to-indigo-500/20 pointer-events-none" />
                 
-                <div className="relative bg-card rounded-3xl border border-blue-500/20 p-6 shadow-2xl backdrop-blur-xl">
+                {/* Transparent Glass Outer Container */}
+                <div className="relative rounded-3xl border border-white/[0.08] bg-card/40 p-6 shadow-xl backdrop-blur-sm transition-all hover:border-blue-500/25">
                   {/* Header Mock */}
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.06]">
-                    <div className="flex items-center gap-2">
-                      <span className="size-2 rounded-full bg-emerald-500" />
-                      <span className="text-xs font-mono text-muted-foreground">GCBFQ3...SCDVY6</span>
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08]">
+                      <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-xs font-mono font-medium text-foreground">GCBFQ3...SCDVY6</span>
                     </div>
                     <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                       Stellar Network
@@ -131,7 +114,7 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                   </div>
 
                   {/* Balance Card + Animated Live Chart Wave */}
-                  <div className="relative overflow-hidden rounded-2xl border border-blue-500/30 p-5 mb-6 bg-gradient-to-br from-blue-600/25 via-blue-500/15 to-cyan-500/15 shadow-xl">
+                  <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 p-5 mb-6 bg-blue-500/[0.05] backdrop-blur-sm">
                     
                     {/* Live SVG Animated Wave Chart */}
                     <div className="absolute bottom-0 inset-x-0 h-16 pointer-events-none opacity-40">
@@ -148,14 +131,27 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
 
                     <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase flex items-center justify-between">
                       <span>Estimated Balance</span>
-                      <Sparkles className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
+                      <div className="size-6 rounded-lg bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-400 shadow-sm shadow-blue-500/20">
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="9.5" />
+                          <circle cx="12" cy="12" r="3" fill="currentColor" />
+                          <line x1="12" y1="2.5" x2="12" y2="9" />
+                          <line x1="12" y1="15" x2="12" y2="21.5" />
+                          <line x1="2.5" y1="12" x2="9" y2="12" />
+                          <line x1="15" y1="12" x2="21.5" y2="12" />
+                          <line x1="5.28" y1="5.28" x2="9.88" y2="9.88" />
+                          <line x1="14.12" y1="14.12" x2="18.72" y2="18.72" />
+                          <line x1="5.28" y1="18.72" x2="9.88" y2="14.12" />
+                          <line x1="14.12" y1="9.88" x2="18.72" y2="5.28" />
+                        </svg>
+                      </div>
                     </span>
                     <div className="text-3xl font-extrabold font-mono tracking-tight mt-1 flex items-baseline gap-1 text-foreground">
                       12,450.85 <span className="text-xs text-blue-400 font-semibold">XLM</span>
                     </div>
                     <div className="text-sm text-muted-foreground font-medium mt-0.5">≈ $1,369.59 USD</div>
 
-                    <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/[0.08] text-xs relative z-10">
+                    <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/[0.06] text-xs relative z-10">
                       <div>
                         <span className="text-muted-foreground font-medium block">USDC Token</span>
                         <span className="font-mono font-bold mt-0.5 block text-foreground">1,250.00 USDC</span>
@@ -173,22 +169,22 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                       Recent Activity
                     </span>
 
-                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 text-xs hover:border-blue-500/30 transition-all">
+                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-blue-500/25 backdrop-blur-sm rounded-xl p-3 text-xs transition-all">
                       <div className="size-7 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold">↑</div>
                       <div className="flex-1">
                         <div className="font-semibold text-foreground">Sent 120.00 XLM</div>
                         <div className="text-[10px] text-muted-foreground font-mono mt-0.5">To GD2B...K8XQ</div>
                       </div>
-                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">Success</span>
+                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">Success</span>
                     </div>
 
-                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 text-xs hover:border-blue-500/30 transition-all">
+                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-blue-500/25 backdrop-blur-sm rounded-xl p-3 text-xs transition-all">
                       <div className="size-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold">↓</div>
                       <div className="flex-1">
                         <div className="font-semibold text-foreground">Received 50.00 USDC</div>
                         <div className="text-[10px] text-muted-foreground font-mono mt-0.5">From GCOA...M5K0</div>
                       </div>
-                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">Success</span>
+                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">Success</span>
                     </div>
                   </div>
 
@@ -208,26 +204,26 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
           /* PAGE 2: LUMEN FLOW ESCROW (Interactive 3D Studio + Glowing Border Beams) */
           /* ========================================================= */
           <div className="space-y-12">
-            {/* Centered Master Hero Header */}
-            <div className="text-center max-w-3xl mx-auto space-y-6">
+            {/* Centered Master Escrow Studio Title */}
+            <div className="max-w-3xl mx-auto text-center space-y-6">
               <FadeIn delay={100}>
-                <div className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 backdrop-blur-md shadow-lg shadow-amber-500/10">
-                  <Lock className="w-3.5 h-3.5 mr-2 text-amber-400" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 shadow-sm backdrop-blur-md">
+                  <Lock className="w-3.5 h-3.5" />
                   SOROBAN ON-CHAIN SMART CONTRACT PLATFORM
                 </div>
               </FadeIn>
 
               <FadeIn delay={200}>
-                <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground text-balance">
                   Trustless Web3 Escrow Studio for{" "}
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 inline-block">
+                  <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
                     High-Stakes Milestone Deals
                   </span>
                 </h1>
               </FadeIn>
 
               <FadeIn delay={300}>
-                <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+                <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                   Lock USDC/XLM in non-custodial Soroban WASM vaults. Automated stage disbursement upon client approval or 3-of-5 multisig guardian arbitration.
                 </p>
               </FadeIn>
@@ -235,17 +231,18 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
               <FadeIn delay={400}>
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
                   <Button
-                    onClick={onConnectClick}
                     size="lg"
-                    className="h-13 rounded-xl px-8 text-base font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 shadow-xl shadow-amber-500/25 border-0 transition-transform hover:scale-105"
+                    onClick={onConnectClick}
+                    className="rounded-2xl px-7 py-6 font-semibold border-0 shadow-xl transition-transform duration-200 hover:scale-[1.02] bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 shadow-amber-500/25 hover:shadow-amber-500/40 text-white gap-2"
                   >
                     Launch Escrow Deal
-                    <ArrowUpRight className="ml-2 h-5 w-5" />
+                    <ArrowUpRight className="size-4" />
                   </Button>
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-13 rounded-xl px-8 text-base font-medium border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10 text-amber-300"
+                    onClick={onConnectClick}
+                    className="rounded-2xl px-6 py-6 border-white/20 dark:border-white/10 bg-white/[0.05] hover:bg-white/10 backdrop-blur-xl text-foreground font-semibold shadow-sm"
                   >
                     View Soroban Contracts
                   </Button>
@@ -258,7 +255,7 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
               <div className="grid gap-6 md:grid-cols-3 items-stretch relative">
                 
                 {/* Card 1: Vault Deposit Terms */}
-                <div className="bg-[#090d16] rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5">
+                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5">
                   <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -267,12 +264,12 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                       </span>
                       <ShieldCheck className="w-5 h-5 text-amber-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Soroban Lockup</h3>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Soroban Lockup</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed mb-6">
                       Client deposits USDC into a non-custodial Soroban WASM contract. Zero centralized party access.
                     </p>
 
-                    <div className="bg-white/[0.02] border border-amber-500/20 rounded-xl p-4 space-y-3 shadow-inner">
+                    <div className="bg-white/[0.04] border border-amber-500/20 rounded-xl p-4 space-y-3 backdrop-blur-md shadow-inner">
                       <div className="flex justify-between text-xs">
                         <span className="text-muted-foreground">Contract Deposit</span>
                         <span className="font-mono font-bold text-amber-400">15,000.00 USDC</span>
@@ -284,14 +281,14 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-white/[0.06] flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <div className="pt-6 border-t border-white/10 flex items-center gap-2 text-[11px] text-muted-foreground">
                     <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
                     Status: Active Contract Locked
                   </div>
                 </div>
 
                 {/* Card 2: Milestone Disbursement Pipeline */}
-                <div className="bg-[#0b121e] rounded-2xl border border-amber-500/40 p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group hover:border-orange-400 transition-all duration-300 hover:-translate-y-1.5">
+                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/40 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-orange-400 transition-all duration-300 hover:-translate-y-1.5">
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -300,7 +297,7 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                       </span>
                       <Clock className="w-5 h-5 text-orange-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Stage Release Flow</h3>
+                    <h3 className="text-xl font-bold text-foreground mb-2">Stage Release Flow</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed mb-4">
                       Work deliverables are reviewed per milestone. Approved stages instantly disburse funds.
                     </p>
@@ -317,21 +314,21 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                         <span className="font-medium text-amber-200">Stage 2: Soroban Dev</span>
                         <span className="font-mono font-bold text-amber-300">$7,000 🔒</span>
                       </div>
-                      <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-2.5 text-[11px] flex items-center justify-between opacity-50">
+                      <div className="bg-white/[0.04] border border-white/10 rounded-lg p-2.5 text-[11px] flex items-center justify-between opacity-60">
                         <span className="font-medium text-muted-foreground">Stage 3: Audit</span>
                         <span className="font-mono font-bold text-muted-foreground">$5,000</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-white/[0.06] flex items-center gap-2 text-[11px] text-amber-400 font-mono">
+                  <div className="pt-6 border-t border-white/10 flex items-center gap-2 text-[11px] text-amber-400 font-mono">
                     <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
                     Milestone 2 Under Review
                   </div>
                 </div>
 
                 {/* Card 3: MultiSig Guardian Arbitration */}
-                <div className="bg-[#090d16] rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group hover:border-emerald-400 transition-all duration-300 hover:-translate-y-1.5">
+                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-emerald-400 transition-all duration-300 hover:-translate-y-1.5">
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -340,12 +337,12 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                       </span>
                       <Scale className="w-5 h-5 text-emerald-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">3-of-5 MultiSig Panel</h3>
+                    <h3 className="text-xl font-bold text-foreground mb-2">3-of-5 MultiSig Panel</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed mb-6">
                       In case of disagreement, trusted arbitrator keypairs vote on-chain to disburse funds fairly.
                     </p>
 
-                    <div className="bg-white/[0.02] border border-amber-500/20 rounded-xl p-4 space-y-2 text-xs shadow-inner">
+                    <div className="bg-white/[0.04] border border-amber-500/20 rounded-xl p-4 space-y-2 text-xs backdrop-blur-md shadow-inner">
                       <div className="flex justify-between items-center">
                         <span className="text-muted-foreground">Arbitration Panel</span>
                         <span className="font-mono font-bold text-emerald-400">Lumen Guardian Set</span>
@@ -357,7 +354,7 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-muted-foreground">
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-muted-foreground">
                     <span className="font-mono text-amber-400/90 flex items-center gap-1">
                       <Cpu className="w-3 h-3 text-amber-400" />
                       0x8f3a...b1c9

@@ -174,15 +174,15 @@ export function LandingPageContainer({
       {/* Background blobs synced to state */}
       <Web3Background mode={landingMode} />
 
-      {/* Global Permanent Fixed Navbar - Fades out during transition to let paper roll sweep clean */}
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-background/80 dark:bg-[#050814]/80 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-300 ${
+      {/* Global Permanent Fixed Navbar - Optical Glass Magnifier Lens */}
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/25 dark:border-white/15 bg-white/[0.05] dark:bg-white/[0.03] backdrop-blur-xl backdrop-saturate-200 backdrop-contrast-125 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 ${
         isTransitioning ? "opacity-0 pointer-events-none -translate-y-4" : "opacity-100 translate-y-0"
       }`}>
         <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Logo />
             {/* Header Mode Switcher (Tab indicator) */}
-            <div className="hidden sm:flex items-center gap-1 bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl p-0.5 text-[11px]">
+            <div className="hidden sm:flex items-center gap-1 bg-white/[0.05] dark:bg-white/[0.03] border border-white/15 rounded-xl p-0.5 text-[11px] backdrop-blur-md">
               <button
                 onClick={() => handleModeSwitch("wallet")}
                 className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${

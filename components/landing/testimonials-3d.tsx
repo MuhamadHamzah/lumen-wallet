@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Marquee } from '@/components/ui/3d-testimonails'
 import { FadeIn } from './web3-animations'
@@ -148,6 +148,24 @@ interface Testimonials3DProps {
 export function Testimonials3D({ mode = "wallet" }: Testimonials3DProps) {
   const isWallet = mode === "wallet"
   const [dbFeedbacks, setDbFeedbacks] = useState<FeedbackItem[]>([])
+  const sectionRef = useRef<HTMLElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  // IntersectionObserver: Only run marquee animations when visible in viewport (saves CPU/GPU)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      { threshold: 0.05 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
 
   // Load live user feedbacks from the database API
   useEffect(() => {
@@ -202,7 +220,7 @@ export function Testimonials3D({ mode = "wallet" }: Testimonials3DProps) {
   }
 
   return (
-    <section className="relative py-16 overflow-hidden">
+    <section ref={sectionRef} className="relative py-16 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 mb-8 text-center">
         <FadeIn>
           <div className={`inline-flex items-center rounded-full border px-3.5 py-1 text-xs font-semibold mb-3 ${
@@ -224,8 +242,10 @@ export function Testimonials3D({ mode = "wallet" }: Testimonials3DProps) {
 
       {/* Scroll Reveal Animation wrapper for the 3D Marquee Wall */}
       <FadeIn delay={200} direction="up" className="w-full">
-        {/* Full-width 3D Testimonial Marquee Container balanced medium scale */}
-        <div className="relative flex h-[460px] w-full flex-row items-center justify-center overflow-hidden gap-5 [perspective:300px] bg-transparent">
+        {/* Full-width 3D Testimonial Marquee Container with viewport pause optimization */}
+        <div className={`relative flex h-[460px] w-full flex-row items-center justify-center overflow-hidden gap-5 [perspective:300px] bg-transparent ${
+          !isVisible ? "[&_.animate-marquee-vertical]:![animation-play-state:paused]" : ""
+        }`}>
           <div
             className="flex flex-row items-center gap-5"
             style={{
