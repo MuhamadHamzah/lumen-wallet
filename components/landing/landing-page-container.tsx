@@ -168,27 +168,27 @@ export function LandingPageContainer({
   const rollScale = 1 + Math.sin(progress * Math.PI) * 0.12 // 3D roll cylinder swells in mid-flight
 
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-[#050814]">
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden bg-background">
       <style dangerouslySetInnerHTML={{ __html: transitionStyles }} />
       
       {/* Background blobs synced to state */}
       <Web3Background mode={landingMode} />
 
       {/* Global Permanent Fixed Navbar - Fades out during transition to let paper roll sweep clean */}
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-[#050814]/75 backdrop-blur-xl shadow-xl shadow-black/10 transition-all duration-300 ${
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-background/80 dark:bg-[#050814]/80 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-300 ${
         isTransitioning ? "opacity-0 pointer-events-none -translate-y-4" : "opacity-100 translate-y-0"
       }`}>
         <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Logo />
             {/* Header Mode Switcher (Tab indicator) */}
-            <div className="hidden sm:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] rounded-xl p-0.5 text-[11px]">
+            <div className="hidden sm:flex items-center gap-1 bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl p-0.5 text-[11px]">
               <button
                 onClick={() => handleModeSwitch("wallet")}
                 className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
                   mounted && landingMode === "wallet"
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "text-muted-foreground hover:text-white"
+                    ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                    : "text-muted-foreground hover:text-foreground dark:hover:text-white"
                 }`}
               >
                 Wallet
@@ -197,8 +197,8 @@ export function LandingPageContainer({
                 onClick={() => handleModeSwitch("flow")}
                 className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
                   mounted && landingMode === "flow"
-                    ? "bg-amber-600 text-white shadow-sm"
-                    : "text-muted-foreground hover:text-white"
+                    ? "bg-amber-600 text-white shadow-sm shadow-amber-500/20"
+                    : "text-muted-foreground hover:text-foreground dark:hover:text-white"
                 }`}
               >
                 Flow Escrow
@@ -212,7 +212,7 @@ export function LandingPageContainer({
               onClick={onConnectClick}
               className={`rounded-xl px-4 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-transform duration-200 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
                 !mounted
-                  ? "bg-slate-700 opacity-60"
+                  ? "bg-primary/80 opacity-60"
                   : landingMode === "wallet"
                   ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-blue-500/20 hover:shadow-blue-500/35"
                   : "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 shadow-amber-500/20 hover:shadow-amber-500/35"

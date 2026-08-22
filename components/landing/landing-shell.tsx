@@ -25,19 +25,19 @@ export function LandingShell({
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
       {/* Floating Modern Web3 Navbar */}
       {!hideHeader && (
-        <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/[0.08] bg-card/65 backdrop-blur-xl shadow-xl shadow-black/10">
+        <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-background/80 dark:bg-[#050814]/80 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20">
         <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Logo />
             {/* Header Mode Switcher (Tab indicator) */}
             {onModeSwitch && (
-              <div className="hidden sm:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] rounded-xl p-0.5 text-[11px]">
+              <div className="hidden sm:flex items-center gap-1 bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl p-0.5 text-[11px]">
                 <button
                   onClick={() => onModeSwitch("wallet")}
                   className={`px-3 py-1.5 rounded-lg font-semibold ${
                     mode === "wallet"
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                      : "text-muted-foreground hover:text-white"
+                      ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                      : "text-muted-foreground hover:text-foreground dark:hover:text-white"
                   }`}
                 >
                   Wallet
@@ -46,8 +46,8 @@ export function LandingShell({
                   onClick={() => onModeSwitch("flow")}
                   className={`px-3 py-1.5 rounded-lg font-semibold ${
                     mode === "flow"
-                      ? "bg-amber-600 text-white shadow-lg shadow-amber-600/20"
-                      : "text-muted-foreground hover:text-white"
+                      ? "bg-amber-600 text-white shadow-sm shadow-amber-500/20"
+                      : "text-muted-foreground hover:text-foreground dark:hover:text-white"
                   }`}
                 >
                   Flow Escrow
