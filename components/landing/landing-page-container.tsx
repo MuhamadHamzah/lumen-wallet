@@ -53,7 +53,6 @@ export function LandingPageContainer({
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [dragOffset, setDragOffset] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
-  const [showTooltip, setShowTooltip] = useState(false)
 
   // Animated progress state (0 = normal, 1 = fully transitioned)
   const [progress, setProgress] = useState(0)
@@ -72,24 +71,12 @@ export function LandingPageContainer({
     }
   }, [])
 
-  // Show tooltip on first visit
-  useEffect(() => {
-    const hasTorn = localStorage.getItem("lumen_has_torn")
-    if (!hasTorn) {
-      const timer = setTimeout(() => {
-        setShowTooltip(true)
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [landingMode])
-
   // Drag & click trigger handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isTransitioning) return
     setIsDragging(true)
     dragStart.current = { x: e.clientX, y: e.clientY }
     ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
-    setShowTooltip(false)
   }
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -154,7 +141,6 @@ export function LandingPageContainer({
 
   const handleCurlClick = () => {
     if (isTransitioning) return
-    setShowTooltip(false)
     triggerTear()
   }
 
@@ -162,7 +148,6 @@ export function LandingPageContainer({
   const handleModeSwitch = (mode: "wallet" | "flow") => {
     if (isTransitioning) return
     if (mode === landingMode) return // Already in target mode
-    setShowTooltip(false)
     triggerTear() // Trigger 3D paper roll animation!
   }
 
@@ -361,16 +346,6 @@ export function LandingPageContainer({
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
         />
-      )}
-
-      {/* Pulsing Guide Tooltip */}
-      {showTooltip && !isDragging && !isTransitioning && (
-        <div className="absolute top-24 right-6 z-40 max-w-xs animate-bounce pointer-events-none">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xl border border-white/10 relative">
-            <span>Psst... Seret atau klik pojok kertas ini untuk beralih ke {landingMode === "wallet" ? "Lumen Flow Escrow" : "Lumen Wallet"}! 📄✨</span>
-            <div className="absolute -top-1.5 right-6 w-3 h-3 bg-blue-600 rotate-45" />
-          </div>
-        </div>
       )}
 
       {/* Auth Modal */}
