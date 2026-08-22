@@ -22,7 +22,7 @@ export function LandingShell({
   hideHeader = false,
 }: LandingShellProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-transparent relative overflow-hidden">
       {/* Floating Modern Web3 Navbar */}
       {!hideHeader && (
         <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-background/80 dark:bg-[#050814]/80 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/20">

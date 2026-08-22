@@ -1,8 +1,17 @@
 "use client"
 
+import KineticGrid from "@/components/ui/kinetic-grid"
+
 export function Web3Background({ mode = "wallet" }: { mode?: "wallet" | "flow" }) {
   return (
-    <div className="absolute inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+    <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+      {/* Interactive Kinetic Grid Canvas */}
+      <KineticGrid
+        globalColor={mode === "flow" ? "amber" : "default"}
+        transparentBg={true}
+        className="fixed inset-0 w-full h-full min-h-screen !bg-transparent pointer-events-none"
+      />
+
       {/* Main gradient - matches logo's deep navy */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,130,246,0.15),transparent)]" />
 
@@ -23,15 +32,6 @@ export function Web3Background({ mode = "wallet" }: { mode?: "wallet" | "flow" }
           background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%)',
           animationDelay: '4s',
           animationDirection: 'reverse',
-        }}
-      />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: 'linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.5) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
         }}
       />
 
