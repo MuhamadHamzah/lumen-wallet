@@ -221,7 +221,7 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
         {/* Center-Focused Seamless Infinite Carousel */}
         <FadeIn delay={200}>
           <div 
-            className="relative w-full overflow-hidden py-8 [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]"
+            className="relative w-full overflow-hidden py-6 sm:py-8 [mask-image:linear-gradient(to_right,transparent,white_6%,white_94%,transparent)] [--card-w:min(310px,76vw)] [--gap:14px] sm:[--card-w:360px] sm:[--gap:24px]"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -231,7 +231,7 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                 enableTransition ? "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" : ""
               }`}
               style={{
-                transform: `translateX(calc(50% - (${currentIndex} * 384px) - 180px))`,
+                transform: `translateX(calc(50% - (${currentIndex} * (var(--card-w) + var(--gap))) - (var(--card-w) / 2)))`,
               }}
             >
               {loopFeatures.map((feature, index) => {
@@ -242,19 +242,19 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                 return (
                   <div
                     key={`${feature.title}-${index}`}
-                    style={{ width: "360px", marginRight: "24px" }}
+                    style={{ width: "var(--card-w)", marginRight: "var(--gap)" }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
-                    className={`shrink-0 select-none rounded-2xl p-6 sm:p-7 transition-all duration-700 cursor-pointer ${
+                    className={`shrink-0 select-none rounded-2xl p-5 sm:p-7 transition-all duration-700 cursor-pointer ${
                       isCenter
                         ? isWallet
-                          ? "scale-105 z-20 border border-blue-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(59,130,246,0.2),inset_0_1px_1px_0_rgba(147,197,253,0.3)] opacity-100"
-                          : "scale-105 z-20 border border-amber-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(245,158,11,0.2),inset_0_1px_1px_0_rgba(251,191,36,0.3)] opacity-100"
+                          ? "scale-[1.02] sm:scale-105 z-20 border border-blue-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(59,130,246,0.2),inset_0_1px_1px_0_rgba(147,197,253,0.3)] opacity-100"
+                          : "scale-[1.02] sm:scale-105 z-20 border border-amber-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(245,158,11,0.2),inset_0_1px_1px_0_rgba(251,191,36,0.3)] opacity-100"
                         : "scale-95 opacity-40 border border-white/[0.06] bg-card/30 backdrop-blur-sm"
                     }`}
                   >
                     {/* Top accent highlight for centered card */}
-                    <div className={`h-[2px] w-full mb-4 rounded-full transition-opacity duration-500 ${
+                    <div className={`h-[2px] w-full mb-3 sm:mb-4 rounded-full transition-opacity duration-500 ${
                       isCenter
                         ? isWallet
                           ? "bg-gradient-to-r from-blue-500 via-cyan-400 to-transparent opacity-100"
@@ -262,14 +262,14 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                         : "opacity-0"
                     }`} />
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="flex items-center justify-between">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${feature.iconBg} ${feature.iconColor} transition-transform duration-300 shadow-inner ${
-                          isCenter ? "scale-110" : ""
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${feature.iconBg} ${feature.iconColor} transition-transform duration-300 shadow-inner ${
+                          isCenter ? "scale-105 sm:scale-110" : ""
                         }`}>
-                          <Icon className="w-6 h-6" />
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                         </div>
-                        <span className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md border ${
+                        <span className={`text-[10px] sm:text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md border ${
                           isCenter
                             ? isWallet
                               ? "bg-blue-500/20 text-blue-300 border-blue-400/30"
@@ -279,13 +279,13 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                           0{realItemIndex}
                         </span>
                       </div>
-                      <div className="space-y-2">
-                        <h3 className={`text-lg font-semibold leading-tight transition-colors duration-300 ${
+                      <div className="space-y-1.5 sm:space-y-2">
+                        <h3 className={`text-base sm:text-lg font-semibold leading-tight transition-colors duration-300 ${
                           isCenter ? "text-foreground" : "text-muted-foreground"
                         }`}>
                           {feature.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                           {feature.description}
                         </p>
                       </div>
