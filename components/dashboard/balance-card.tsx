@@ -23,6 +23,29 @@ export function BalanceCard() {
     () => getBalance(publicKey as string, network),
   )
 
+  // Fetch live real-time XLM market price
+  const { data: xlmPrice = 0.1952 } = useSWR(
+    "xlm-usd-price",
+    async () => {
+      try {
+        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=stellar&vs_currencies=usd")
+        if (res.ok) {
+          const json = await res.json()
+          if (json?.stellar?.usd) return Number(json.stellar.usd)
+        }
+      } catch {}
+      try {
+        const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=XLMUSDT")
+        if (res.ok) {
+          const json = await res.json()
+          if (json?.price) return Number(json.price)
+        }
+      } catch {}
+      return 0.1952
+    },
+    { refreshInterval: 60000, fallbackData: 0.1952 }
+  )
+
   const numericBalance = Number((balance ?? "0").replace(/,/g, ""))
   const unfunded = !isLoading && !error && numericBalance === 0
 
@@ -77,7 +100,7 @@ export function BalanceCard() {
 
         {!isLoading && !error && (
           <p className="text-xs text-muted-foreground font-mono">
-            ≈ ${(numericBalance * 0.11).toLocaleString(undefined, { maximumFractionDigits: 2 })} USD Valuation
+            ≈ ${(numericBalance * xlmPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD Valuation
           </p>
         )}
       </div>
