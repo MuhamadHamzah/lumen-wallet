@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AlertTriangle, Plus, Trash, Check, Ban, ShieldAlert, Sparkles, User, Info, Loader2, ArrowRight } from "lucide-react"
+import { AlertTriangle, Plus, Trash, Check, Ban, ShieldAlert, User, Info, Loader2, ArrowRight, DollarSign, Cpu } from "lucide-react"
 import { toast } from "sonner"
 import { useWallet } from "@/components/wallet-provider"
 import { Button } from "@/components/ui/button"
@@ -299,7 +299,7 @@ export function EscrowDashboard() {
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex size-9 items-center justify-center rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400">
-              <Sparkles className="size-5" />
+              <DollarSign className="size-5" />
             </span>
             <h1 className="text-2xl font-bold text-foreground tracking-tight">Milestone Escrow Studio</h1>
           </div>
@@ -399,7 +399,7 @@ export function EscrowDashboard() {
                       
                       {isSimulated && (
                         <span className="flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[11px] font-semibold text-primary font-mono">
-                          <Sparkles className="size-3" /> Sandbox VM
+                          <Cpu className="size-3" /> Sandbox VM
                         </span>
                       )}
                     </div>

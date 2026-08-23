@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { Lock, Wallet, AlertCircle, Sparkles, Copy, Check, Eye, EyeOff } from "lucide-react"
+import { Lock, Wallet, AlertCircle, ShieldCheck, Copy, Check, Eye, EyeOff } from "lucide-react"
 import { useWallet } from "@/components/wallet-provider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -177,7 +177,7 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
     return (
       <div className="space-y-5 w-full max-w-md">
         <div className="flex items-center gap-2 text-sm font-medium text-primary">
-          <Sparkles className="h-4 w-4" />
+          <ShieldCheck className="h-4 w-4" />
           <span>Testnet Keypair Generated!</span>
         </div>
 

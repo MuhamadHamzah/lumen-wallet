@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare, Search, Sparkles, Database } from "lucide-react"
+import { Send, CheckCircle, Shield, Award, Users, Activity, BarChart2, Star, MessageSquare, Search, Database } from "lucide-react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -293,7 +293,7 @@ export function FeedbackAnalytics() {
           {/* Feedback Feed */}
           <div className="rounded-3xl border border-border/80 bg-card/60 backdrop-blur-xl p-5 shadow-sm space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2 pb-2 border-b border-border/40">
-              <Sparkles className="size-3.5 text-primary" /> Live Feedback Feed
+              <MessageSquare className="size-3.5 text-primary" /> Live Feedback Feed
             </h3>
             <div className="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
               {feedbacks.map((f) => (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import useSWR from "swr"
-import { Coins, Plus, Search, ExternalLink, ArrowUpRight, Loader2, ShieldCheck, Sparkles, Trash2, Cpu, RefreshCw, Layers } from "lucide-react"
+import { Coins, Plus, Search, ExternalLink, ArrowUpRight, Loader2, ShieldCheck, Trash2, Cpu, RefreshCw, Layers } from "lucide-react"
 import { toast } from "sonner"
 import { type TokenInfo, getTokenInfo, isValidContractId, formatTokenAmount, stellarExpertContractUrl } from "@/lib/soroban"
 import { getBalance } from "@/lib/stellar"
@@ -401,7 +401,7 @@ function TokenCard({
                 onClick={() => setActionMode("mint")}
                 disabled={!publicKey}
               >
-                <Sparkles className="size-3.5" />
+                <Plus className="size-3.5" />
                 Mint
               </Button>
             )}

@@ -51,7 +51,7 @@ Lumen Wallet offers a unified, zero-friction Web3 wallet experience powered by S
 ```
 
 - **Frontend**: Next.js 16 (App Router), TypeScript 5.7, Tailwind CSS, Radix UI Primitives, SWR.
-- **Smart Contracts**: Rust Soroban WASM contracts deployed on Stellar Testnet & Mainnet (`CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364`).
+- **Smart Contracts**: Rust Soroban WASM contracts deployed on Stellar Mainnet (`CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`) and Custom Token (`CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`).
 - **Persistence**: Hybrid Supabase PostgreSQL persistence with local JSON fallback for interaction logs, user feedback, and escrow metadata.
 
 ---

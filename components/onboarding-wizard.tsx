@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, Wallet, Droplets, ArrowRightLeft, MessageSquare, ChevronRight, ChevronLeft, Sparkles, ShieldCheck, Zap } from "lucide-react"
+import { CheckCircle2, Wallet, Droplets, ArrowRightLeft, MessageSquare, ChevronRight, ChevronLeft, ShieldCheck, Zap } from "lucide-react"
 import { useWallet } from "@/components/wallet-provider"
 
 interface OnboardingWizardProps {

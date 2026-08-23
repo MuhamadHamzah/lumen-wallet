@@ -804,7 +804,7 @@ export function MultisigManager() {
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-normal mt-1">
                     {userWeight >= accountDetails.thresholds.med_threshold 
-                      ? "✨ Your signature is sufficient to broadcast medium-risk transactions alone." 
+                      ? "Your signature is sufficient to broadcast medium-risk transactions alone." 
                       : "⚠️ Transactions will require co-signatures from other authorized signers."}
                   </p>
                 </div>

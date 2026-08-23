@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, DollarSign, BarChart2, MoreHorizontal, X } from "lucide-react"
+import { LayoutDashboard, ArrowUpRight, ArrowDownLeft, History, Coins, LogOut, ShieldCheck, RefreshCw, DollarSign, BarChart2, MoreHorizontal, X, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWallet } from "@/components/wallet-provider"
 import { Logo } from "@/components/logo"
@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button"
 import { truncate } from "@/lib/stellar"
 import { CopyButton } from "@/components/copy-button"
 
-import { Sparkles } from "lucide-react"
+import { Compass } from "lucide-react"
 import { OnboardingWizard } from "@/components/onboarding-wizard"
 
 const NAV_SECTIONS = [
@@ -40,6 +40,7 @@ const NAV_SECTIONS = [
     items: [
       { href: "/history", label: "Explorer History", icon: History },
       { href: "/feedback", label: "Telemetry & Feed", icon: BarChart2 },
+      { href: "/docs", label: "Developer Docs", icon: BookOpen },
     ],
   },
 ]
@@ -62,6 +63,7 @@ const MOBILE_MORE = [
   { href: "/escrow", label: "Escrow", icon: DollarSign },
   { href: "/multisig", label: "Multisig", icon: ShieldCheck },
   { href: "/feedback", label: "Analytics", icon: BarChart2 },
+  { href: "/docs", label: "Docs", icon: BookOpen },
 ]
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -151,7 +153,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               onClick={() => setWizardOpen(true)}
               className="w-full justify-start gap-2 text-xs font-medium border-primary/20 text-primary hover:bg-primary/10 transition-all focus-visible:ring-2 focus-visible:ring-primary"
             >
-              <Sparkles className="size-3.5" />
+              <Compass className="size-3.5" />
               Onboarding Guide
             </Button>
             {publicKey && (
@@ -188,7 +190,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 title="Onboarding Guide"
                 className="size-8 text-primary border-primary/25 hover:bg-primary/10"
               >
-                <Sparkles className="size-4" />
+                <Compass className="size-4" />
               </Button>
               <NetworkSwitcher />
               <ThemeToggle />

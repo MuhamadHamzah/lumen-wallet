@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ShieldCheck, ArrowRight, Lock, CheckCircle2, Clock, Cpu, ArrowUpRight, Scale, TrendingUp, Zap, Sparkles } from "lucide-react"
+import { ShieldCheck, ArrowRight, Lock, CheckCircle2, Clock, Cpu, ArrowUpRight, Scale, TrendingUp, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FadeIn } from "./web3-animations"
 

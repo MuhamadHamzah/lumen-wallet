@@ -1,4 +1,4 @@
-# ✨ Lumen Wallet: Stellar Blockchain Wallet & DEX
+# Lumen Wallet: Stellar Blockchain Wallet & DEX
 
 ![Stellar](https://img.shields.io/badge/Stellar-Blockchain-blue?logo=stellar&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
@@ -12,7 +12,7 @@
 > **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)  
 > **Feedback Google Form**: [Open Form](https://forms.gle/D3LD7AwEN5GYzbuG8)  
 > **Smart Contract Security Review**: [SECURITY_REVIEW.md](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/SECURITY_REVIEW.md)  
-> **Technical Tutorial Article**: [TUTORIAL.md](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/TUTORIAL.md)  
+> **Technical Tutorial & Developer Docs**: [Read Live on Web (lumenchain.xyz/docs)](https://lumenchain.xyz/docs) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/TUTORIAL.md)  
 
 ---
 
@@ -21,9 +21,9 @@
 Lumen Wallet & LumenFlow Escrow have successfully transitioned to a production-grade Web3 application on the **Stellar Mainnet**. This level marks the launch of on-chain smart contracts, security review approval, developer tutorial publishing, and real mainnet user onboarding.
 
 ### 🛡️ Smart Contract Mainnet Deployments
-* **LumenFlow Escrow Contract**: `CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD` *(User can replace this with their active deployed Mainnet address)*
-* **Custom SEP-41 Token Contract**: `CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364` *(User can replace this with their active deployed Mainnet address)*
-* **Explorer Verification**: Both contracts can be queried and verified live on [Stellar Expert](https://stellar.expert).
+* **LumenFlow Escrow Contract**: `CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`
+* **Custom SEP-41 Token Contract**: `CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`
+* **Explorer Verification**: Both contracts are deployed live and verifiable on [Stellar Expert Public Mainnet](https://stellar.expert/explorer/public/contract/CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3).
 
 ### 💭 Advanced Feature: Multi-signature Logic
 * **Implementation**: We implemented on-chain **Multi-signature Multi-Party Authorization** inside the Soroban Escrow contract. Instead of unilateral payments, milestone fund releases require cryptographic signature validation and consent from multiple keys (Client + Freelancer/Arbitrator) using Soroban's native auth framework.
@@ -181,9 +181,11 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
   * **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
 
 #### 2. LumenFlow Escrow Contract (Level 4 MVP)
+* **Mainnet Contract ID**: `CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`
+  * **Explorer**: [View on Stellar Expert (Public Mainnet)](https://stellar.expert/explorer/public/contract/CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3)
 * **Testnet Contract ID**: `CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364`
   * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364)
-  * **Status**: Deployed & ready for milestone payments.
+  * **Status**: Deployed on Mainnet & Testnet, verified for milestone payments.
 
 ---
 

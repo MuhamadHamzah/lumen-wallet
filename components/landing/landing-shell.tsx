@@ -1,6 +1,8 @@
 "use client"
 
 import type { ReactNode } from "react"
+import Link from "next/link"
+import { BookOpen } from "lucide-react"
 import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { NetworkSwitcher } from "@/components/network-switcher"
@@ -54,6 +56,13 @@ export function LandingShell({
                 </button>
               </div>
             )}
+            <Link
+              href="/docs"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-white/[0.08] transition-all"
+            >
+              <BookOpen className="size-3.5 text-primary" />
+              <span>Docs</span>
+            </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <NetworkSwitcher />

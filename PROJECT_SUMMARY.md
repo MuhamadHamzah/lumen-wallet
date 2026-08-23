@@ -379,7 +379,7 @@ See IMPLEMENTATION.md for detailed troubleshooting guide.
 
 ---
 
-## ✨ Summary
+## Summary
 
 Lumen is now a **professional-grade Stellar wallet application** with:
 
@@ -399,4 +399,4 @@ The application is **ready for immediate deployment** to production.
 **Version**: 1.0.0  
 **Date Completed**: June 2, 2026  
 **Built With**: Next.js 16 + React 19 + TypeScript + Tailwind CSS  
-**Deployment Ready**: YES ✨
+**Deployment Ready**: YES

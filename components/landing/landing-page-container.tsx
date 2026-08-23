@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
+import { BookOpen } from "lucide-react"
 import { LandingShell } from "./landing-shell"
 import { Hero } from "./hero"
 import { Features } from "./features"
@@ -245,6 +247,15 @@ export function LandingPageContainer({
                 Flow Escrow
               </button>
             </div>
+
+            {/* Developer Docs Trigger Link */}
+            <Link
+              href="/docs"
+              className={`${isCockpitVisible ? "hidden" : "hidden md:inline-flex"} items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-white/[0.08] transition-all border border-transparent hover:border-white/10`}
+            >
+              <BookOpen className="size-3.5 text-primary" />
+              <span>Docs</span>
+            </Link>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <NetworkSwitcher />

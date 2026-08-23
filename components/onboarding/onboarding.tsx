@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { AlertTriangle, Loader2, Plus, Download, ShieldCheck, Sparkles } from "lucide-react"
+import { AlertTriangle, Loader2, Plus, Download, ShieldCheck } from "lucide-react"
 import { toast } from "sonner"
 import { generateKeypair, isValidSecret, publicFromSecret, type Keypair } from "@/lib/stellar"
 import { useWallet } from "@/components/wallet-provider"
@@ -50,7 +50,7 @@ export function Onboarding() {
         <div className="w-full max-w-lg space-y-6">
           <div className="text-center space-y-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/20">
-              <Sparkles className="size-3" /> Secure Stellar Non-Custodial Keyring
+              <ShieldCheck className="size-3" /> Secure Stellar Non-Custodial Keyring
             </span>
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Welcome to Lumen</h1>
             <p className="text-xs text-muted-foreground font-mono max-w-md mx-auto">
