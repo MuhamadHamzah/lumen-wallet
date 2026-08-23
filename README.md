@@ -6,7 +6,7 @@
 ![Level 6](https://img.shields.io/badge/Rise%20In-Level%206%20Black%20Belt-black)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> **Live Application**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)  
+> **Live Application**: [https://lumenchain.xyz](https://lumenchain.xyz)  
 > **Demo Video Walkthrough**: [https://youtu.be/F8JIcWFxsIQ](https://youtu.be/F8JIcWFxsIQ)  
 > **Executive Pitch Deck (Canva PPT)**: [View Pitch Deck](https://canva.link/zk12jyusvccpa2g) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
 > **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)  
@@ -207,14 +207,14 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 #### LumenFlow Escrow Contract
 | Method | Auth | Description |
 |--------|------|-------------|
-| `initialize(client, freelancer, arbitrator, token)` | — | Set up roles and token address |
+| `initialize(client, freelancer, arbitrator, token)` | - | Set up roles and token address |
 | `deposit(id, amount)` | client | Deposit and lock funds for milestone `id` |
 | `submit(id)` | freelancer | Submit proof of completion for milestone `id` |
 | `release(id)` | client | Approve and transfer milestone `id` funds to freelancer |
 | `dispute(caller, id)` | client/freelancer | File a dispute for milestone `id` |
 | `resolve(id, freelancer_share, client_share)` | arbitrator | Resolve dispute and split funds |
 | `refund_by_freelancer(id)` | freelancer | Voluntarily cancel milestone and refund client |
-| `get_milestone(id)` | — | Get amount and status of milestone `id` |
+| `get_milestone(id)` | - | Get amount and status of milestone `id` |
 
 
 
@@ -340,7 +340,7 @@ The application is deployed on **Vercel** with automatic deployments on push to 
 npx vercel --prod
 ```
 
-**Live URL**: [https://lumenwallet-ten.vercel.app](https://lumenwallet-ten.vercel.app)
+**Live URL**: [https://lumenchain.xyz](https://lumenchain.xyz)
 
 ---
 

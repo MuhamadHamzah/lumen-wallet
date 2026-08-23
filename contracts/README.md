@@ -120,18 +120,18 @@ stellar contract invoke \
 
 | Method | Auth | Description |
 | --- | --- | --- |
-| `initialize(admin, decimal, name, symbol)` | — | One-time setup. |
+| `initialize(admin, decimal, name, symbol)` | - | One-time setup. |
 | `mint(to, amount)` | admin | Create new tokens. |
 | `set_admin(new_admin)` | admin | Hand over admin rights. |
-| `admin()` | — | Read the current admin. |
+| `admin()` | - | Read the current admin. |
 | `transfer(from, to, amount)` | from | Move tokens. |
-| `balance(id)` | — | Read a balance. |
+| `balance(id)` | - | Read a balance. |
 | `approve(from, spender, amount, expiration_ledger)` | from | Set an allowance. |
-| `allowance(from, spender)` | — | Read an allowance. |
+| `allowance(from, spender)` | - | Read an allowance. |
 | `transfer_from(spender, from, to, amount)` | spender | Spend an allowance. |
 | `burn(from, amount)` | from | Destroy your tokens. |
 | `burn_from(spender, from, amount)` | spender | Burn via allowance. |
-| `decimals()` / `name()` / `symbol()` | — | Token metadata. |
+| `decimals()` / `name()` / `symbol()` | - | Token metadata. |
 
 > **Amounts are integers in base units.** A balance of `1000000000` on a token
 > with `decimal = 7` represents `100.0` tokens. The wallet UI handles this
