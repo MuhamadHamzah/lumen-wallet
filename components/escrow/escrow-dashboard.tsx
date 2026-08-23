@@ -33,7 +33,7 @@ interface EscrowProject {
 
 
 export function EscrowDashboard() {
-  const { publicKey } = useWallet()
+  const { publicKey, network } = useWallet()
   const [projects, setProjects] = useState<EscrowProject[]>([])
   const [activeProject, setActiveProject] = useState<EscrowProject | null>(null)
   
@@ -89,12 +89,14 @@ export function EscrowDashboard() {
     }
   }
 
-  // Set default client to logged-in user
+  // Set default client and token address based on network
   useEffect(() => {
     if (publicKey) {
       setClientAddr(publicKey)
     }
-  }, [publicKey])
+    const isMainnet = network === "mainnet"
+    setTokenAddr(isMainnet ? "CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE" : "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD")
+  }, [publicKey, network])
 
   const handleAddMilestone = () => {
     setMilestones([...milestones, { description: `Milestone ${milestones.length + 1}`, amount: 100 }])
@@ -104,21 +106,25 @@ export function EscrowDashboard() {
     setMilestones(milestones.filter((_, i) => i !== index))
   }
 
-  const handleMilestoneChange = (index: number, field: "description" | "amount", value: any) => {
+  const handleMilestoneChange = (index: number, field: "description" | "amount", value: string) => {
     const updated = [...milestones]
-    updated[index] = { ...updated[index], [field]: value }
+    if (field === "amount") {
+      updated[index].amount = Number(value)
+    } else {
+      updated[index].description = value
+    }
     setMilestones(updated)
   }
 
-  const handleCreateProject = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleCreateProject = async () => {
     if (!projName || !clientAddr || !freelancerAddr || !arbitratorAddr) {
       toast.error("Please fill in all address fields")
       return
     }
 
+    const isMainnet = network === "mainnet"
     const newProject: EscrowProject = {
-      id: `CC${Math.random().toString(36).substring(2, 15).toUpperCase()}ESCROW`,
+      id: isMainnet ? "CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3" : "CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364",
       name: projName,
       client: clientAddr,
       freelancer: freelancerAddr,
@@ -280,7 +286,8 @@ export function EscrowDashboard() {
         body: JSON.stringify({
           address: publicKey || "Unknown Wallet",
           action: actionName,
-          txHash: "0x" + Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10) + "...testnet",
+          txHash: "0x" + Math.random().toString(16).substring(2, 10) + Math.random().toString(16).substring(2, 10) + (network === "mainnet" ? "...mainnet" : "...testnet"),
+          network: network || "mainnet",
         }),
       })
     } catch (err) {

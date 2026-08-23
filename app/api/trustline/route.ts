@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     signedXdr,
     assetCode,
     assetIssuer,
-    network = "testnet",
+    network = "mainnet",
   } = body
 
   // 1. Submit Signed XDR Mode (Freighter step 2)
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       const result = await server.submitTransaction(tx)
       try {
         const senderPubKey = (tx as any).source || (tx as any).feeSource || ""
-        await logInteraction(senderPubKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash)
+        await logInteraction(senderPubKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash, network)
       } catch (err) {
         console.error("Failed to log interaction for signed XDR trustline:", err)
       }
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
 
       const result = await server.submitTransaction(tx)
       try {
-        await logInteraction(senderPublicKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash)
+        await logInteraction(senderPublicKey, `Open Trustline (${assetCode || "Custom Asset"})`, result.hash, network)
       } catch (err) {
         console.error("Failed to log interaction for direct trustline:", err)
       }

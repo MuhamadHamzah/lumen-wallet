@@ -25,7 +25,7 @@ export interface Keypair {
   secretKey: string
 }
 
-const NETWORK = (process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "testnet").toLowerCase()
+const NETWORK = (process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "mainnet").toLowerCase()
 const IS_MAINNET = NETWORK === "mainnet" || NETWORK === "public"
 
 // Base network fee for a single operation: 100 stroops = 0.00001 XLM.
@@ -45,7 +45,7 @@ async function readError(res: Response): Promise<string> {
 }
 
 /** Fetch the real native XLM balance from Horizon (via the server route). */
-export async function getBalance(publicKey: string, network = "testnet"): Promise<string> {
+export async function getBalance(publicKey: string, network = "mainnet"): Promise<string> {
   const res = await fetch(`/api/balance?address=${encodeURIComponent(publicKey)}&network=${network}`)
   if (!res.ok) throw new Error(await readError(res))
   const { balance } = (await res.json()) as { balance: string }
@@ -53,7 +53,7 @@ export async function getBalance(publicKey: string, network = "testnet"): Promis
 }
 
 /** Fetch real transaction history from Horizon (via the server route). */
-export async function getTransactions(publicKey: string, network = "testnet"): Promise<StellarTransaction[]> {
+export async function getTransactions(publicKey: string, network = "mainnet"): Promise<StellarTransaction[]> {
   const res = await fetch(`/api/transactions?address=${encodeURIComponent(publicKey)}&network=${network}`)
   if (!res.ok) throw new Error(await readError(res))
   const { transactions } = (await res.json()) as { transactions: StellarTransaction[] }
@@ -66,7 +66,7 @@ export async function sendPayment(
   destination: string,
   amount: string,
   memo?: string,
-  network = "testnet",
+  network = "mainnet",
 ): Promise<{ hash: string }> {
   const res = await fetch("/api/send", {
     method: "POST",

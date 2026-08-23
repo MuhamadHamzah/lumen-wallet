@@ -64,7 +64,7 @@ async function fetchAccount(address: string, net: string) {
   return await res.json()
 }
 
-const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+const logInteraction = async (pubKey: string, actionName: string, txHash: string, network = "mainnet") => {
   try {
     await fetch("/api/interactions", {
       method: "POST",
@@ -73,6 +73,7 @@ const logInteraction = async (pubKey: string, actionName: string, txHash: string
         address: pubKey,
         action: actionName,
         txHash,
+        network,
       }),
     })
   } catch (err) {
@@ -385,7 +386,8 @@ export default function SwapPage() {
       logInteraction(
         publicKey || "Unknown",
         `Swap ${sourceAmount} ${sourceAsset.code} to ${destAsset.code}`,
-        successHash || "Success"
+        successHash || "Success",
+        network
       )
       
       // Mutate relevant details

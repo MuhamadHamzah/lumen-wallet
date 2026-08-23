@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const destAssetCode = searchParams.get("destAssetCode")
   const destAssetIssuer = searchParams.get("destAssetIssuer")
   const amount = searchParams.get("amount")
-  const network = searchParams.get("network") ?? "testnet"
+  const network = searchParams.get("network") ?? "mainnet"
 
   if (!sourceAssetCode || !destAssetCode || !amount) {
     return NextResponse.json(

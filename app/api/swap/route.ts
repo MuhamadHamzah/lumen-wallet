@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     amount,
     destMinAmount,
     path = [],
-    network = "testnet",
+    network = "mainnet",
   } = body
 
   // 1. Submit Signed XDR Mode (Freighter step 2)
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       const result = await server.submitTransaction(tx)
       try {
         const senderPubKey = (tx as any).source || (tx as any).feeSource || ""
-        await logInteraction(senderPubKey, "Swap Tokens", result.hash)
+        await logInteraction(senderPubKey, "Swap Tokens", result.hash, network)
       } catch (err) {
         console.error("Failed to log interaction for signed XDR swap:", err)
       }
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
 
       const result = await server.submitTransaction(tx)
       try {
-        await logInteraction(senderPublicKey, "Swap Tokens", result.hash)
+        await logInteraction(senderPublicKey, "Swap Tokens", result.hash, network)
       } catch (err) {
         console.error("Failed to log interaction for direct swap:", err)
       }

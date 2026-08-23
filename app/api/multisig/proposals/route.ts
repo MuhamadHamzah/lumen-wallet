@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic"
 
 export async function GET(request: NextRequest) {
   const account = request.nextUrl.searchParams.get("account")
-  const network = request.nextUrl.searchParams.get("network") ?? "testnet"
+  const network = request.nextUrl.searchParams.get("network") ?? "mainnet"
 
   if (!account) {
     return NextResponse.json({ error: "Missing 'account' query parameter." }, { status: 400 })
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     proposals[index] = proposal
     await writeProposals(proposals)
     try {
-      await logInteraction(signer, `Sign Multisig Proposal: ${proposal.title || "Untitled"}`, "N/A (Proposal)")
+      await logInteraction(signer, `Sign Multisig Proposal: ${proposal.title || "Untitled"}`, "N/A (Proposal)", proposal.network || "mainnet")
     } catch (err) {
       console.error("Failed to log interaction for multisig sign:", err)
     }
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     proposals[index] = proposal
     await writeProposals(proposals)
     try {
-      await logInteraction(proposal.creator || "Multisig", `Execute Multisig Proposal: ${proposal.title || "Untitled"}`, txHash)
+      await logInteraction(proposal.creator || "Multisig", `Execute Multisig Proposal: ${proposal.title || "Untitled"}`, txHash, proposal.network || "mainnet")
     } catch (err) {
       console.error("Failed to log interaction for multisig execute:", err)
     }

@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const contractId = searchParams.get("contract")?.trim()
   const address = searchParams.get("address")?.trim()
-  const network = searchParams.get("network")?.trim() ?? "testnet"
+  const network = searchParams.get("network")?.trim() ?? "mainnet"
 
   if (!contractId || !isValidContractId(contractId)) {
     return NextResponse.json({ error: "Invalid contract ID (must start with C)." }, { status: 400 })

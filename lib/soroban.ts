@@ -21,7 +21,7 @@ export interface TokenInfo {
   isAdmin: boolean
 }
 
-const NETWORK = (process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "testnet").toLowerCase()
+const NETWORK = (process.env.NEXT_PUBLIC_STELLAR_NETWORK ?? "mainnet").toLowerCase()
 const IS_MAINNET = NETWORK === "mainnet" || NETWORK === "public"
 
 /** Validate a Soroban contract id (C..., 56 chars, base32). */
@@ -48,26 +48,24 @@ export function fromBaseUnits(raw: string, decimals: number): string {
   const digits = (negative ? raw.slice(1) : raw).padStart(decimals + 1, "0")
   const cut = digits.length - decimals
   const whole = digits.slice(0, cut) || "0"
-  const frac = decimals > 0 ? digits.slice(cut).replace(/0+$/, "") : ""
-  const out = frac ? `${whole}.${frac}` : whole
-  return negative ? `-${out}` : out
+  const frac = digits.slice(cut).replace(/0+$/, "")
+  return `${negative ? "-" : ""}${whole}${frac ? `.${frac}` : ""}`
 }
 
-/** Format base units for display, grouped with thousands separators. */
-export function formatTokenAmount(raw: string, decimals: number): string {
-  const human = fromBaseUnits(raw, decimals)
+/** Format a decimal string for display, trimming excess fractional zeros. */
+export function formatTokenAmount(human: string, decimals = 7): string {
   const n = Number(human)
   if (!Number.isFinite(n)) return human
   return n.toLocaleString(undefined, { maximumFractionDigits: Math.min(decimals, 7) })
 }
 
-export function stellarExpertContractUrl(contractId: string, network = "testnet"): string {
+export function stellarExpertContractUrl(contractId: string, network = "mainnet"): string {
   const isMainnet = network === "mainnet" || network === "public"
   const net = isMainnet ? "public" : "testnet"
   return `https://stellar.expert/explorer/${net}/contract/${contractId}`
 }
 
-export function stellarExpertTxUrl(hash: string, network = "testnet"): string {
+export function stellarExpertTxUrl(hash: string, network = "mainnet"): string {
   const isMainnet = network === "mainnet" || network === "public"
   const net = isMainnet ? "public" : "testnet"
   return `https://stellar.expert/explorer/${net}/tx/${hash}`
@@ -83,7 +81,7 @@ async function readError(res: Response): Promise<string> {
 }
 
 /** Read token metadata + the given address's balance from the contract. */
-export async function getTokenInfo(contractId: string, address: string, network = "testnet"): Promise<TokenInfo> {
+export async function getTokenInfo(contractId: string, address: string, network = "mainnet"): Promise<TokenInfo> {
   const res = await fetch(
     `/api/token/info?contract=${encodeURIComponent(contractId)}&address=${encodeURIComponent(address)}&network=${network}`,
   )
@@ -97,7 +95,7 @@ export async function transferToken(
   contractId: string,
   to: string,
   amount: string,
-  network = "testnet",
+  network = "mainnet",
 ): Promise<{ hash: string }> {
   const res = await fetch("/api/token/transfer", {
     method: "POST",
@@ -114,7 +112,7 @@ export async function mintToken(
   contractId: string,
   to: string,
   amount: string,
-  network = "testnet",
+  network = "mainnet",
 ): Promise<{ hash: string }> {
   const res = await fetch("/api/token/mint", {
     method: "POST",

@@ -60,7 +60,6 @@ export function RecentTransactions() {
           <span className="size-1.5 rounded-full bg-emerald-500 animate-ping" />
           Streaming Horizon SSE
         </span>
-        <span>Testnet Protocol 20</span>
       </div>
     </div>
   )

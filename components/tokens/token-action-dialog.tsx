@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+const logInteraction = async (pubKey: string, actionName: string, txHash: string, network = "mainnet") => {
   try {
     await fetch("/api/interactions", {
       method: "POST",
@@ -29,6 +29,7 @@ const logInteraction = async (pubKey: string, actionName: string, txHash: string
         address: pubKey,
         action: actionName,
         txHash,
+        network,
       }),
     })
   } catch (err) {
@@ -79,7 +80,8 @@ export function TokenActionDialog({ mode, token, network, open, onOpenChange }: 
       logInteraction(
         publicKey || "Unknown",
         isMint ? `Mint ${amount} ${token.symbol}` : `Send ${amount} ${token.symbol} (Soroban)`,
-        hash
+        hash,
+        network
       )
       if (publicKey) mutate(["token", token.contractId, publicKey, network])
     } catch (err) {

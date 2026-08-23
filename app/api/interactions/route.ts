@@ -13,7 +13,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { address, action, txHash } = body
+    const { address, action, txHash, network } = body
 
     if (!address || !action) {
       return NextResponse.json({ error: "Missing address or action." }, { status: 400 })
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
       action,
       txHash: txHash || "N/A",
       time: new Date().toISOString(),
+      network: network || (action?.toLowerCase().includes("testnet") || action?.toLowerCase().includes("friendbot") ? "testnet" : "mainnet"),
     }
 
     interactions.unshift(newLog)

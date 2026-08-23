@@ -19,7 +19,7 @@ import type { StellarTransaction, TxStatus, TxType } from "@/lib/stellar"
  * place secret keys are ever handled. Nothing here is shipped to the client.
  */
 
-const RAW_NETWORK = (process.env.STELLAR_NETWORK ?? "testnet").toLowerCase()
+const RAW_NETWORK = (process.env.STELLAR_NETWORK ?? "mainnet").toLowerCase()
 export const IS_MAINNET = RAW_NETWORK === "mainnet" || RAW_NETWORK === "public"
 
 export function getHorizonUrl(network?: string): string {

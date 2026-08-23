@@ -24,7 +24,7 @@ import {
  * (transfer/mint) are simulated, prepared, signed, submitted, and polled.
  */
 
-const RAW_NETWORK = (process.env.STELLAR_NETWORK ?? "testnet").toLowerCase()
+const RAW_NETWORK = (process.env.STELLAR_NETWORK ?? "mainnet").toLowerCase()
 export const IS_MAINNET = RAW_NETWORK === "mainnet" || RAW_NETWORK === "public"
 
 export function getSorobanRpcUrl(network?: string): string {

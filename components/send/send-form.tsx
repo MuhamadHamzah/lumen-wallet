@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
-const logInteraction = async (pubKey: string, actionName: string, txHash: string) => {
+const logInteraction = async (pubKey: string, actionName: string, txHash: string, network = "mainnet") => {
   try {
     await fetch("/api/interactions", {
       method: "POST",
@@ -23,6 +23,7 @@ const logInteraction = async (pubKey: string, actionName: string, txHash: string
         address: pubKey,
         action: actionName,
         txHash,
+        network,
       }),
     })
   } catch (err) {
@@ -47,10 +48,12 @@ export function SendForm() {
   const currentBalNum = Number((balance ?? "0").replace(/,/g, ""))
   const fee = getFeeEstimate()
   const feeNum = Number(fee) || 0.00001
+  const baseReserve = 1.0 // Stellar protocol mandatory minimum reserve
+  const spendableBalance = Math.max(0, currentBalNum - baseReserve - feeNum)
   const destinationValid = destination === "" || isValidPublic(destination)
   const amountNum = Number(amount)
   const canSubmit =
-    isValidPublic(destination) && amount !== "" && amountNum > 0 && !loading && amountNum <= currentBalNum
+    isValidPublic(destination) && amount !== "" && amountNum > 0 && !loading && amountNum <= spendableBalance
 
   const remainingBalance = Math.max(0, currentBalNum - (amountNum || 0) - feeNum)
 
@@ -99,7 +102,7 @@ export function SendForm() {
 
         setTxHash(hash)
         toast.success("Payment sent successfully via wallet")
-        logInteraction(publicKey || "Unknown", "Send XLM", hash)
+        logInteraction(publicKey || "Unknown", "Send XLM", hash, network)
         if (publicKey) {
           mutate(["balance", publicKey, network])
           mutate(["transactions", publicKey, network])
@@ -173,7 +176,7 @@ export function SendForm() {
 
         setTxHash(hash)
         toast.success("Payment sent successfully via Freighter")
-        logInteraction(publicKey || "Unknown", "Send XLM", hash)
+        logInteraction(publicKey || "Unknown", "Send XLM", hash, network)
         if (publicKey) {
           mutate(["balance", publicKey, network])
           mutate(["transactions", publicKey, network])
@@ -199,7 +202,7 @@ export function SendForm() {
       const { hash } = await sendPayment(secretKey, destination, amount, memo, network)
       setTxHash(hash)
       toast.success("Payment sent successfully")
-      logInteraction(publicKey || "Unknown", "Send XLM", hash)
+      logInteraction(publicKey || "Unknown", "Send XLM", hash, network)
       if (publicKey) {
         mutate(["balance", publicKey, network])
         mutate(["transactions", publicKey, network])
@@ -291,10 +294,10 @@ export function SendForm() {
               </Label>
               <button
                 type="button"
-                onClick={() => setAmount(String(Math.max(0, currentBalNum - feeNum)))}
+                onClick={() => setAmount(spendableBalance > 0 ? spendableBalance.toFixed(5) : "0")}
                 className="text-[11px] font-mono text-primary hover:underline"
               >
-                Max: {currentBalNum.toLocaleString()} XLM
+                Max Spendable: {spendableBalance.toFixed(4)} XLM
               </button>
             </div>
             <div className="relative">
@@ -313,8 +316,10 @@ export function SendForm() {
                 XLM
               </span>
             </div>
-            {amountNum > currentBalNum && (
-              <p className="text-xs text-destructive font-mono">Amount exceeds current available balance.</p>
+            {amountNum > spendableBalance && (
+              <p className="text-xs text-destructive font-mono">
+                Amount exceeds spendable balance ({spendableBalance.toFixed(4)} XLM). Stellar requires a 1.0 XLM base reserve to keep the account active.
+              </p>
             )}
           </div>
 
@@ -367,8 +372,16 @@ export function SendForm() {
         <div className="space-y-3 text-xs">
           <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/50 space-y-2">
             <div className="flex justify-between text-muted-foreground">
-              <span>Current Balance:</span>
+              <span>Total Balance:</span>
               <span className="font-mono font-medium text-foreground">{currentBalNum.toFixed(4)} XLM</span>
+            </div>
+            <div className="flex justify-between text-muted-foreground">
+              <span>Mandatory Base Reserve:</span>
+              <span className="font-mono font-medium text-muted-foreground">1.0000 XLM</span>
+            </div>
+            <div className="flex justify-between text-muted-foreground">
+              <span>Spendable Available:</span>
+              <span className="font-mono font-medium text-emerald-400">{spendableBalance.toFixed(4)} XLM</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
               <span>Transfer Outflow:</span>
@@ -395,7 +408,7 @@ export function SendForm() {
         </div>
 
         <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-muted-foreground">
-          <span>Stellar Protocol 20</span>
+          <span>Stellar Mainnet</span>
           <span className="text-emerald-500">Non-Custodial</span>
         </div>
       </div>

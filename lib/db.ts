@@ -31,6 +31,7 @@ export interface InteractionLog {
   action: string
   txHash: string
   time: string
+  network?: string
 }
 
 export interface EscrowProject {
@@ -98,7 +99,7 @@ export async function writeFeedbacks(data: FeedbackItem[]): Promise<void> {
         user: item.user,
         rating: item.rating,
         comment: item.comment,
-        date: item.date
+        date: item.date,
       }))
       const { error } = await supabase.from("feedbacks").upsert(formatted)
       if (error) throw error
@@ -121,7 +122,46 @@ export async function writeFeedbacks(data: FeedbackItem[]): Promise<void> {
 // 2. FITUR CATATAN INTERAKSI (INTERACTIONS)
 // ==========================================
 
+function parseLogNetwork(item: any): "mainnet" | "testnet" {
+  const hash = item.tx_hash || item.txHash || ""
+  const action = (item.action || "").toLowerCase()
+  const time = item.time || ""
+  
+  if (
+    hash.toLowerCase().includes("testnet") ||
+    action.includes("testnet") ||
+    action.includes("friendbot") ||
+    action.includes("test usdc") ||
+    action.includes("escrow") ||
+    action.includes("milestone") ||
+    (time && new Date(time).getTime() < new Date("2026-08-20").getTime())
+  ) {
+    return "testnet"
+  }
+  
+  if (item.network === "testnet" || item.network === "mainnet") {
+    return item.network
+  }
+
+  return "mainnet"
+}
+
 export async function readInteractions(): Promise<InteractionLog[]> {
+  const sourceFile = path.join(process.cwd(), "data", "interactions.json")
+  let localData: InteractionLog[] = []
+  try {
+    if (fs.existsSync(sourceFile)) {
+      localData = JSON.parse(fs.readFileSync(sourceFile, "utf-8"))
+        .filter((item: any) => !item.action?.includes("Connect Wallet"))
+        .map((item: any) => ({
+          ...item,
+          network: parseLogNetwork(item),
+        }))
+    }
+  } catch (err) {
+    console.error("Local interactions read error:", err)
+  }
+
   if (hasSupabase) {
     try {
       const { data, error } = await supabase
@@ -130,47 +170,48 @@ export async function readInteractions(): Promise<InteractionLog[]> {
         .order("time", { ascending: false })
       
       if (error) throw error
-      if (data) {
-        return data.map((item: any) => ({
-          address: item.address,
-          action: item.action,
-          txHash: item.tx_hash,
-          time: item.time,
-        }))
+      if (data && data.length > 0) {
+        const supabaseLogs = data
+          .filter((item: any) => !item.action?.includes("Connect Wallet"))
+          .map((item: any) => ({
+            address: item.address,
+            action: item.action,
+            txHash: item.tx_hash,
+            time: item.time,
+            network: parseLogNetwork(item),
+          }))
+        
+        const seen = new Set<string>()
+        const combined: InteractionLog[] = []
+        for (const item of [...supabaseLogs, ...localData]) {
+          const key = `${item.address}-${item.action}-${item.txHash}`
+          if (!seen.has(key)) {
+            seen.add(key)
+            combined.push(item)
+          }
+        }
+        return combined
       }
     } catch (err) {
       console.error("Kesalahan Supabase readInteractions, menggunakan fallback:", err)
     }
   }
 
-  // Fallback ke penyimpanan berkas lokal
-  try {
-    const sourceFile = path.join(process.cwd(), "data", "interactions.json")
-    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
-    if (!fs.existsSync(INTERACTIONS_FILE)) {
-      if (fs.existsSync(sourceFile)) {
-        fs.writeFileSync(INTERACTIONS_FILE, fs.readFileSync(sourceFile, "utf-8"))
-      } else {
-        fs.writeFileSync(INTERACTIONS_FILE, JSON.stringify([]))
-      }
-    }
-    return JSON.parse(fs.readFileSync(INTERACTIONS_FILE, "utf-8"))
-  } catch (err) {
-    console.error("Gagal membaca berkas interactions lokal:", err)
-    return []
-  }
+  return localData
 }
 
 export async function writeInteractions(data: InteractionLog[]): Promise<void> {
+  const filteredData = data.filter(item => !item.action?.includes("Connect Wallet"))
   if (hasSupabase) {
     try {
-      const newItem = data[0]
+      const newItem = filteredData[0]
       if (newItem) {
         const formatted = {
           address: newItem.address,
           action: newItem.action,
           tx_hash: newItem.txHash,
           time: newItem.time,
+          network: newItem.network || "mainnet",
         }
         const { error } = await supabase.from("interactions").insert([formatted])
         if (error) throw error
@@ -184,7 +225,7 @@ export async function writeInteractions(data: InteractionLog[]): Promise<void> {
   // Fallback ke penyimpanan berkas lokal
   try {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
-    fs.writeFileSync(INTERACTIONS_FILE, JSON.stringify(data, null, 2))
+    fs.writeFileSync(INTERACTIONS_FILE, JSON.stringify(filteredData, null, 2))
   } catch (err) {
     console.error("Gagal menulis berkas interactions lokal:", err)
   }
@@ -360,7 +401,7 @@ export async function writeProposals(data: MultisigProposal[]): Promise<void> {
   }
 }
 
-export async function logInteraction(address: string, action: string, txHash: string): Promise<void> {
+export async function logInteraction(address: string, action: string, txHash: string, network = "mainnet"): Promise<void> {
   try {
     const list = await readInteractions()
     list.unshift({
@@ -368,6 +409,7 @@ export async function logInteraction(address: string, action: string, txHash: st
       action,
       txHash,
       time: new Date().toISOString(),
+      network,
     })
     await writeInteractions(list.slice(0, 100))
   } catch (err) {

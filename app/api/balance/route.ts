@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"
 
 export async function GET(request: NextRequest) {
   const address = request.nextUrl.searchParams.get("address")
-  const network = request.nextUrl.searchParams.get("network") ?? "testnet"
+  const network = request.nextUrl.searchParams.get("network") ?? "mainnet"
 
   if (!address) {
     return NextResponse.json({ error: "Missing 'address' query parameter." }, { status: 400 })

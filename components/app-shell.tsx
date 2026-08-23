@@ -209,7 +209,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <span className="size-1.5 rounded-full bg-emerald-500" />
                 Live SSE Synced
               </span>
-              {network === "testnet" && (
+              {network === "mainnet" ? (
+                <>
+                  <span className="text-muted-foreground/40">•</span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-[10px] font-semibold">
+                    <span className="size-1.5 rounded-full bg-emerald-400" />
+                    Stellar Mainnet Public
+                  </span>
+                </>
+              ) : (
                 <>
                   <span className="text-muted-foreground/40">•</span>
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 font-mono text-[10px] font-semibold">

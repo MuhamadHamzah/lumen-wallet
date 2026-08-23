@@ -19,22 +19,6 @@ interface WalletConnectionProps {
   onClose?: () => void
 }
 
-const logWalletInteraction = async (pubKey: string, actionName: string) => {
-  try {
-    await fetch("/api/interactions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address: pubKey,
-        action: actionName,
-        txHash: "N/A (Connection)",
-      }),
-    })
-  } catch (err) {
-    console.error("Failed to log interaction:", err)
-  }
-}
-
 export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
   const { setWallet } = useWallet()
   const [secretKeyInput, setSecretKeyInput] = useState("")
@@ -100,7 +84,6 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
       { publicKey: generatedKeypair.publicKey, secretKey: generatedKeypair.secretKey },
       "manual"
     )
-    logWalletInteraction(generatedKeypair.publicKey, "Connect Wallet (Generated)")
     setGeneratedKeypair(null)
     toast.success("Wallet connected successfully!")
   }, [generatedKeypair, setWallet])
@@ -120,7 +103,6 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
       const { address } = await StellarWalletsKit.authModal()
 
       setWallet({ publicKey: address, secretKey: `kit:${address}` }, "kit")
-      logWalletInteraction(address, "Connect Wallet (StellarWalletsKit)")
       toast.success("Wallet connected successfully!")
     } catch (err: any) {
       if (err?.message === "The user closed the modal.") {
@@ -158,7 +140,6 @@ export function WalletConnection({ onClose }: WalletConnectionProps = {}) {
       const publicKey = keypair.publicKey()
 
       setWallet({ publicKey, secretKey: secretKeyInput.trim() }, "manual")
-      logWalletInteraction(publicKey, "Connect Wallet (Import Key)")
       setSecretKeyInput("")
       setShowSecretKeyForm(false)
       toast.success("Wallet connected successfully!")
