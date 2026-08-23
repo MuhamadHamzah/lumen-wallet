@@ -8,6 +8,7 @@
 
 > **Live Application**: [https://lumenchain.xyz](https://lumenchain.xyz)  
 > **Demo Video Walkthrough**: [https://youtu.be/F8JIcWFxsIQ](https://youtu.be/F8JIcWFxsIQ)  
+> **Twitter/X Launch Announcement**: [View on X (Post #2091562996686553279)](https://x.com/sorobanLumen/status/2091562996686553279)  
 > **Executive Pitch Deck (Canva PPT)**: [View Pitch Deck](https://canva.link/zk12jyusvccpa2g) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
 > **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)  
 > **Feedback Google Form**: [Open Form](https://forms.gle/D3LD7AwEN5GYzbuG8)  
@@ -31,7 +32,7 @@ Lumen Wallet & LumenFlow Escrow have successfully transitioned to a production-g
 ### 👥 Mainnet Onboarding & Marketing
 * **Verified Mainnet Users**: **20+ Unique Mainnet Addresses** executing active payment transactions.
 * **Onboarding Excel Data**: Accessible via [docs/user_onboarding_responses.xlsx](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx).
-* **Social Media Promotion**: [View Twitter/X Launch Post](https://twitter.com) *(User can replace this with their active launch post/thread link)*
+* **Social Media Promotion**: [View Twitter/X Launch Post](https://x.com/sorobanLumen/status/2091562996686553279)
 
 ---
 
