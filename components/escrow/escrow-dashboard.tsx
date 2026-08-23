@@ -147,12 +147,12 @@ export function EscrowDashboard() {
 
   const getStatusBadge = (status: number) => {
     switch (status) {
-      case 0: return <span className="rounded-full bg-slate-800 text-slate-400 border border-slate-700 px-2.5 py-0.5 text-[11px] font-semibold">Created</span>
-      case 1: return <span className="rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(59,130,246,0.2)]">Funded</span>
-      case 2: return <span className="rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(245,158,11,0.2)]">Submitted</span>
-      case 3: return <span className="rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(52,211,153,0.2)]">Released</span>
-      case 4: return <span className="rounded-full bg-red-500/10 text-red-400 border border-red-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(239,68,68,0.2)]">Disputed</span>
-      case 5: return <span className="rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/25 px-2.5 py-0.5 text-[11px] font-semibold shadow-[0_0_8px_rgba(139,92,246,0.2)]">Resolved / Refunded</span>
+      case 0: return <span className="rounded-full bg-muted text-muted-foreground border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Created</span>
+      case 1: return <span className="rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/25 px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Funded</span>
+      case 2: return <span className="rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25 px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Submitted</span>
+      case 3: return <span className="rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Released</span>
+      case 4: return <span className="rounded-full bg-destructive/10 text-destructive border border-destructive/25 px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Disputed</span>
+      case 5: return <span className="rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/25 px-2.5 py-0.5 text-[10px] font-semibold uppercase font-mono">Resolved / Refunded</span>
       default: return null
     }
   }
@@ -294,26 +294,26 @@ export function EscrowDashboard() {
   const userIsArbitrator = activeProject?.arbitrator === publicKey
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-slate-800/80">
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-border/40">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-cyan-400 shadow-inner">
+            <span className="flex size-9 items-center justify-center rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400">
               <Sparkles className="size-5" />
             </span>
-            <h1 className="text-2xl font-bold text-white tracking-tight">LumenFlow Escrow</h1>
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">Milestone Escrow Studio</h1>
           </div>
-          <p className="text-slate-400 text-xs mt-1 leading-relaxed">
-            Secure, milestone-based decentralized payment flow on Stellar Soroban.
+          <p className="text-muted-foreground text-xs font-mono mt-1">
+            Soroban WASM Smart Contract Milestone Pipeline
           </p>
         </div>
 
-        <div className="flex items-center gap-1 rounded-full border border-slate-700 bg-slate-900/80 p-1">
+        <div className="flex items-center gap-1 rounded-full border border-border/80 bg-muted/40 p-1">
           <Button 
             variant="ghost" 
             size="sm"
             onClick={() => setIsSimulated(true)}
-            className={`text-xs h-8 rounded-full px-4 transition-all ${isSimulated ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 shadow-[0_0_10px_rgba(6,182,212,0.15)]" : "text-slate-500 hover:text-slate-300"}`}
+            className={`text-xs h-7 rounded-full px-3.5 transition-all ${isSimulated ? "bg-primary/15 text-primary border border-primary/25 shadow-sm font-semibold" : "text-muted-foreground hover:text-foreground"}`}
           >
             Simulated Sandbox
           </Button>
@@ -327,41 +327,41 @@ export function EscrowDashboard() {
               }
               setIsSimulated(false)
             }}
-            className={`text-xs h-8 rounded-full px-4 transition-all ${!isSimulated ? "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25 shadow-[0_0_10px_rgba(6,182,212,0.15)]" : "text-slate-500 hover:text-slate-300"}`}
+            className={`text-xs h-7 rounded-full px-3.5 transition-all ${!isSimulated ? "bg-primary/15 text-primary border border-primary/25 shadow-sm font-semibold" : "text-muted-foreground hover:text-foreground"}`}
           >
             Live Stellar Testnet
           </Button>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* Left Side: Escrow Projects List */}
-        <div className="md:col-span-1 space-y-4">
-          <Card className="border border-slate-800 bg-slate-900/60 backdrop-blur-xl p-5 rounded-2xl">
-            <h2 className="text-[11px] font-semibold tracking-widest uppercase text-slate-400 mb-4 flex items-center justify-between">
-              <span>My Projects</span>
-              <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">{projects.length}</span>
-            </h2>
+      <div className="grid lg:grid-cols-12 gap-6 items-start">
+        {/* Left Side: Escrow Projects List (4 Cols) */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="rounded-3xl border border-border/80 bg-card/60 p-5 backdrop-blur-xl shadow-sm space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-border/40">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">My Contracts</span>
+              <span className="bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold px-2 py-0.5 rounded-full font-mono">{projects.length}</span>
+            </div>
             
             {projects.length === 0 ? (
-              <p className="text-xs text-slate-500 text-center py-10">No escrow contracts initialized yet.</p>
+              <p className="text-xs text-muted-foreground text-center py-10 font-mono">No escrow contracts initialized yet.</p>
             ) : (
               <div className="space-y-2">
                 {projects.map((proj) => (
                   <button
                     key={proj.id}
                     onClick={() => setActiveProject(proj)}
-                    className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all duration-200 ${
+                    className={`w-full text-left p-3.5 rounded-2xl border text-xs transition-all ${
                       activeProject?.id === proj.id 
-                        ? "border-cyan-500/30 bg-cyan-500/5 shadow-[0_0_15px_rgba(6,182,212,0.08)]" 
-                        : "border-slate-800 bg-slate-950/40 hover:bg-slate-800/50 hover:border-slate-700"
+                        ? "border-primary/40 bg-primary/[0.06] shadow-sm font-semibold text-foreground" 
+                        : "border-border/60 bg-muted/20 hover:bg-muted/50 text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <div className="font-semibold truncate text-slate-100">{proj.name}</div>
-                    <div className="font-mono text-[10px] text-slate-500 mt-1 truncate">{proj.id}</div>
-                    <div className="flex justify-between items-center mt-2.5 text-xs">
-                      <span className="text-slate-400">Milestones: {proj.milestones.length}</span>
-                      <span className="font-bold text-cyan-400 font-mono">
+                    <div className="font-semibold truncate text-foreground text-sm">{proj.name}</div>
+                    <div className="font-mono text-[10px] text-muted-foreground mt-1 truncate">{proj.id}</div>
+                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-border/40 text-xs">
+                      <span>Milestones: {proj.milestones.length}</span>
+                      <span className="font-bold text-primary font-mono">
                         {proj.milestones.reduce((acc, m) => acc + m.amount, 0)} {proj.tokenSymbol}
                       </span>
                     </div>
@@ -369,75 +369,77 @@ export function EscrowDashboard() {
                 ))}
               </div>
             )}
-          </Card>
+          </div>
         </div>
 
-        {/* Right Side: Active Project Details & Create tab */}
-        <div className="md:col-span-2">
-          <Tabs defaultValue="manage">
-            <TabsList className="grid w-full grid-cols-2 max-w-sm mb-4">
-              <TabsTrigger value="manage">Active Escrow</TabsTrigger>
-              <TabsTrigger value="create">New Escrow Contract</TabsTrigger>
+        {/* Right Side: Active Project Details & Create tab (8 Cols) */}
+        <div className="lg:col-span-8">
+          <Tabs defaultValue="manage" className="space-y-4">
+            <TabsList className="grid w-full grid-cols-2 max-w-sm rounded-2xl h-10 p-1 bg-muted/40 border border-border/60">
+              <TabsTrigger value="manage" className="rounded-xl text-xs font-semibold">Active Escrow</TabsTrigger>
+              <TabsTrigger value="create" className="rounded-xl text-xs font-semibold">New Escrow Contract</TabsTrigger>
             </TabsList>
 
             {/* MANAGE ESCROW */}
-            <TabsContent value="manage">
+            <TabsContent value="manage" className="space-y-4">
               {activeProject ? (
-                <div className="space-y-6">
+                <div className="space-y-5">
                   {/* Escrow Meta info */}
-                  <Card className="border border-slate-800 bg-slate-900/60 backdrop-blur-xl p-6 rounded-2xl">
-                    <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
+                  <div className="rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-xl shadow-sm space-y-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-border/40">
                       <div>
-                        <h2 className="text-xl font-bold text-white">{activeProject.name}</h2>
-                        <div className="flex items-center gap-2 mt-1.5">
-                          <span className="text-[11px] text-slate-500 font-mono bg-slate-950/60 px-2 py-0.5 rounded border border-slate-800">Contract: {activeProject.id}</span>
-                          <CopyButton value={activeProject.id} label="Contract ID copied" className="size-5" />
+                        <h2 className="text-xl font-bold text-foreground">{activeProject.name}</h2>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[11px] text-muted-foreground font-mono bg-muted/40 px-2 py-0.5 rounded-lg border border-border/60">
+                            Contract: {activeProject.id}
+                          </span>
+                          <CopyButton value={activeProject.id} label="Contract ID copied" className="size-6" />
                         </div>
                       </div>
                       
                       {isSimulated && (
-                        <div className="flex items-center gap-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 text-[11px] font-semibold text-cyan-400">
-                            <Sparkles className="size-3" /> Sandbox Mode
-                        </div>
+                        <span className="flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[11px] font-semibold text-primary font-mono">
+                          <Sparkles className="size-3" /> Sandbox VM
+                        </span>
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-5 border-t border-slate-800 text-xs">
-                      <div>
-                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Client Address:</div>
-                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-2xl bg-muted/30 border border-border/50 space-y-1">
+                        <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider block">Client (Depositor)</span>
+                        <div className="font-mono text-[11px] truncate flex items-center justify-between text-foreground">
                           <span>{activeProject.client}</span>
-                          {userIsClient && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
+                          {userIsClient && <span className="bg-primary/15 text-primary border border-primary/20 text-[8px] px-1.5 py-0.5 rounded-full font-bold">You</span>}
                         </div>
                       </div>
-                      <div>
-                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Freelancer Address:</div>
-                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
+                      <div className="p-3 rounded-2xl bg-muted/30 border border-border/50 space-y-1">
+                        <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider block">Freelancer (Beneficiary)</span>
+                        <div className="font-mono text-[11px] truncate flex items-center justify-between text-foreground">
                           <span>{activeProject.freelancer}</span>
-                          {userIsFreelancer && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
+                          {userIsFreelancer && <span className="bg-primary/15 text-primary border border-primary/20 text-[8px] px-1.5 py-0.5 rounded-full font-bold">You</span>}
                         </div>
                       </div>
-                      <div>
-                        <div className="text-slate-400 font-medium mb-1.5 text-[11px]">Arbitrator Address:</div>
-                        <div className="font-mono bg-slate-950/60 border border-slate-800 p-2.5 rounded-lg truncate flex items-center justify-between text-slate-300">
+                      <div className="p-3 rounded-2xl bg-muted/30 border border-border/50 space-y-1">
+                        <span className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider block">Arbitrator (Guardian)</span>
+                        <div className="font-mono text-[11px] truncate flex items-center justify-between text-foreground">
                           <span>{activeProject.arbitrator}</span>
-                          {userIsArbitrator && <span className="bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 text-[8px] px-1.5 py-0.5 rounded-full ml-1 font-bold">You</span>}
+                          {userIsArbitrator && <span className="bg-primary/15 text-primary border border-primary/20 text-[8px] px-1.5 py-0.5 rounded-full font-bold">You</span>}
                         </div>
                       </div>
                     </div>
-                  </Card>
+                  </div>
 
                   {/* Milestones progress overview */}
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <h3 className="text-lg font-bold">Project Milestones</h3>
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">Milestone Pipeline</h3>
                       {(() => {
                         const total = activeProject.milestones.length
                         const released = activeProject.milestones.filter(m => m.status === 3 || m.status === 5).length
                         const pct = total > 0 ? Math.round((released / total) * 100) : 0
                         return (
                           <div className="flex items-center gap-2 text-xs">
-                            <span className="text-muted-foreground font-medium">Progress: {released}/{total} ({pct}%)</span>
+                            <span className="text-muted-foreground font-mono">{released}/{total} Complete ({pct}%)</span>
                             <div className="w-24 bg-muted h-2 rounded-full overflow-hidden border border-border">
                               <div className="bg-primary h-full transition-all duration-500" style={{ width: `${pct}%` }} />
                             </div>
@@ -445,222 +447,230 @@ export function EscrowDashboard() {
                         )
                       })()}
                     </div>
-                    {activeProject.milestones.map((m) => (
-                      <Card key={m.id} className="border border-slate-800 bg-slate-900/50 backdrop-blur-md p-5 rounded-2xl relative overflow-hidden hover:border-slate-700 transition-all">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center gap-2.5">
-                              <span className="text-xs font-bold text-slate-500 bg-slate-800 px-2 py-0.5 rounded-md font-mono">#{m.id}</span>
-                              <h4 className="font-semibold text-base text-slate-100">{m.description}</h4>
+
+                    <div className="space-y-3">
+                      {activeProject.milestones.map((m) => (
+                        <div key={m.id} className="rounded-3xl border border-border/80 bg-card/60 p-5 backdrop-blur-xl space-y-3 shadow-sm hover:border-primary/40 transition-colors">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2.5">
+                                <span className="text-[10px] font-bold text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md font-mono">Stage #{m.id}</span>
+                                <h4 className="font-bold text-sm text-foreground">{m.description}</h4>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1">
+                                <span className="font-mono text-sm font-extrabold text-primary">
+                                  {m.amount} {activeProject.tokenSymbol}
+                                </span>
+                                {getStatusBadge(m.status)}
+                              </div>
                             </div>
-                            <div className="flex items-center gap-3 mt-1">
-                              <span className="font-mono text-sm font-bold text-cyan-400">
-                                {m.amount} {activeProject.tokenSymbol}
-                              </span>
-                              {getStatusBadge(m.status)}
+
+                            {/* Action panel based on role & status */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                              {userIsClient && m.status === 0 && (
+                                <Button size="sm" onClick={() => handleDeposit(m.id, m.amount)} className="gap-1.5 rounded-xl text-xs h-8">
+                                  <Plus className="size-3.5" /> Deposit &amp; Lock
+                                </Button>
+                              )}
+
+                              {userIsFreelancer && m.status === 1 && (
+                                <Button size="sm" onClick={() => handleSubmitWork(m.id)} className="gap-1.5 rounded-xl text-xs h-8">
+                                  <Plus className="size-3.5" /> Submit Deliverables
+                                </Button>
+                              )}
+
+                              {userIsClient && (m.status === 1 || m.status === 2 || m.status === 4) && (
+                                <Button size="sm" onClick={() => handleRelease(m.id, m.amount)} className="gap-1.5 rounded-xl text-xs h-8">
+                                  <Check className="size-3.5" /> Release Funds
+                                </Button>
+                              )}
+
+                              {(userIsClient || userIsFreelancer) && (m.status === 1 || m.status === 2) && (
+                                <Button size="sm" variant="destructive" onClick={() => handleDispute(m.id)} className="gap-1.5 rounded-xl text-xs h-8">
+                                  <ShieldAlert className="size-3.5" /> File Dispute
+                                </Button>
+                              )}
+
+                              {userIsFreelancer && (m.status === 1 || m.status === 2) && (
+                                <Button size="sm" variant="outline" onClick={() => handleRefund(m.id, m.amount)} className="gap-1.5 rounded-xl text-xs h-8">
+                                  <Ban className="size-3.5" /> Refund Client
+                                </Button>
+                              )}
+
+                              {userIsArbitrator && m.status === 4 && (
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  onClick={() => {
+                                    setSelectedMilestoneId(m.id)
+                                    setFreelancerShare(m.amount / 2)
+                                    setClientShare(m.amount / 2)
+                                  }}
+                                  className="gap-1.5 rounded-xl text-xs h-8"
+                                >
+                                  <ShieldAlert className="size-3.5" /> Resolve Dispute
+                                </Button>
+                              )}
                             </div>
                           </div>
 
-                          {/* Action panel based on role & status */}
-                          <div className="flex items-center gap-2 flex-wrap">
-                            {/* CLIENT actions */}
-                            {userIsClient && m.status === 0 && (
-                              <Button size="sm" variant="default" onClick={() => handleDeposit(m.id, m.amount)} className="gap-1.5">
-                                <Plus className="size-3.5" /> Deposit & Lock
-                              </Button>
-                            )}
-
-                            {userIsFreelancer && m.status === 1 && (
-                              <Button size="sm" variant="default" onClick={() => handleSubmitWork(m.id)} className="gap-1.5">
-                                <Plus className="size-3.5" /> Submit Work
-                              </Button>
-                            )}
-
-                            {userIsClient && (m.status === 1 || m.status === 2 || m.status === 4) && (
-                              <Button size="sm" variant="default" onClick={() => handleRelease(m.id, m.amount)} className="gap-1.5">
-                                <Check className="size-3.5" /> Release Funds
-                              </Button>
-                            )}
-
-                            {/* Dispute can be triggered by client/freelancer in Funded/Submitted */}
-                            {(userIsClient || userIsFreelancer) && (m.status === 1 || m.status === 2) && (
-                              <Button size="sm" variant="destructive" onClick={() => handleDispute(m.id)} className="gap-1.5">
-                                <ShieldAlert className="size-3.5" /> File Dispute
-                              </Button>
-                            )}
-
-                            {/* Voluntary refund by freelancer */}
-                            {userIsFreelancer && (m.status === 1 || m.status === 2) && (
-                              <Button size="sm" variant="outline" onClick={() => handleRefund(m.id, m.amount)} className="gap-1.5">
-                                <Ban className="size-3.5" /> Refund Client
-                              </Button>
-                            )}
-
-                            {/* ARBITRATOR Actions */}
-                            {userIsArbitrator && m.status === 4 && (
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
-                                onClick={() => {
-                                  setSelectedMilestoneId(m.id)
-                                  setFreelancerShare(m.amount / 2)
-                                  setClientShare(m.amount / 2)
-                                }}
-                                className="gap-1.5"
-                              >
-                                <ShieldAlert className="size-3.5" /> Resolve Dispute
-                              </Button>
-                            )}
-                          </div>
+                          {/* Arbitrator Dispute Overlay */}
+                          {selectedMilestoneId === m.id && (
+                            <div className="mt-3 pt-3 border-t border-border/50 space-y-3 bg-muted/40 p-4 rounded-2xl">
+                              <div className="flex items-center gap-2 text-xs font-semibold text-amber-500">
+                                <Info className="size-3.5" />
+                                Arbitrator Allocation: Distribute {m.amount} {activeProject.tokenSymbol}
+                              </div>
+                              <div className="grid grid-cols-2 gap-3 text-xs">
+                                <div className="space-y-1">
+                                  <Label className="text-[10px]">Freelancer Share</Label>
+                                  <Input 
+                                    type="number"
+                                    value={freelancerShare}
+                                    onChange={(e) => {
+                                      const val = Number(e.target.value)
+                                      setFreelancerShare(val)
+                                      setClientShare(Math.max(0, m.amount - val))
+                                    }}
+                                    className="h-8 text-xs font-mono rounded-lg"
+                                  />
+                                </div>
+                                <div className="space-y-1">
+                                  <Label className="text-[10px]">Client Share</Label>
+                                  <Input 
+                                    type="number"
+                                    value={clientShare}
+                                    onChange={(e) => {
+                                      const val = Number(e.target.value)
+                                      setClientShare(val)
+                                      setFreelancerShare(Math.max(0, m.amount - val))
+                                    }}
+                                    className="h-8 text-xs font-mono rounded-lg"
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-2 mt-2">
+                                <Button size="sm" variant="ghost" className="h-8 text-xs rounded-xl" onClick={() => setSelectedMilestoneId(null)}>Cancel</Button>
+                                <Button size="sm" className="h-8 text-xs rounded-xl" onClick={() => handleResolve(m.id, m.amount)}>Confirm Resolution</Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-
-                        {/* Interactive Arbitrator Dispute resolution overlay */}
-                        {selectedMilestoneId === m.id && (
-                          <div className="mt-4 pt-4 border-t border-border space-y-3 bg-muted p-3 rounded-lg">
-                            <div className="flex items-center gap-2 text-xs font-semibold text-amber-500 mb-1">
-                              <Info className="size-3.5" />
-                              Arbitrator Panel: Allocate the {m.amount} {activeProject.tokenSymbol} between client and freelancer.
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="space-y-1">
-                                <Label htmlFor={`f-share-${m.id}`} className="text-xs">Freelancer Share ({activeProject.tokenSymbol})</Label>
-                                <Input 
-                                  id={`f-share-${m.id}`}
-                                  type="number"
-                                  value={freelancerShare}
-                                  onChange={(e) => {
-                                    const val = Number(e.target.value)
-                                    setFreelancerShare(val)
-                                    setClientShare(Math.max(0, m.amount - val))
-                                  }}
-                                  className="h-8 text-xs font-mono"
-                                />
-                              </div>
-                              <div className="space-y-1">
-                                <Label htmlFor={`c-share-${m.id}`} className="text-xs">Client Share ({activeProject.tokenSymbol})</Label>
-                                <Input 
-                                  id={`c-share-${m.id}`}
-                                  type="number"
-                                  value={clientShare}
-                                  onChange={(e) => {
-                                    const val = Number(e.target.value)
-                                    setClientShare(val)
-                                    setFreelancerShare(Math.max(0, m.amount - val))
-                                  }}
-                                  className="h-8 text-xs font-mono"
-                                />
-                              </div>
-                            </div>
-                            <div className="flex justify-end gap-2 mt-2">
-                              <Button size="sm" variant="ghost" onClick={() => setSelectedMilestoneId(null)}>Cancel</Button>
-                              <Button size="sm" variant="default" onClick={() => handleResolve(m.id, m.amount)}>Confirm Resolution</Button>
-                            </div>
-                          </div>
-                        )}
-                      </Card>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-12 border border-dashed rounded-lg border-border">
-                  <h3 className="font-bold text-foreground">No active project selected</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Please select an escrow project from the sidebar list or initialize a new one.</p>
+                <div className="text-center py-16 border border-dashed rounded-3xl border-border bg-muted/10">
+                  <h3 className="font-bold text-foreground text-sm">No active escrow project selected</h3>
+                  <p className="text-xs text-muted-foreground mt-1">Select a contract from the sidebar or deploy a new agreement.</p>
                 </div>
               )}
             </TabsContent>
 
             {/* CREATE ESCROW CONTRACT */}
             <TabsContent value="create">
-              <Card className="border border-border bg-card p-6">
+              <div className="rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-7 backdrop-blur-xl shadow-sm space-y-4">
                 <form onSubmit={handleCreateProject} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="proj-name">Project Name</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="proj-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Project Contract Title
+                    </Label>
                     <Input 
                       id="proj-name" 
-                      placeholder="e.g. Logo Design for Stellar Startup" 
+                      placeholder="e.g. Soroban Smart Contract Architecture Audit" 
                       value={projName}
                       onChange={(e) => setProjName(e.target.value)}
+                      className="rounded-xl h-10 text-xs"
                       required 
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="client-addr">Client Wallet Address</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="client-addr" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Client Public Address
+                      </Label>
                       <Input 
                         id="client-addr" 
                         value={clientAddr}
                         onChange={(e) => setClientAddr(e.target.value)}
                         placeholder="G..." 
-                        className="font-mono text-xs"
+                        className="font-mono text-xs rounded-xl h-10"
                         required 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="freelancer-addr">Freelancer Wallet Address</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="freelancer-addr" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Freelancer Public Address
+                      </Label>
                       <Input 
                         id="freelancer-addr" 
                         value={freelancerAddr}
                         onChange={(e) => setFreelancerAddr(e.target.value)}
                         placeholder="G..." 
-                        className="font-mono text-xs"
+                        className="font-mono text-xs rounded-xl h-10"
                         required 
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="arbitrator-addr">Arbitrator Address</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="arbitrator-addr" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Arbitrator Public Address
+                      </Label>
                       <Input 
                         id="arbitrator-addr" 
                         value={arbitratorAddr}
                         onChange={(e) => setArbitratorAddr(e.target.value)}
                         placeholder="GDARBITRATOR..." 
-                        className="font-mono text-xs"
+                        className="font-mono text-xs rounded-xl h-10"
                         required 
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="token-addr">Arbitration Payment Token Contract</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="token-addr" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Payment Token Contract ID
+                      </Label>
                       <Input 
                         id="token-addr" 
                         value={tokenAddr}
                         onChange={(e) => setTokenAddr(e.target.value)}
                         placeholder="CC..." 
-                        className="font-mono text-xs"
+                        className="font-mono text-xs rounded-xl h-10"
                         required 
                       />
                     </div>
                   </div>
 
                   {/* Milestones Builder */}
-                  <div className="space-y-3 pt-3 border-t border-border">
+                  <div className="space-y-3 pt-3 border-t border-border/50">
                     <div className="flex justify-between items-center">
-                      <Label className="text-base font-semibold">Contract Milestones</Label>
-                      <Button type="button" variant="outline" size="sm" onClick={handleAddMilestone} className="gap-1 text-xs">
-                        <Plus className="size-3" /> Add Milestone
+                      <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Contract Milestones</Label>
+                      <Button type="button" variant="outline" size="sm" onClick={handleAddMilestone} className="gap-1 text-xs rounded-xl h-8">
+                        <Plus className="size-3" /> Add Stage
                       </Button>
                     </div>
 
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       {milestones.map((m, idx) => (
-                        <div key={idx} className="flex items-center gap-3 bg-muted p-3 rounded-lg">
-                          <span className="text-xs font-bold text-muted-foreground shrink-0">#{idx + 1}</span>
+                        <div key={idx} className="flex items-center gap-2.5 bg-muted/40 p-3 rounded-2xl border border-border/50">
+                          <span className="text-xs font-mono font-bold text-muted-foreground shrink-0">#{idx + 1}</span>
                           <Input 
                             value={m.description}
                             onChange={(e) => handleMilestoneChange(idx, "description", e.target.value)}
                             placeholder="Milestone Description" 
-                            className="flex-1 h-9 text-xs"
-                            required
+                            className="flex-1 h-9 text-xs rounded-xl"
+                            required 
                           />
                           <Input 
                             type="number"
                             value={m.amount}
                             onChange={(e) => handleMilestoneChange(idx, "amount", e.target.value)}
                             placeholder="Amount" 
-                            className="w-24 h-9 text-xs font-mono"
-                            required
+                            className="w-24 h-9 text-xs font-mono rounded-xl"
+                            required 
                           />
                           {milestones.length > 1 && (
                             <Button 
@@ -668,7 +678,7 @@ export function EscrowDashboard() {
                               variant="ghost" 
                               size="icon" 
                               onClick={() => handleRemoveMilestone(idx)} 
-                              className="size-8 text-destructive hover:bg-destructive/10"
+                              className="size-8 text-destructive hover:bg-destructive/10 rounded-xl"
                             >
                               <Trash className="size-3.5" />
                             </Button>
@@ -678,12 +688,12 @@ export function EscrowDashboard() {
                     </div>
                   </div>
 
-                  <Button type="submit" variant="default" className="w-full gap-2 mt-4 font-semibold">
+                  <Button type="submit" className="w-full h-11 rounded-xl font-semibold gap-2 mt-4 shadow-md focus-visible:ring-2 focus-visible:ring-primary">
                     <Loader2 className="size-4 animate-spin hidden" />
-                    Deploy & Initialize Escrow Contract
+                    Deploy &amp; Initialize Soroban Escrow
                   </Button>
                 </form>
-              </Card>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

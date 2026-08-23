@@ -86,7 +86,10 @@ export function describeSorobanError(error: unknown): string {
   return msg
 }
 
-/** Run a read-only contract method via simulation and decode the result. */
+/** In-memory cache for static contract metadata to prevent RPC rate-limits */
+const metadataCache = new Map<string, TokenMetadata>()
+
+/** Run a read-only contract method via simulation and decode the result with automatic retry. */
 async function simulateRead(contractId: string, method: string, args: xdr.ScVal[] = [], network?: string): Promise<unknown> {
   const server = getRpcServer(network)
   const contract = new Contract(contractId)
@@ -100,13 +103,24 @@ async function simulateRead(contractId: string, method: string, args: xdr.ScVal[
     .setTimeout(30)
     .build()
 
-  const sim = await server.simulateTransaction(tx)
-  if (rpc.Api.isSimulationError(sim)) {
-    throw new Error(sim.error)
+  let lastError: unknown = null
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const sim = await server.simulateTransaction(tx)
+      if (rpc.Api.isSimulationError(sim)) {
+        throw new Error(sim.error)
+      }
+      const retval = sim.result?.retval
+      if (!retval) throw new Error(`No value returned from "${method}".`)
+      return scValToNative(retval)
+    } catch (err) {
+      lastError = err
+      if (attempt < 2) {
+        await new Promise((resolve) => setTimeout(resolve, 300 * (attempt + 1)))
+      }
+    }
   }
-  const retval = sim.result?.retval
-  if (!retval) throw new Error(`No value returned from "${method}".`)
-  return scValToNative(retval)
+  throw lastError
 }
 
 interface InvokeArgs {
@@ -164,24 +178,43 @@ export interface TokenMetadata {
   decimals: number
 }
 
-/** Read name/symbol/decimals from the token contract. */
+/** Read name/symbol/decimals from the token contract with in-memory caching and fallbacks. */
 export async function getTokenMetadata(contractId: string, network?: string): Promise<TokenMetadata> {
-  const [name, symbol, decimals] = await Promise.all([
+  const cacheKey = `${network || "default"}:${contractId}`
+  if (metadataCache.has(cacheKey)) {
+    return metadataCache.get(cacheKey)!
+  }
+
+  // Query properties safely
+  const [nameRes, symbolRes, decimalsRes] = await Promise.allSettled([
     simulateRead(contractId, "name", [], network),
     simulateRead(contractId, "symbol", [], network),
     simulateRead(contractId, "decimals", [], network),
   ])
-  return {
-    name: String(name),
-    symbol: String(symbol),
-    decimals: Number(decimals),
+
+  // If all 3 failed, throw error to indicate invalid contract
+  if (nameRes.status === "rejected" && symbolRes.status === "rejected" && decimalsRes.status === "rejected") {
+    throw (nameRes as PromiseRejectedResult).reason
   }
+
+  const symbol = symbolRes.status === "fulfilled" ? String(symbolRes.value) : "TKN"
+  const name = nameRes.status === "fulfilled" ? String(nameRes.value) : symbol
+  const decimals = decimalsRes.status === "fulfilled" ? Number(decimalsRes.value) : 7
+
+  const metadata: TokenMetadata = { name, symbol, decimals }
+  metadataCache.set(cacheKey, metadata)
+  return metadata
 }
 
 /** Read a single address's token balance (base units, stringified). */
 export async function getTokenBalance(contractId: string, address: string, network?: string): Promise<string> {
-  const raw = await simulateRead(contractId, "balance", [addressToScVal(address)], network)
-  return (raw as bigint).toString()
+  try {
+    const raw = await simulateRead(contractId, "balance", [addressToScVal(address)], network)
+    return (raw as bigint).toString()
+  } catch {
+    // Return 0 if account has never held this token or contract returns null balance
+    return "0"
+  }
 }
 
 /** Read the token admin public key, or null if the contract has none. */

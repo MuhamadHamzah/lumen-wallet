@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description: 'A clean, modern wallet for the Stellar network. Send, receive, and track XLM on testnet.',
   generator: 'v0.app',
   icons: {
-    icon: '/logo_lumen.png',
-    apple: '/logo_lumen.png',
+    icon: '/lumen-nobg.png',
+    apple: '/lumen-nobg.png',
   },
 }
 

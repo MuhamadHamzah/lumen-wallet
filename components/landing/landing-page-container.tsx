@@ -71,6 +71,45 @@ export function LandingPageContainer({
     }
   }, [])
 
+  const [isCockpitVisible, setIsCockpitVisible] = useState(false)
+
+  // IntersectionObserver to detect when live cockpit card is in view and smoothly adjust navbar width
+  useEffect(() => {
+    if (!mounted || typeof window === "undefined") return
+
+    let observer: IntersectionObserver | null = null
+
+    const attachObserver = () => {
+      const target = document.getElementById("live-cockpit-card")
+      if (!target) return false
+
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          setIsCockpitVisible(entry.isIntersecting)
+        },
+        {
+          root: null,
+          rootMargin: "-40px 0px -40px 0px",
+          threshold: 0.15,
+        }
+      )
+
+      observer.observe(target)
+      return true
+    }
+
+    if (!attachObserver()) {
+      const timer = setInterval(() => {
+        if (attachObserver()) clearInterval(timer)
+      }, 150)
+      return () => clearInterval(timer)
+    }
+
+    return () => {
+      if (observer) observer.disconnect()
+    }
+  }, [mounted, landingMode])
+
   // Drag & click trigger handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isTransitioning) return
@@ -175,14 +214,16 @@ export function LandingPageContainer({
       <Web3Background mode={landingMode} />
 
       {/* Global Permanent Fixed Navbar - Optical Glass Magnifier Lens */}
-      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl rounded-2xl border border-white/25 dark:border-white/15 bg-white/[0.05] dark:bg-white/[0.03] backdrop-blur-xl backdrop-saturate-200 backdrop-contrast-125 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 ${
+      <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] ${
+        isCockpitVisible ? "max-w-xl" : "max-w-6xl"
+      } rounded-2xl border border-white/25 dark:border-white/15 bg-white/[0.05] dark:bg-white/[0.03] backdrop-blur-xl backdrop-saturate-200 backdrop-contrast-125 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.3)] transition-all duration-500 ease-in-out ${
         isTransitioning ? "opacity-0 pointer-events-none -translate-y-4" : "opacity-100 translate-y-0"
       }`}>
-        <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-6">
+        <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-500">
+          <div className="flex items-center gap-3 sm:gap-6">
             <Logo />
             {/* Header Mode Switcher (Tab indicator) */}
-            <div className="hidden sm:flex items-center gap-1 bg-white/[0.05] dark:bg-white/[0.03] border border-white/15 rounded-xl p-0.5 text-[11px] backdrop-blur-md">
+            <div className={`${isCockpitVisible ? "hidden" : "hidden sm:flex"} items-center gap-1 bg-white/[0.05] dark:bg-white/[0.03] border border-white/15 rounded-xl p-0.5 text-[11px] backdrop-blur-md transition-all duration-300`}>
               <button
                 onClick={() => handleModeSwitch("wallet")}
                 className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
@@ -210,7 +251,7 @@ export function LandingPageContainer({
             <ThemeToggle />
             <Button
               onClick={onConnectClick}
-              className={`rounded-xl px-4 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-transform duration-200 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
+              className={`rounded-xl px-3 sm:px-5 py-2 font-semibold border-0 shadow-lg transition-transform duration-200 hover:scale-[1.02] text-xs sm:text-sm h-9 text-white ${
                 !mounted
                   ? "bg-primary/80 opacity-60"
                   : landingMode === "wallet"

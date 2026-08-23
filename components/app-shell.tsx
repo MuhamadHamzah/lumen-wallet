@@ -17,17 +17,35 @@ import { CopyButton } from "@/components/copy-button"
 import { Sparkles } from "lucide-react"
 import { OnboardingWizard } from "@/components/onboarding-wizard"
 
-const NAV = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/send", label: "Send", icon: ArrowUpRight },
-  { href: "/receive", label: "Receive", icon: ArrowDownLeft },
-  { href: "/swap", label: "Swap", icon: RefreshCw },
-  { href: "/tokens", label: "Tokens", icon: Coins },
-  { href: "/escrow", label: "Escrow", icon: DollarSign },
-  { href: "/feedback", label: "Analytics", icon: BarChart2 },
-  { href: "/history", label: "History", icon: History },
-  { href: "/multisig", label: "Multisig", icon: ShieldCheck },
+const NAV_SECTIONS = [
+  {
+    title: "Portfolio",
+    items: [
+      { href: "/", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/send", label: "Send Assets", icon: ArrowUpRight },
+      { href: "/receive", label: "Receive", icon: ArrowDownLeft },
+      { href: "/swap", label: "Swap Tokens", icon: RefreshCw },
+      { href: "/tokens", label: "Soroban Assets", icon: Coins },
+    ],
+  },
+  {
+    title: "Contracts & Governance",
+    items: [
+      { href: "/escrow", label: "Milestone Escrow", icon: DollarSign },
+      { href: "/multisig", label: "MultiSig Vault", icon: ShieldCheck },
+    ],
+  },
+  {
+    title: "Ledger Insights",
+    items: [
+      { href: "/history", label: "Explorer History", icon: History },
+      { href: "/feedback", label: "Telemetry & Feed", icon: BarChart2 },
+    ],
+  },
 ]
+
+/* Flat list for active checking */
+const ALL_NAV_ITEMS = NAV_SECTIONS.flatMap((s) => s.items)
 
 /* Primary tabs shown directly in the bottom bar */
 const MOBILE_PRIMARY = [
@@ -42,12 +60,12 @@ const MOBILE_MORE = [
   { href: "/receive", label: "Receive", icon: ArrowDownLeft },
   { href: "/tokens", label: "Tokens", icon: Coins },
   { href: "/escrow", label: "Escrow", icon: DollarSign },
-  { href: "/feedback", label: "Analytics", icon: BarChart2 },
   { href: "/multisig", label: "Multisig", icon: ShieldCheck },
+  { href: "/feedback", label: "Analytics", icon: BarChart2 },
 ]
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { isConnected, isInitialized, disconnect, publicKey } = useWallet()
+  const { isConnected, isInitialized, disconnect, publicKey, network } = useWallet()
   const pathname = usePathname()
   const router = useRouter()
   const [moreOpen, setMoreOpen] = useState(false)
@@ -66,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const closeMore = useCallback(() => setMoreOpen(false), [])
 
-  /* Check if current page is one of the "More" items (to highlight the More button) */
+  /* Check if current page is one of the "More" items */
   const isMoreActive = MOBILE_MORE.some((item) => item.href === pathname)
 
   if (!isInitialized) {
@@ -74,7 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex h-screen w-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
           <div className="size-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-          <p className="text-sm text-muted-foreground">Loading…</p>
+          <p className="text-sm text-muted-foreground font-mono">Connecting to Horizon node…</p>
         </div>
       </div>
     )
@@ -83,71 +101,84 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (!isConnected) return null
 
   return (
-    <div className="min-h-screen bg-background">
-      <TestnetBanner />
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       <OnboardingWizard open={wizardOpen} onOpenChange={setWizardOpen} />
 
-      <div className="mx-auto flex w-full max-w-6xl gap-0 lg:gap-8 px-4 py-4 lg:px-6 lg:py-6">
-        {/* Desktop sidebar */}
-        <aside className="hidden w-52 shrink-0 lg:flex flex-col sticky top-6 h-fit">
-          <div className="mb-7">
-            <Logo />
+      <div className="mx-auto flex w-full max-w-7xl flex-1 gap-0 lg:gap-8 px-4 py-4 lg:px-8 lg:py-6">
+        {/* Desktop Domain-Structured Sidebar */}
+        <aside className="hidden w-60 shrink-0 lg:flex flex-col sticky top-6 h-[calc(100vh-3rem)] justify-between pb-4">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between pb-2 border-b border-border/40">
+              <Logo />
+            </div>
+
+            <nav className="space-y-5" aria-label="Main Navigation">
+              {NAV_SECTIONS.map((section) => (
+                <div key={section.title} className="space-y-1">
+                  <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+                    {section.title}
+                  </p>
+                  <div className="space-y-0.5">
+                    {section.items.map((item) => {
+                      const active = pathname === item.href
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={cn(
+                            "flex items-center gap-3 rounded-xl px-3 py-2 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                            active
+                              ? "bg-primary/10 text-primary border border-primary/20 shadow-sm font-semibold"
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/50 border border-transparent",
+                          )}
+                        >
+                          <item.icon className="size-4 shrink-0" />
+                          <span>{item.label}</span>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </nav>
           </div>
 
-          <nav className="flex flex-col gap-1">
-            {NAV.map((item) => {
-              const active = pathname === item.href
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
-                    active
-                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_12px_rgba(6,182,212,0.1)]"
-                      : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 border border-transparent",
-                  )}
-                >
-                  <item.icon className="size-4" />
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-
-          <div className="mt-6 pt-4 border-t border-slate-800 space-y-2.5">
+          {/* Sidebar Account & Session Management Footer */}
+          <div className="pt-4 border-t border-border/50 space-y-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setWizardOpen(true)}
-              className="w-full justify-start gap-2 text-xs font-semibold border-cyan-500/25 text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300 transition-all"
+              className="w-full justify-start gap-2 text-xs font-medium border-primary/20 text-primary hover:bg-primary/10 transition-all focus-visible:ring-2 focus-visible:ring-primary"
             >
               <Sparkles className="size-3.5" />
               Onboarding Guide
             </Button>
             {publicKey && (
-              <div className="flex items-center gap-2 px-2 py-2 rounded-lg bg-slate-900/60 border border-slate-800">
-                <div className="size-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
-                <span className="font-mono text-[11px] text-slate-400 truncate">{truncate(publicKey, 4, 4)}</span>
-                <CopyButton value={publicKey} label="Copied" className="size-5 ml-auto" />
+              <div className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl bg-muted/40 border border-border/60">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span className="font-mono text-[11px] text-foreground truncate">{truncate(publicKey, 4, 4)}</span>
+                </div>
+                <CopyButton value={publicKey} label="Address copied" className="size-6 shrink-0" />
               </div>
             )}
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start gap-2 text-slate-500 hover:text-slate-200 hover:bg-slate-800/50"
+              className="w-full justify-start gap-2 text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-destructive"
               onClick={disconnect}
             >
-              <LogOut className="size-4" />
-              Disconnect
+              <LogOut className="size-3.5" />
+              Disconnect Wallet
             </Button>
           </div>
         </aside>
 
-        {/* Main content */}
-        <div className="flex w-full min-w-0 flex-col">
+        {/* Main Application Cockpit Frame */}
+        <div className="flex w-full min-w-0 flex-1 flex-col">
           {/* Mobile header */}
-          <header className="mb-4 flex items-center justify-between lg:hidden">
+          <header className="mb-4 flex items-center justify-between lg:hidden border-b border-border/40 pb-3">
             <Logo />
             <div className="flex items-center gap-2">
               <Button
@@ -155,41 +186,51 @@ export function AppShell({ children }: { children: ReactNode }) {
                 size="icon"
                 onClick={() => setWizardOpen(true)}
                 title="Onboarding Guide"
-                className="size-8 text-cyan-400 border-cyan-500/25 hover:bg-cyan-500/10"
+                className="size-8 text-primary border-primary/25 hover:bg-primary/10"
               >
                 <Sparkles className="size-4" />
               </Button>
               <NetworkSwitcher />
               <ThemeToggle />
-              <Button variant="ghost" size="icon" aria-label="Disconnect" onClick={disconnect} className="text-slate-500 hover:text-slate-200">
+              <Button variant="ghost" size="icon" aria-label="Disconnect" onClick={disconnect} className="text-muted-foreground hover:text-destructive">
                 <LogOut className="size-4" />
               </Button>
             </div>
           </header>
 
-          {/* Desktop top bar */}
-          <div className="mb-6 hidden items-center justify-end gap-3 lg:flex">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setWizardOpen(true)}
-              className="gap-1.5 text-xs font-semibold border-cyan-500/25 text-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-300"
-            >
-              <Sparkles className="size-3.5" />
-              Onboarding Guide
-            </Button>
-            <NetworkSwitcher />
-            <ThemeToggle />
+          {/* Desktop Top Status Ribbon */}
+          <div className="mb-6 hidden items-center justify-between border-b border-border/40 pb-3 lg:flex">
+            <div className="flex items-center gap-2.5 text-xs text-muted-foreground">
+              <span className="font-mono uppercase font-semibold text-foreground/80 tracking-wide">Stellar Horizon</span>
+              <span className="text-muted-foreground/40">•</span>
+              <span className="flex items-center gap-1.5 text-emerald-500 font-mono text-[11px]">
+                <span className="size-1.5 rounded-full bg-emerald-500" />
+                Live SSE Synced
+              </span>
+              {network === "testnet" && (
+                <>
+                  <span className="text-muted-foreground/40">•</span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 font-mono text-[10px] font-semibold">
+                    <span className="size-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    Testnet Sandbox
+                  </span>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <NetworkSwitcher />
+              <ThemeToggle />
+            </div>
           </div>
 
-          <main className="pb-20 lg:pb-6">{children}</main>
+          <main className="flex-1 pb-24 lg:pb-8 focus:outline-none" tabIndex={-1}>{children}</main>
         </div>
       </div>
 
       {/* Mobile "More" overlay backdrop */}
       {moreOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md lg:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-md lg:hidden animate-in fade-in duration-200"
           onClick={closeMore}
         />
       )}
@@ -197,26 +238,26 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Mobile "More" slide-up panel */}
       <div
         className={cn(
-          "fixed inset-x-0 bottom-[52px] z-50 lg:hidden transition-all duration-300 ease-out",
+          "fixed inset-x-0 bottom-[54px] z-50 lg:hidden transition-all duration-300 ease-out",
           moreOpen
             ? "translate-y-0 opacity-100 pointer-events-auto"
             : "translate-y-4 opacity-0 pointer-events-none",
         )}
       >
-        <div className="mx-3 mb-2 rounded-2xl border border-slate-700/80 bg-slate-900/95 backdrop-blur-2xl shadow-[0_-8px_30px_rgba(0,0,0,0.4)] overflow-hidden">
+        <div className="mx-3 mb-2 rounded-2xl border border-border bg-card/95 backdrop-blur-2xl shadow-2xl overflow-hidden">
           {/* Panel header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800/60">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">More</span>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border/60">
+            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest">More Services</span>
             <button
               onClick={closeMore}
-              className="size-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-400 transition-colors"
+              className="size-6 flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground transition-colors"
             >
               <X className="size-3.5" />
             </button>
           </div>
 
           {/* Panel grid */}
-          <div className="grid grid-cols-3 gap-1.5 p-3">
+          <div className="grid grid-cols-3 gap-2 p-3">
             {MOBILE_MORE.map((item) => {
               const active = pathname === item.href
               return (
@@ -227,8 +268,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                   className={cn(
                     "flex flex-col items-center gap-1.5 rounded-xl py-3 px-2 text-[11px] font-medium transition-all",
                     active
-                      ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
-                      : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 border border-transparent",
+                      ? "bg-primary/10 text-primary border border-primary/20 font-semibold"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted border border-transparent",
                   )}
                 >
                   <item.icon className="size-5" />
@@ -241,7 +282,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-800 bg-slate-950/95 backdrop-blur-xl lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-border/80 bg-background/95 backdrop-blur-xl lg:hidden">
         <div className="mx-auto flex max-w-md items-center justify-around px-2 py-1">
           {MOBILE_PRIMARY.map((item) => {
             const active = pathname === item.href
@@ -250,11 +291,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-col items-center gap-0.5 py-1.5 px-2 text-[10px] font-medium transition-all",
-                  active ? "text-cyan-400" : "text-slate-500 hover:text-slate-200",
+                  "flex flex-col items-center gap-0.5 py-1.5 px-2 text-[10px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-primary",
+                  active ? "text-primary font-semibold" : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                <item.icon className={cn("size-5", active && "drop-shadow-[0_0_6px_rgba(6,182,212,0.5)]")} />
+                <item.icon className={cn("size-5", active && "drop-shadow-sm")} />
                 {item.label}
               </Link>
             )
@@ -263,8 +304,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <button
             onClick={() => setMoreOpen((prev) => !prev)}
             className={cn(
-              "flex flex-col items-center gap-0.5 py-1.5 px-2 text-[10px] font-medium transition-all",
-              moreOpen || isMoreActive ? "text-cyan-400" : "text-slate-500 hover:text-slate-200",
+              "flex flex-col items-center gap-0.5 py-1.5 px-2 text-[10px] font-medium transition-all focus-visible:ring-2 focus-visible:ring-primary",
+              moreOpen || isMoreActive ? "text-primary font-semibold" : "text-muted-foreground hover:text-foreground",
             )}
           >
             <MoreHorizontal className="size-5" />
@@ -272,17 +313,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
         </div>
       </nav>
-    </div>
-  )
-}
-
-export function TestnetBanner() {
-  const { network } = useWallet()
-  if (network !== "testnet") return null
-  return (
-    <div className="flex items-center justify-center gap-2 bg-amber-500/5 border-b border-amber-500/15 px-4 py-1.5 text-center text-[11px] font-semibold text-amber-400/80 tracking-wide">
-      <span className="size-1.5 rounded-full bg-amber-400 animate-pulse" />
-      Stellar Testnet — funds have no real value
     </div>
   )
 }

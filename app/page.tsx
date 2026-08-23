@@ -25,12 +25,22 @@ export default function Page() {
     return (
       <AppShell>
         <div className="space-y-6">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-balance">Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Overview of your Stellar wallet</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">Financial Cockpit</h1>
+              <p className="text-xs text-muted-foreground font-mono">Portfolio Overview • Stellar Horizon Node</p>
+            </div>
           </div>
-          <BalanceCard />
-          <RecentTransactions />
+          
+          {/* Asymmetric 7 / 5 Cockpit Grid */}
+          <div className="grid gap-6 lg:grid-cols-12 items-start">
+            <div className="lg:col-span-7">
+              <BalanceCard />
+            </div>
+            <div className="lg:col-span-5">
+              <RecentTransactions />
+            </div>
+          </div>
         </div>
       </AppShell>
     )

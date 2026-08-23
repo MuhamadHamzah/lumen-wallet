@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       const { hash } = await submitSignedTransaction({ signedXdr, network })
       try {
         const tx = TransactionBuilder.fromXDR(signedXdr, getNetworkPassphrase(network))
-        const senderPubKey = tx.source
+        const senderPubKey = (tx as any).source || (tx as any).feeSource || ""
         await logInteraction(senderPubKey, "Send XLM", hash)
       } catch (err) {
         console.error("Failed to log interaction for signed XDR payment:", err)

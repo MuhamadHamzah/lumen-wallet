@@ -8,8 +8,8 @@ export default function HistoryPage() {
     <AppShell>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-balance">Transaction history</h1>
-          <p className="text-sm text-muted-foreground">All payments sent and received</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Explorer History</h1>
+          <p className="text-xs text-muted-foreground font-mono">Horizon Ledger Event Ingestion &amp; Transaction Hashes</p>
         </div>
         <HistoryList />
       </div>

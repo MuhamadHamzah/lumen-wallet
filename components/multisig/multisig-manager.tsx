@@ -86,7 +86,7 @@ export function MultisigManager() {
       // 1. Fetch account details
       const details = await getAccountDetails(publicKey, network)
       if (!details) {
-        // Account doesn't exist on this network — handled by the UI fallback
+        // Account doesn't exist on this network: handled by the UI fallback
         setAccountDetails(null)
         setProposals([])
         return
@@ -162,7 +162,7 @@ export function MultisigManager() {
       builder.addOperation(
         Operation.setOptions({
           signer: {
-            pubKey: newSignerKey.trim(),
+            ed25519PublicKey: newSignerKey.trim(),
             weight: weightNum
           }
         })
@@ -478,8 +478,7 @@ export function MultisigManager() {
         network,
         targetAccount: publicKey,
         targetWeight: requiredThreshold,
-        thresholdType: "medium",
-        currentWeight: userWeight // Explicitly set creator's signer weight
+        thresholdType: "medium"
       })
 
       toast.success("Multisig transaction proposal created!")
@@ -637,111 +636,111 @@ export function MultisigManager() {
   return (
     <div className="space-y-6">
       {/* Top Banner / Actions */}
-      <div className="flex items-center justify-between border-b border-border/40 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/40 pb-4">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
-            <ShieldCheck className="h-5 w-5" />
+          <div className="size-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+            <ShieldCheck className="size-5" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">Multisig Safe</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">MultiSig Vault</h2>
             <p className="text-xs text-muted-foreground font-mono">
               Status: {isMultisigConfigured ? "Multi-Signature Configured" : "Standard Single Key"}
             </p>
           </div>
         </div>
-        <Button size="icon" variant="outline" onClick={handleRefresh} disabled={refreshing}>
-          <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />
+        <Button size="icon" variant="outline" className="rounded-xl size-9" onClick={handleRefresh} disabled={refreshing}>
+          <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
         </Button>
       </div>
 
       {/* Pill Navigation Tabs */}
       <div className="w-full overflow-x-auto no-scrollbar pb-1">
-        <div className="flex gap-2 p-1 bg-muted/30 border border-border/40 rounded-xl w-fit min-w-max">
+        <div className="flex gap-1.5 p-1 bg-muted/40 border border-border/60 rounded-2xl w-fit min-w-max">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
               activeTab === "overview" 
-                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                ? "bg-card text-foreground shadow-sm border border-border/60" 
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Users className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-            Overview
+            <Users className="inline size-3.5 mr-1.5 -mt-0.5" />
+            Signer Weights
           </button>
           <button
             onClick={() => setActiveTab("proposals")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all relative ${
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all relative ${
               activeTab === "proposals" 
-                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                ? "bg-card text-foreground shadow-sm border border-border/60" 
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <FileText className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-            Proposals
+            <FileText className="inline size-3.5 mr-1.5 -mt-0.5" />
+            Signature Queue
             {proposals.filter(p => p.status === "pending").length > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+              <span className="ml-1.5 inline-flex items-center justify-center px-1.5 py-0.2 rounded-full bg-primary text-[10px] font-bold text-primary-foreground font-mono">
                 {proposals.filter(p => p.status === "pending").length}
               </span>
             )}
           </button>
           <button
             onClick={() => setActiveTab("create")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
               activeTab === "create" 
-                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                ? "bg-card text-foreground shadow-sm border border-border/60" 
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Play className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-            Create Tx
+            <Play className="inline size-3.5 mr-1.5 -mt-0.5" />
+            Create Proposal
           </button>
           <button
             onClick={() => setActiveTab("setup")}
-            className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all ${
+            className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
               activeTab === "setup" 
-                ? "bg-card text-foreground shadow-sm border border-border/50" 
+                ? "bg-card text-foreground shadow-sm border border-border/60" 
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Lock className="inline h-4 w-4 mr-1.5 -mt-0.5" />
-            Setup Safe
+            <Lock className="inline size-3.5 mr-1.5 -mt-0.5" />
+            Configure Quorum
           </button>
         </div>
       </div>
 
       {/* Overview Tab Content */}
       {activeTab === "overview" && (
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Signers & Thresholds Visualizer */}
-          <Card className="md:col-span-2 p-6 border-border space-y-6">
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          {/* Signers & Thresholds Visualizer (8 Cols) */}
+          <div className="lg:col-span-8 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-xl shadow-sm space-y-6">
             <div>
-              <h3 className="text-lg font-bold">Signers &amp; Key Weights</h3>
-              <p className="text-sm text-muted-foreground">Accounts authorized to sign transactions from this wallet.</p>
+              <h3 className="text-base font-bold uppercase tracking-wider text-foreground">Signers &amp; Key Weights</h3>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5">Accounts authorized to co-sign transactions from this vault.</p>
             </div>
             
-            <div className="space-y-4">
+            <div className="space-y-3">
               {accountDetails.signers.map((signer, index) => (
-                <div key={index} className="flex items-center justify-between border border-border/40 bg-muted/20 p-3.5 rounded-xl">
+                <div key={index} className="flex items-center justify-between border border-border/50 bg-muted/30 p-3.5 rounded-2xl">
                   <div className="space-y-1 min-w-0">
-                    <span className="text-xs font-mono font-bold tracking-tight text-foreground/80 break-all">
+                    <span className="text-xs font-mono font-medium text-foreground tracking-tight break-all">
                       {signer.key}
                     </span>
                     <div className="flex gap-2">
                       {signer.key === publicKey && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-primary/15 text-primary rounded">
-                          You
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-primary/15 text-primary border border-primary/25 rounded-full font-mono">
+                          Active User
                         </span>
                       )}
                       {index === 0 && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-muted-foreground/15 text-muted-foreground rounded">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-muted text-muted-foreground border border-border rounded-full font-mono">
                           Master Key
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="text-right shrink-0 ml-4">
-                    <div className="text-sm font-bold">{signer.weight}</div>
-                    <div className="text-[10px] text-muted-foreground font-semibold">Weight</div>
+                    <div className="text-base font-mono font-extrabold text-primary">{signer.weight}</div>
+                    <div className="text-[9px] text-muted-foreground font-mono uppercase tracking-wider">Weight</div>
                   </div>
                 </div>
               ))}
@@ -758,32 +757,32 @@ export function MultisigManager() {
               </div>
               <div className="p-3 bg-muted/40 rounded-xl border border-border/20">
                 <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Medium</div>
-                <div className="text-xl font-extrabold text-primary">{accountDetails.thresholds.med_threshold}</div>
+                <div className="text-xl font-extrabold text-primary font-mono">{accountDetails.thresholds.med_threshold}</div>
                 <div className="text-[10px] text-muted-foreground mt-1">Payments / Swaps</div>
               </div>
-              <div className="p-3 bg-muted/40 rounded-xl border border-border/20">
+              <div className="p-3 bg-muted/40 rounded-2xl border border-border/40">
                 <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">High</div>
-                <div className="text-xl font-extrabold">{accountDetails.thresholds.high_threshold}</div>
+                <div className="text-xl font-extrabold font-mono">{accountDetails.thresholds.high_threshold}</div>
                 <div className="text-[10px] text-muted-foreground mt-1">Signer / Threshold Settings</div>
               </div>
             </div>
-          </Card>
+          </div>
 
-          {/* Quick Info Sidebar */}
-          <Card className="p-6 border-border space-y-4 h-fit">
-            <h3 className="text-base font-bold">Safe Summary</h3>
-            <div className="space-y-3.5 text-sm">
+          {/* Quick Info Sidebar (4 Cols) */}
+          <div className="lg:col-span-4 rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-xl shadow-sm space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Safe Summary</h3>
+            <div className="space-y-3.5 text-xs">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Signers Count:</span>
-                <span className="font-semibold">{accountDetails.signers.length}</span>
+                <span className="font-semibold font-mono">{accountDetails.signers.length}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Your Weight:</span>
-                <span className="font-semibold text-primary">{userWeight}</span>
+                <span className="font-semibold font-mono text-primary">{userWeight}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Signatures Required (Med):</span>
-                <span className="font-semibold">
+                <span className="text-muted-foreground">Required Weight (Med):</span>
+                <span className="font-semibold font-mono">
                   {accountDetails.thresholds.med_threshold} weight
                 </span>
               </div>
@@ -792,10 +791,10 @@ export function MultisigManager() {
 
               {/* Progress bar indicating authorization weight */}
               {isMultisigConfigured && (
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex justify-between text-xs font-semibold">
-                    <span>Your Weight Capacity:</span>
-                    <span>{Math.round((userWeight / accountDetails.thresholds.med_threshold) * 100)}%</span>
+                    <span>Your Execution Capacity:</span>
+                    <span className="font-mono">{Math.round((userWeight / accountDetails.thresholds.med_threshold) * 100)}%</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div 
@@ -805,54 +804,54 @@ export function MultisigManager() {
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-normal mt-1">
                     {userWeight >= accountDetails.thresholds.med_threshold 
-                      ? "✨ Your signature is heavy enough to execute transactions alone." 
-                      : "⚠️ Transactions will require signatures from other signers to execute."}
+                      ? "✨ Your signature is sufficient to broadcast medium-risk transactions alone." 
+                      : "⚠️ Transactions will require co-signatures from other authorized signers."}
                   </p>
                 </div>
               )}
             </div>
-          </Card>
+          </div>
         </div>
       )}
 
       {/* Active Proposals Tab */}
       {activeTab === "proposals" && (
-        <Card className="p-6 border-border space-y-6">
-          <div>
-            <h3 className="text-lg font-bold">Multisig Proposals</h3>
-            <p className="text-sm text-muted-foreground">Manage ongoing transactions requiring signature authorization.</p>
+        <div className="rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-7 backdrop-blur-xl shadow-sm space-y-6">
+          <div className="pb-3 border-b border-border/40">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Signature Authorization Queue</h3>
+            <p className="text-xs text-muted-foreground font-mono mt-0.5">Manage ongoing transactions requiring quorum authorization.</p>
           </div>
 
           {proposals.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <FileText className="h-10 w-10 mx-auto opacity-30 mb-3" />
-              <p className="text-sm font-medium">No active proposals found for this account.</p>
+            <div className="text-center py-14 text-muted-foreground space-y-2">
+              <FileText className="size-8 mx-auto opacity-30" />
+              <p className="text-xs font-mono">No active signature proposals found for this account.</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {proposals.map((proposal) => {
                 const hasSigned = proposal.signersWhoSigned.includes(publicKey || "")
                 const canExecute = proposal.currentWeight >= proposal.targetWeight
                 
                 return (
-                  <Card key={proposal.id} className="p-5 border-border/60 bg-muted/10 space-y-4 hover:border-border/80 transition-all duration-200">
+                  <div key={proposal.id} className="p-5 rounded-2xl border border-border/60 bg-muted/20 space-y-4 hover:border-primary/40 transition-colors">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div className="space-y-1">
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded font-mono ${
                           proposal.status === "executed" 
-                            ? "bg-success/15 text-success" 
+                            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20" 
                             : proposal.status === "failed" 
-                            ? "bg-destructive/15 text-destructive" 
-                            : "bg-amber-500/15 text-amber-500"
+                            ? "bg-destructive/15 text-destructive border border-destructive/20" 
+                            : "bg-amber-500/15 text-amber-400 border border-amber-500/20"
                         }`}>
                           {proposal.status}
                         </span>
-                        <h4 className="text-base font-bold">{proposal.title}</h4>
+                        <h4 className="text-sm font-bold text-foreground">{proposal.title}</h4>
                         <p className="text-xs text-muted-foreground leading-normal">{proposal.description}</p>
                       </div>
                       
                       <div className="text-right shrink-0">
-                        <div className="text-sm font-bold text-foreground/80">
+                        <div className="text-xs font-mono font-bold text-foreground">
                           Weight: {proposal.currentWeight} / {proposal.targetWeight}
                         </div>
                         <div className="w-24 bg-muted rounded-full h-1.5 mt-1 ml-auto">
@@ -868,7 +867,7 @@ export function MultisigManager() {
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
                       <div className="space-y-1 font-medium text-muted-foreground leading-normal">
-                        <div>Creator: <span className="font-mono text-foreground/70">{proposal.creator.slice(0, 8)}...</span></div>
+                        <div>Creator: <span className="font-mono text-foreground/80">{proposal.creator.slice(0, 8)}...</span></div>
                         <div>Signed by: {proposal.signersWhoSigned.map(s => s.slice(0, 5) + "...").join(", ")}</div>
                         {proposal.txHash && (
                           <div className="break-all">
@@ -890,21 +889,21 @@ export function MultisigManager() {
                           <Button 
                             size="sm" 
                             variant={hasSigned ? "secondary" : "outline"} 
-                            disabled={hasSigned || actionLoading}
+                            disabled={hasSigned || actionLoading} 
                             onClick={() => handleSignProposal(proposal)}
-                            className="h-9 font-semibold"
+                            className="h-8 rounded-xl text-xs font-semibold"
                           >
                             {hasSigned ? (
                               <>
-                                <Check className="h-4.5 w-4.5 mr-1" />
+                                <Check className="size-3.5 mr-1" />
                                 Signed
                               </>
                             ) : actionLoading ? (
                               "Signing..."
                             ) : (
                               <>
-                                <Key className="h-4 w-4 mr-1" />
-                                Sign
+                                <Key className="size-3.5 mr-1" />
+                                Sign Proposal
                               </>
                             )}
                           </Button>
@@ -912,62 +911,69 @@ export function MultisigManager() {
                             size="sm" 
                             disabled={!canExecute || actionLoading} 
                             onClick={() => handleExecuteProposal(proposal)}
-                            className="h-9 font-semibold"
+                            className="h-8 rounded-xl text-xs font-semibold shadow-sm"
                           >
                             {actionLoading ? "Executing..." : (
                               <>
-                                <Play className="h-4 w-4 mr-1" />
-                                Execute
+                                <Play className="size-3.5 mr-1" />
+                                Execute Quorum
                               </>
                             )}
                           </Button>
                         </div>
                       )}
                     </div>
-                  </Card>
+                  </div>
                 )
               })}
             </div>
           )}
-        </Card>
+        </div>
       )}
 
       {/* Create Proposal Tab */}
       {activeTab === "create" && (
-        <Card className="p-6 border-border space-y-6">
-          <div>
-            <h3 className="text-lg font-bold">Propose Payment Transaction</h3>
-            <p className="text-sm text-muted-foreground">Draft a new payment from this multisig account to request signer authorizations.</p>
+        <div className="rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-7 backdrop-blur-xl shadow-sm space-y-5">
+          <div className="pb-3 border-b border-border/40">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Propose MultiSig Payment</h3>
+            <p className="text-xs text-muted-foreground font-mono mt-0.5">Draft a transaction to initiate signature collection from authorized keys.</p>
           </div>
 
           <form onSubmit={handleCreateProposal} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="propTitle">Proposal Title *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="propTitle" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Proposal Title *
+                </Label>
                 <Input 
                   id="propTitle"
-                  placeholder="e.g. Send 10 XLM to developer"
+                  placeholder="e.g. Disburse 50 XLM to core dev"
                   value={proposalTitle}
                   onChange={(e) => setProposalTitle(e.target.value)}
+                  className="rounded-xl h-10 text-xs"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="propDest">Recipient Public Key *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="propDest" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Recipient Public Key *
+                </Label>
                 <Input 
                   id="propDest"
                   placeholder="starts with G..."
                   value={proposalDest}
                   onChange={(e) => setProposalDest(e.target.value.trim())}
-                  className="font-mono text-sm"
+                  className="font-mono text-xs rounded-xl h-10"
                   required
                 />
               </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="propAmount">Amount (XLM) *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="propAmount" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Amount (XLM) *
+                </Label>
                 <Input 
                   id="propAmount"
                   type="number"
@@ -976,70 +982,81 @@ export function MultisigManager() {
                   placeholder="0.0"
                   value={proposalAmount}
                   onChange={(e) => setProposalAmount(e.target.value)}
+                  className="font-mono text-xs rounded-xl h-10"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="propMemo">Memo (Optional)</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="propMemo" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Memo (Optional)
+                </Label>
                 <Input 
                   id="propMemo"
                   placeholder="max 28 characters"
                   value={proposalMemo}
                   onChange={(e) => setProposalMemo(e.target.value)}
                   maxLength={28}
+                  className="rounded-xl h-10 text-xs"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="propDesc">Reason / Description</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="propDesc" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Reason / Description
+              </Label>
               <Textarea 
                 id="propDesc"
                 placeholder="Explain the purpose of this transaction..."
                 value={proposalDesc}
                 onChange={(e) => setProposalDesc(e.target.value)}
+                className="text-xs rounded-xl"
                 rows={3}
               />
             </div>
 
-            <Button type="submit" className="w-full h-11 font-semibold" disabled={actionLoading}>
+            <Button type="submit" className="w-full h-11 rounded-xl font-semibold text-xs shadow-md focus-visible:ring-2 focus-visible:ring-primary" disabled={actionLoading}>
               {actionLoading ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <Loader2 className="size-4 animate-spin mr-2" />
                   Proposing...
                 </>
               ) : (
-                "Propose & Sign"
+                "Propose & Sign Transaction"
               )}
             </Button>
           </form>
-        </Card>
+        </div>
       )}
 
       {/* Setup Safe Tab */}
       {activeTab === "setup" && (
         <div className="grid gap-6 md:grid-cols-2">
           {/* Add Signer Form */}
-          <Card className="p-6 border-border space-y-4">
+          <div className="rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-xl shadow-sm space-y-4">
             <div>
-              <h3 className="text-base font-bold">Add / Edit Signer</h3>
-              <p className="text-xs text-muted-foreground">Add a new key or change the weight of an existing signer.</p>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Add / Edit Signer</h3>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5">Authorize a new key or adjust existing signing weight.</p>
             </div>
             
-            <form onSubmit={handleAddSigner} className="space-y-4">
+            <form onSubmit={handleAddSigner} className="space-y-3.5">
               <div className="space-y-1.5">
-                <Label htmlFor="signerKey">Signer Public Key</Label>
+                <Label htmlFor="signerKey" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Signer Public Key
+                </Label>
                 <Input 
                   id="signerKey"
                   placeholder="G..."
                   value={newSignerKey}
                   onChange={(e) => setNewSignerKey(e.target.value.trim())}
-                  className="font-mono text-sm"
+                  className="font-mono text-xs rounded-xl h-10"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="signerWeight">Signer Weight (0-255)</Label>
+                <Label htmlFor="signerWeight" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Signer Weight (0-255)
+                </Label>
                 <Input 
                   id="signerWeight"
                   type="number"
@@ -1047,26 +1064,27 @@ export function MultisigManager() {
                   max="255"
                   value={newSignerWeight}
                   onChange={(e) => setNewSignerWeight(e.target.value)}
+                  className="font-mono text-xs rounded-xl h-10"
                   required
                 />
               </div>
-              <Button type="submit" className="w-full h-10 font-semibold" disabled={actionLoading}>
-                {actionLoading ? "Processing..." : "Add / Edit Signer"}
+              <Button type="submit" className="w-full h-10 rounded-xl font-semibold text-xs shadow-md" disabled={actionLoading}>
+                {actionLoading ? "Processing..." : "Commit Signer Update"}
               </Button>
             </form>
-          </Card>
+          </div>
 
           {/* Update Thresholds Form */}
-          <Card className="p-6 border-border space-y-4">
+          <div className="rounded-3xl border border-border/80 bg-card/60 p-6 backdrop-blur-xl shadow-sm space-y-4">
             <div>
-              <h3 className="text-base font-bold">Set Threshold Requirements</h3>
-              <p className="text-xs text-muted-foreground">Adjust the total weight required to authorize different operations.</p>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Configure Quorum Thresholds</h3>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5">Adjust required weights for low, medium, and high security tiers.</p>
             </div>
 
-            <form onSubmit={handleUpdateThresholds} className="space-y-4">
+            <form onSubmit={handleUpdateThresholds} className="space-y-3.5">
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1.5">
-                  <Label htmlFor="lowThresh">Low</Label>
+                  <Label htmlFor="lowThresh" className="text-xs font-semibold text-muted-foreground">Low</Label>
                   <Input 
                     id="lowThresh"
                     type="number"
@@ -1074,11 +1092,12 @@ export function MultisigManager() {
                     max="255"
                     value={lowThreshold}
                     onChange={(e) => setLowThreshold(e.target.value)}
+                    className="font-mono text-xs rounded-xl h-10"
                     required
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="medThresh">Medium</Label>
+                  <Label htmlFor="medThresh" className="text-xs font-semibold text-muted-foreground">Medium</Label>
                   <Input 
                     id="medThresh"
                     type="number"
@@ -1086,11 +1105,12 @@ export function MultisigManager() {
                     max="255"
                     value={medThreshold}
                     onChange={(e) => setMedThreshold(e.target.value)}
+                    className="font-mono text-xs rounded-xl h-10"
                     required
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="highThresh">High</Label>
+                  <Label htmlFor="highThresh" className="text-xs font-semibold text-muted-foreground">High</Label>
                   <Input 
                     id="highThresh"
                     type="number"
@@ -1098,15 +1118,16 @@ export function MultisigManager() {
                     max="255"
                     value={highThreshold}
                     onChange={(e) => setHighThreshold(e.target.value)}
+                    className="font-mono text-xs rounded-xl h-10"
                     required
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full h-10 font-semibold" disabled={actionLoading}>
-                {actionLoading ? "Processing..." : "Update Thresholds"}
+              <Button type="submit" className="w-full h-10 rounded-xl font-semibold text-xs shadow-md" disabled={actionLoading}>
+                {actionLoading ? "Processing..." : "Update Quorum Thresholds"}
               </Button>
             </form>
-          </Card>
+          </div>
         </div>
       )}
     </div>

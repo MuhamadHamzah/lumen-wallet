@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
   try {
     const { decimals } = await getTokenMetadata(contract, network)
     const baseUnits = toBaseUnits(amount, decimals)
-    if (baseUnits <= 0n) {
+    if (baseUnits <= BigInt(0)) {
       return NextResponse.json({ error: "Amount is too small for this token's precision." }, { status: 400 })
     }
     const { hash } = await tokenMint({ secret, contractId: contract, to, amount: baseUnits, network })

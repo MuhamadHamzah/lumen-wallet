@@ -37,329 +37,156 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
   const isWallet = mode === "wallet"
 
   return (
-    <div className="relative overflow-hidden pt-4 pb-16 sm:pt-8 sm:pb-24 lg:pt-10">
+    <div className="relative overflow-hidden pt-6 pb-16 sm:pt-10 sm:pb-24 lg:pt-12">
       <style dangerouslySetInnerHTML={{ __html: coolAnimationStyles }} />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* ========================================================= */}
-        {/* PAGE 1: LUMEN WALLET (Clean Split Hero) */}
+        {/* PAGE 1: LUMEN WALLET (Majestic Editorial Masthead) */}
         {/* ========================================================= */}
         {isWallet ? (
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-            {/* Left column */}
-            <div className="space-y-8">
-              <FadeIn delay={100}>
-                <div className="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-semibold text-blue-400 backdrop-blur-md shadow-lg shadow-blue-500/10">
-                  <span className="relative flex h-2 w-2 mr-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
-                  </span>
-                  Powered by Stellar Network
+          <div className="max-w-4xl mx-auto text-center space-y-8 py-4 sm:py-8">
+            {/* Headline & Subtitle */}
+            <FadeIn delay={200}>
+              <div className="space-y-5">
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-balance text-foreground">
+                  Non-custodial{" "}
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+                    Stellar payments
+                  </span>{" "}
+                  engineered for speed.
+                </h1>
+                <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto text-balance">
+                  Manage XLM, USDC, and custom Soroban tokens with zero intermediary custody. Direct ledger streaming via Horizon SSE and instant signing with StellarWalletsKit.
+                </p>
+              </div>
+            </FadeIn>
+
+            {/* Protocol Spec Highlights Grid */}
+            <FadeIn delay={450}>
+              <div className="pt-10 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-center">
+                <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Ledger Finality</span>
+                  <p className="text-sm font-bold font-mono text-foreground">~3.8s Instant</p>
                 </div>
-              </FadeIn>
-
-              <FadeIn delay={250}>
-                <div className="space-y-4">
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] max-w-sm sm:max-w-md">
-                    Your <br />
-                    Gateway to <br />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-400 inline-block w-fit mt-2">
-                      Stellar <br /> Payments
-                    </span>
-                  </h1>
-                  <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-lg">
-                    Send, receive, and manage XLM with ease. Connect your wallet securely using Freighter, StellarWalletsKit, or custom keypairs.
-                  </p>
+                <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Gas Execution</span>
+                  <p className="text-sm font-bold font-mono text-emerald-400">&lt; 0.00001 XLM</p>
                 </div>
-              </FadeIn>
-
-              <FadeIn delay={400}>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <Button
-                    onClick={onConnectClick}
-                    size="lg"
-                    className="group h-13 rounded-xl px-8 text-base font-semibold border-0 shadow-xl shadow-blue-500/25 transition-all duration-300 hover:scale-105 text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400"
-                  >
-                    Connect Wallet
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="h-13 rounded-xl px-8 text-base font-medium border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-blue-500/30"
-                  >
-                    Learn More
-                  </Button>
+                <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Key Custody</span>
+                  <p className="text-sm font-bold font-mono text-foreground">100% Non-Custodial</p>
                 </div>
-              </FadeIn>
-            </div>
-
-            {/* Right column - Personal Wallet Glass Card */}
-            <FadeIn delay={300} direction="left">
-              <div className="relative">
-                <div className="absolute -inset-4 blur-3xl rounded-3xl bg-gradient-to-br from-blue-500/25 via-cyan-500/20 to-indigo-500/20 pointer-events-none" />
-                
-                {/* Transparent Glass Outer Container */}
-                <div className="relative rounded-3xl border border-white/[0.08] bg-card/40 p-6 shadow-xl backdrop-blur-sm transition-all hover:border-blue-500/25">
-                  {/* Header Mock */}
-                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.06]">
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08]">
-                      <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-xs font-mono font-medium text-foreground">GCBFQ3...SCDVY6</span>
-                    </div>
-                    <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                      Stellar Network
-                    </span>
-                  </div>
-
-                  {/* Balance Card + Animated Live Chart Wave */}
-                  <div className="relative overflow-hidden rounded-2xl border border-blue-500/20 p-5 mb-6 bg-blue-500/[0.05] backdrop-blur-sm">
-                    
-                    {/* Live SVG Animated Wave Chart */}
-                    <div className="absolute bottom-0 inset-x-0 h-16 pointer-events-none opacity-40">
-                      <svg className="w-full h-full" viewBox="0 0 300 60" preserveAspectRatio="none">
-                        <path
-                          d="M0,45 C50,20 100,50 150,15 C200,35 250,5 300,25"
-                          fill="none"
-                          stroke="#38bdf8"
-                          strokeWidth="2.5"
-                          className="animate-chart-line"
-                        />
-                      </svg>
-                    </div>
-
-                    <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase flex items-center justify-between">
-                      <span>Estimated Balance</span>
-                      <div className="size-6 rounded-lg bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-400 shadow-sm shadow-blue-500/20">
-                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="12" r="9.5" />
-                          <circle cx="12" cy="12" r="3" fill="currentColor" />
-                          <line x1="12" y1="2.5" x2="12" y2="9" />
-                          <line x1="12" y1="15" x2="12" y2="21.5" />
-                          <line x1="2.5" y1="12" x2="9" y2="12" />
-                          <line x1="15" y1="12" x2="21.5" y2="12" />
-                          <line x1="5.28" y1="5.28" x2="9.88" y2="9.88" />
-                          <line x1="14.12" y1="14.12" x2="18.72" y2="18.72" />
-                          <line x1="5.28" y1="18.72" x2="9.88" y2="14.12" />
-                          <line x1="14.12" y1="9.88" x2="18.72" y2="5.28" />
-                        </svg>
-                      </div>
-                    </span>
-                    <div className="text-3xl font-extrabold font-mono tracking-tight mt-1 flex items-baseline gap-1 text-foreground">
-                      12,450.85 <span className="text-xs text-blue-400 font-semibold">XLM</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground font-medium mt-0.5">≈ $1,369.59 USD</div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/[0.06] text-xs relative z-10">
-                      <div>
-                        <span className="text-muted-foreground font-medium block">USDC Token</span>
-                        <span className="font-mono font-bold mt-0.5 block text-foreground">1,250.00 USDC</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground font-medium block">Active Network</span>
-                        <span className="font-mono font-bold mt-0.5 block text-emerald-400">Stellar Network</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Transactions */}
-                  <div className="space-y-3">
-                    <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase block mb-1">
-                      Recent Activity
-                    </span>
-
-                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-blue-500/25 backdrop-blur-sm rounded-xl p-3 text-xs transition-all">
-                      <div className="size-7 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold">↑</div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-foreground">Sent 120.00 XLM</div>
-                        <div className="text-[10px] text-muted-foreground font-mono mt-0.5">To GD2B...K8XQ</div>
-                      </div>
-                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">Success</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.05] hover:border-blue-500/25 backdrop-blur-sm rounded-xl p-3 text-xs transition-all">
-                      <div className="size-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold">↓</div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-foreground">Received 50.00 USDC</div>
-                        <div className="text-[10px] text-muted-foreground font-mono mt-0.5">From GCOA...M5K0</div>
-                      </div>
-                      <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">Success</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-white/[0.06] flex items-center justify-between text-[10px] text-muted-foreground font-medium">
-                    <span className="flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
-                      StellarWalletsKit Ready
-                    </span>
-                    <span className="font-mono">v2.1.0</span>
-                  </div>
+                <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Smart Contracts</span>
+                  <p className="text-sm font-bold font-mono text-blue-400">Soroban WASM</p>
                 </div>
               </div>
             </FadeIn>
           </div>
         ) : (
           /* ========================================================= */
-          /* PAGE 2: LUMEN FLOW ESCROW (Interactive 3D Studio + Glowing Border Beams) */
+          /* PAGE 2: LUMEN FLOW ESCROW (Asymmetric Contract Workbench) */
           /* ========================================================= */
           <div className="space-y-12">
-            {/* Centered Master Escrow Studio Title */}
-            <div className="max-w-3xl mx-auto text-center space-y-6">
+            {/* Header Masthead (Centered) */}
+            <div className="max-w-4xl mx-auto text-center space-y-6 py-4 sm:py-8">
               <FadeIn delay={100}>
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-semibold text-amber-400 shadow-sm backdrop-blur-md">
-                  <Lock className="w-3.5 h-3.5" />
-                  SOROBAN ON-CHAIN SMART CONTRACT PLATFORM
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={200}>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground text-balance">
-                  Trustless Web3 Escrow Studio for{" "}
-                  <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
-                    High-Stakes Milestone Deals
-                  </span>
-                </h1>
-              </FadeIn>
-
-              <FadeIn delay={300}>
-                <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                  Lock USDC/XLM in non-custodial Soroban WASM vaults. Automated stage disbursement upon client approval or 3-of-5 multisig guardian arbitration.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={400}>
-                <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-                  <Button
-                    size="lg"
-                    onClick={onConnectClick}
-                    className="rounded-2xl px-7 py-6 font-semibold border-0 shadow-xl transition-transform duration-200 hover:scale-[1.02] bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 shadow-amber-500/25 hover:shadow-amber-500/40 text-white gap-2"
-                  >
-                    Launch Escrow Deal
-                    <ArrowUpRight className="size-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={onConnectClick}
-                    className="rounded-2xl px-6 py-6 border-white/20 dark:border-white/10 bg-white/[0.05] hover:bg-white/10 backdrop-blur-xl text-foreground font-semibold shadow-sm"
-                  >
-                    View Soroban Contracts
-                  </Button>
+                <div className="space-y-5">
+                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.08] text-balance">
+                    Trustless milestone agreements,{" "}
+                    <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
+                      locked on-chain.
+                    </span>
+                  </h1>
+                  <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-balance">
+                    Deposit funds safely into Soroban smart contract vaults. Disburse milestones automatically upon client deliverable verification or decentralized arbitration quorum.
+                  </p>
                 </div>
               </FadeIn>
             </div>
 
-            {/* 3-Card High-End Escrow Studio Matrix with Glowing Hover Beams */}
+            {/* Asymmetric 8 / 4 Workbench Split */}
             <FadeIn delay={500}>
-              <div className="grid gap-6 md:grid-cols-3 items-stretch relative">
+              <div className="grid gap-6 lg:grid-cols-12 items-stretch">
                 
-                {/* Card 1: Vault Deposit Terms */}
-                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/15 px-2.5 py-1 rounded-full border border-amber-500/30">
-                        1. Vault Deposit
-                      </span>
-                      <ShieldCheck className="w-5 h-5 text-amber-400" />
+                {/* Left 8 Cols: Milestone Progressive Timeline */}
+                <div className="lg:col-span-8 rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-8 backdrop-blur-2xl space-y-6 shadow-xl">
+                  <div className="flex items-center justify-between pb-4 border-b border-border/50">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">Vault Contract #0x9f4a...e12</span>
+                      <h3 className="text-xl font-bold text-foreground mt-0.5">Enterprise Soroban Milestone Pipeline</h3>
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Soroban Lockup</h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed mb-6">
-                      Client deposits USDC into a non-custodial Soroban WASM contract. Zero centralized party access.
-                    </p>
-
-                    <div className="bg-white/[0.04] border border-amber-500/20 rounded-xl p-4 space-y-3 backdrop-blur-md shadow-inner">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Contract Deposit</span>
-                        <span className="font-mono font-bold text-amber-400">15,000.00 USDC</span>
-                      </div>
-                      <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Time-lock Expiry</span>
-                        <span className="font-mono font-semibold text-emerald-400">30 Days Auto-Refund</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-white/10 flex items-center gap-2 text-[11px] text-muted-foreground">
-                    <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
-                    Status: Active Contract Locked
-                  </div>
-                </div>
-
-                {/* Card 2: Milestone Disbursement Pipeline */}
-                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/40 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-orange-400 transition-all duration-300 hover:-translate-y-1.5">
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-orange-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-500/15 px-2.5 py-1 rounded-full border border-orange-500/30">
-                        2. Milestone Execution
-                      </span>
-                      <Clock className="w-5 h-5 text-orange-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Stage Release Flow</h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-                      Work deliverables are reviewed per milestone. Approved stages instantly disburse funds.
-                    </p>
-
-                    <div className="space-y-2">
-                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5 text-[11px] flex items-center justify-between">
-                        <span className="font-medium text-emerald-300 flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                          Stage 1: Wireframes
-                        </span>
-                        <span className="font-mono font-bold text-emerald-400">$3,000 ✅</span>
-                      </div>
-                      <div className="bg-amber-500/20 border border-amber-500/40 rounded-lg p-2.5 text-[11px] flex items-center justify-between">
-                        <span className="font-medium text-amber-200">Stage 2: Soroban Dev</span>
-                        <span className="font-mono font-bold text-amber-300">$7,000 🔒</span>
-                      </div>
-                      <div className="bg-white/[0.04] border border-white/10 rounded-lg p-2.5 text-[11px] flex items-center justify-between opacity-60">
-                        <span className="font-medium text-muted-foreground">Stage 3: Audit</span>
-                        <span className="font-mono font-bold text-muted-foreground">$5,000</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-white/10 flex items-center gap-2 text-[11px] text-amber-400 font-mono">
-                    <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
-                    Milestone 2 Under Review
-                  </div>
-                </div>
-
-                {/* Card 3: MultiSig Guardian Arbitration */}
-                <div className="bg-white/[0.06] dark:bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-150 rounded-2xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.15)] relative overflow-hidden group hover:border-emerald-400 transition-all duration-300 hover:-translate-y-1.5">
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/10 to-emerald-500/0 border-beam-glow opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/15 px-2.5 py-1 rounded-full border border-emerald-500/30">
-                        3. Dispute Protection
-                      </span>
-                      <Scale className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">3-of-5 MultiSig Panel</h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed mb-6">
-                      In case of disagreement, trusted arbitrator keypairs vote on-chain to disburse funds fairly.
-                    </p>
-
-                    <div className="bg-white/[0.04] border border-amber-500/20 rounded-xl p-4 space-y-2 text-xs backdrop-blur-md shadow-inner">
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Arbitration Panel</span>
-                        <span className="font-mono font-bold text-emerald-400">Lumen Guardian Set</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Required Votes</span>
-                        <span className="font-mono font-bold text-foreground">3 / 5 Signatures</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span className="font-mono text-amber-400/90 flex items-center gap-1">
-                      <Cpu className="w-3 h-3 text-amber-400" />
-                      0x8f3a...b1c9
+                    <span className="font-mono text-sm font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-xl">
+                      15,000.00 USDC
                     </span>
-                    <span className="text-emerald-400 font-semibold">Verified</span>
+                  </div>
+
+                  {/* Stage Progress Pipeline */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="size-5 text-emerald-400 shrink-0" />
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">Stage 1: Architecture & WASM Specification</p>
+                          <p className="text-xs text-muted-foreground">Approved by client • 5,000.00 USDC disbursed</p>
+                        </div>
+                      </div>
+                      <span className="font-mono text-xs font-bold text-emerald-400">Released</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-amber-500/15 border border-amber-500/35">
+                      <div className="flex items-center gap-3">
+                        <Clock className="size-5 text-amber-400 shrink-0 animate-pulse" />
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">Stage 2: Soroban Smart Contract Development</p>
+                          <p className="text-xs text-amber-300/80">Deliverables submitted • Pending client review</p>
+                        </div>
+                      </div>
+                      <span className="font-mono text-xs font-bold text-amber-400">In Review (7,000 USDC)</span>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-muted/30 border border-border/40 opacity-60">
+                      <div className="flex items-center gap-3">
+                        <ShieldCheck className="size-5 text-muted-foreground shrink-0" />
+                        <div>
+                          <p className="text-sm font-semibold text-muted-foreground">Stage 3: Security Audit & Mainnet Launch</p>
+                          <p className="text-xs text-muted-foreground">Time-lock protected • 3,000.00 USDC</p>
+                        </div>
+                      </div>
+                      <span className="font-mono text-xs font-semibold text-muted-foreground">Locked</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right 4 Cols: MultiSig Arbitration & Guardian Gauge */}
+                <div className="lg:col-span-4 rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-6 shadow-xl">
+                  <div>
+                    <div className="flex items-center justify-between pb-3 border-b border-border/50">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Governance</span>
+                      <Scale className="size-4 text-emerald-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground mt-3">3-of-5 MultiSig Guardian Set</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      On-chain decentralized arbitration panel protects both parties against unresponsive actors.
+                    </p>
+
+                    <div className="mt-5 space-y-2.5 p-4 rounded-2xl bg-muted/40 border border-border/60">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">Required Signatures</span>
+                        <span className="font-mono font-bold text-foreground">3 / 5 Quorum</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                        <div className="bg-gradient-to-r from-amber-400 to-emerald-400 h-2 rounded-full w-3/5" />
+                      </div>
+                      <p className="text-[11px] font-mono text-emerald-400 text-right">60% Threshold Met</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
+                    <span className="font-mono">Auto-Refund: 30 Days</span>
+                    <span className="text-emerald-400 font-semibold font-mono">Zero-Fee WASM</span>
                   </div>
                 </div>
 

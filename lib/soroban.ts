@@ -32,7 +32,7 @@ export function isValidContractId(id: string): boolean {
 /** Convert a human amount string ("12.5") to base units given decimals. */
 export function toBaseUnits(amount: string, decimals: number): bigint {
   const trimmed = amount.trim()
-  if (!trimmed) return 0n
+  if (!trimmed) return BigInt(0)
   const negative = trimmed.startsWith("-")
   const unsigned = negative ? trimmed.slice(1) : trimmed
   const [whole = "0", frac = ""] = unsigned.split(".")

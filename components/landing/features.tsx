@@ -1,178 +1,45 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
 import { 
   Smartphone, 
   Zap, 
   Lock, 
   TrendingUp, 
   Wallet, 
-  BarChart3,
-  ShieldCheck,
-  CalendarRange,
-  Scale,
-  Users,
-  Layers,
-  Award
+  BarChart3, 
+  ShieldCheck, 
+  CalendarRange, 
+  Scale, 
+  Users, 
+  Layers, 
+  Award,
+  ArrowUpRight,
+  CheckCircle2
 } from "lucide-react"
 import { FadeIn } from "./web3-animations"
-
-const walletFeatures = [
-  {
-    icon: Smartphone,
-    title: "Multiple Wallet Support",
-    description: "Connect with Freighter, StellarWalletsKit, or import your custom secret key with complete non-custodial safety.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-400",
-  },
-  {
-    icon: Lock,
-    title: "Bank-Grade Key Security",
-    description: "Your keys, your funds. Private keys stay encrypted locally in memory and are never transmitted to any server.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-300",
-  },
-  {
-    icon: Zap,
-    title: "Instant Stellar Transfers",
-    description: "Send and receive XLM and custom Stellar tokens with 5-second ledger finality and sub-cent fees.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-400",
-  },
-  {
-    icon: TrendingUp,
-    title: "Real-Time Balance Tracker",
-    description: "Watch your balance update live with Horizon API SSE streaming. Track every payment and trustline instantly.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-300",
-  },
-  {
-    icon: Wallet,
-    title: "Stellar Asset Management",
-    description: "Add trustlines for USDC, EURC, and custom Stellar tokens. Manage all your crypto holdings in one clean dashboard.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-400",
-  },
-  {
-    icon: BarChart3,
-    title: "Ledger Transaction Explorer",
-    description: "Complete transaction history with instant filtering, explorer hash links, and CSV export for accounting.",
-    iconBg: "bg-blue-500/15",
-    iconColor: "text-blue-300",
-  },
-]
-
-const flowFeatures = [
-  {
-    icon: ShieldCheck,
-    title: "Soroban Smart Contract Vaults",
-    description: "Non-custodial WASM smart contracts on Stellar that securely lock project funds until contract conditions are met.",
-    iconBg: "bg-amber-500/15",
-    iconColor: "text-amber-400",
-  },
-  {
-    icon: CalendarRange,
-    title: "Milestone Progress Disbursement",
-    description: "Break complex deals into verified stages. Client approves deliverable -> funds auto-disburse to freelancer.",
-    iconBg: "bg-amber-500/15",
-    iconColor: "text-amber-300",
-  },
-  {
-    icon: Scale,
-    title: "Decentralized MultiSig Arbitration",
-    description: "Fair 3-of-5 guardian keypair arbitration panel to resolve disputes and disburse funds without single points of failure.",
-    iconBg: "bg-emerald-500/15",
-    iconColor: "text-emerald-400",
-  },
-  {
-    icon: Users,
-    title: "Role-Based Web3 Dashboards",
-    description: "Dedicated interfaces for Clients (Depositors), Freelancers (Beneficiaries), and Arbitrators with full contract audit trails.",
-    iconBg: "bg-amber-500/15",
-    iconColor: "text-amber-400",
-  },
-  {
-    icon: Layers,
-    title: "Sub-Cent Soroban Execution",
-    description: "Execute complex smart contract operations on Stellar for less than $0.001 per transaction, making micro-escrows viable.",
-    iconBg: "bg-amber-500/15",
-    iconColor: "text-amber-300",
-  },
-  {
-    icon: Award,
-    title: "Time-Locked Safety Refunds",
-    description: "Automatic contract expiration timeouts protecting clients from unresponsive contractors with zero-fee refund claims.",
-    iconBg: "bg-emerald-500/15",
-    iconColor: "text-emerald-400",
-  },
-]
 
 interface FeaturesProps {
   mode?: "wallet" | "flow"
 }
 
+const coolAnimationStyles = `
+  @keyframes stroke-draw {
+    0% { stroke-dashoffset: 400; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .animate-chart-line {
+    stroke-dasharray: 400;
+    animation: stroke-draw 3s ease-out infinite alternate;
+  }
+`
+
 export function Features({ mode = "wallet" }: FeaturesProps) {
   const isWallet = mode === "wallet"
-  const currentFeatures = isWallet ? walletFeatures : flowFeatures
-  const sectionRef = useRef<HTMLElement>(null)
-
-  // Duplicated sets for seamless infinite wrapping:
-  // Card 6 is directly followed by Card 1 without any boundary glitch
-  const loopCount = 6
-  const loopFeatures = Array.from({ length: loopCount }, () => currentFeatures).flat()
-
-  const [currentIndex, setCurrentIndex] = useState(currentFeatures.length * 2)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  const [enableTransition, setEnableTransition] = useState(true)
-
-  // IntersectionObserver: Only animate if visible in viewport (saves CPU/GPU when scrolled away)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting)
-      },
-      { threshold: 0.15 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Auto-slide step timer (advances every 3.2s smoothly, pauses when hovered)
-  useEffect(() => {
-    if (!isVisible || isHovered) return
-
-    const interval = setInterval(() => {
-      setEnableTransition(true)
-      setCurrentIndex((prev) => prev + 1)
-    }, 3200)
-
-    return () => clearInterval(interval)
-  }, [isVisible, isHovered])
-
-  // Seamless wrap-around reset without visual jump when nearing the loop boundary
-  const handleTransitionEnd = () => {
-    if (currentIndex >= currentFeatures.length * (loopCount - 1)) {
-      setEnableTransition(false)
-      setCurrentIndex(currentFeatures.length * 2)
-    } else if (currentIndex < currentFeatures.length) {
-      setEnableTransition(false)
-      setCurrentIndex(currentFeatures.length * 2)
-    }
-  }
-
-  // Reset index when switching mode
-  useEffect(() => {
-    setCurrentIndex(currentFeatures.length * 2)
-    setEnableTransition(true)
-  }, [mode, currentFeatures.length])
 
   return (
-    <section ref={sectionRef} className="relative py-20 sm:py-32 overflow-hidden">
+    <section id="capabilities" className="relative py-20 sm:py-28 overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: coolAnimationStyles }} />
+
       {/* Background dot pattern */}
       <div
         className="absolute inset-0 opacity-[0.025]"
@@ -182,120 +49,363 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <FadeIn>
-          <div className="mb-12 space-y-4 text-center">
-            <div className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold mb-4 ${
-              isWallet 
-                ? "border-blue-500/20 bg-blue-500/10 text-blue-400" 
-                : "border-amber-500/20 bg-amber-500/10 text-amber-400"
-            }`}>
-              {isWallet ? "LUMEN WALLET FEATURES" : "SOROBAN SMART CONTRACT ESCROW"}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Live Cockpit Showcase Card directly above section header */}
+        {isWallet && (
+          <FadeIn delay={100} className="mb-24 sm:mb-32 lg:mb-40 max-w-xl mx-auto">
+            <div id="live-cockpit-card" className="relative">
+              <div className="absolute -inset-4 blur-3xl rounded-3xl bg-gradient-to-br from-blue-500/20 via-cyan-500/15 to-indigo-500/15 pointer-events-none" />
+              
+              <div className="relative rounded-3xl border border-white/15 dark:border-white/10 bg-card/60 p-6 sm:p-7 shadow-2xl backdrop-blur-xl transition-all">
+                {/* Account Header Strip */}
+                <div className="flex items-center justify-between pb-5 mb-5 border-b border-border/50">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-6 rounded-lg bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-400">
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="9.5" />
+                        <circle cx="12" cy="12" r="3" fill="currentColor" />
+                        <line x1="12" y1="2.5" x2="12" y2="9" />
+                        <line x1="12" y1="15" x2="12" y2="21.5" />
+                        <line x1="2.5" y1="12" x2="9" y2="12" />
+                        <line x1="15" y1="12" x2="21.5" y2="12" />
+                        <line x1="5.28" y1="5.28" x2="9.88" y2="9.88" />
+                        <line x1="14.12" y1="14.12" x2="18.72" y2="18.72" />
+                        <line x1="5.28" y1="18.72" x2="9.88" y2="14.12" />
+                        <line x1="14.12" y1="9.88" x2="18.72" y2="5.28" />
+                      </svg>
+                    </div>
+                    <span className="text-xs font-mono font-medium text-foreground tracking-tight">GCBFQ3...SCDVY6</span>
+                  </div>
+                  <span className="text-[10px] font-semibold font-mono px-2.5 py-0.5 rounded-full uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    Live Testnet
+                  </span>
+                </div>
+
+                {/* Main Live Balance Block */}
+                <div className="relative overflow-hidden rounded-2xl border border-blue-500/25 p-5 mb-5 bg-blue-500/[0.06] backdrop-blur-sm">
+                  {/* Live SVG Animated Wave Chart */}
+                  <div className="absolute bottom-0 inset-x-0 h-16 pointer-events-none opacity-40">
+                    <svg className="w-full h-full" viewBox="0 0 300 60" preserveAspectRatio="none">
+                      <path
+                        d="M0,45 C50,20 100,50 150,15 C200,35 250,5 300,25"
+                        fill="none"
+                        stroke="#38bdf8"
+                        strokeWidth="2.5"
+                        className="animate-chart-line"
+                      />
+                    </svg>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] font-medium text-muted-foreground uppercase tracking-wider">
+                    <span>Available Balance</span>
+                    <span className="font-mono text-blue-400 lowercase">horizon-sse:connected</span>
+                  </div>
+                  <div className="text-3xl sm:text-4xl font-extrabold font-mono tracking-tight mt-1 flex items-baseline gap-1.5 text-foreground">
+                    12,450.85 <span className="text-xs text-blue-400 font-semibold uppercase">XLM</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground font-medium mt-1">≈ $1,369.59 USD</div>
+
+                  <div className="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/[0.08] text-xs relative z-10">
+                    <div>
+                      <span className="text-muted-foreground font-medium block text-[11px]">USDC Trustline</span>
+                      <span className="font-mono font-bold mt-0.5 block text-foreground">1,250.00 USDC</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground font-medium block text-[11px]">Settlement Time</span>
+                      <span className="font-mono font-bold mt-0.5 block text-emerald-400">3.8 Seconds</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Real-time Ledger Feed Mock */}
+                <div className="space-y-2.5">
+                  <span className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase block">
+                    Live Ledger Ingestion
+                  </span>
+
+                  <div className="flex items-center justify-between bg-muted/40 border border-border/50 hover:bg-muted/60 rounded-xl p-3 text-xs transition-colors">
+                    <div className="flex items-center gap-2.5">
+                      <div className="size-6 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold text-[11px]">↑</div>
+                      <div>
+                        <div className="font-semibold text-foreground">Payment Sent</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">120.00 XLM → GD2B...K8XQ</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2 py-0.5 rounded-full">Finalized</span>
+                  </div>
+
+                  <div className="flex items-center justify-between bg-muted/40 border border-border/50 hover:bg-muted/60 rounded-xl p-3 text-xs transition-colors">
+                    <div className="flex items-center gap-2.5">
+                      <div className="size-6 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-[11px]">↓</div>
+                      <div>
+                        <div className="font-semibold text-foreground">USDC Inbound</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">50.00 USDC ← GCQA...M5K0</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2 py-0.5 rounded-full">Finalized</span>
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-3 border-t border-border/50 flex items-center justify-between text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1.5 font-mono text-emerald-500">
+                    <span className="size-1.5 rounded-full bg-emerald-500 animate-ping" />
+                    Soroban WASM VM Active
+                  </span>
+                  <span className="font-mono">v2.1.0-release</span>
+                </div>
+              </div>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
+          </FadeIn>
+        )}
+
+        {/* Section Header */}
+        <FadeIn>
+          <div className="mb-14 max-w-3xl space-y-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground text-balance">
               {isWallet ? (
                 <>
-                  Powerful Features for{" "}
+                  Engineered for instantaneous payments,{" "}
                   <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                    Modern Crypto Users
+                    complete key custody.
                   </span>
                 </>
               ) : (
                 <>
-                  On-Chain Milestone{" "}
+                  Trustless milestone vaults powered by{" "}
                   <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent">
-                    Escrow Platform
+                    Soroban WASM.
                   </span>
                 </>
               )}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {isWallet 
-                ? "Everything you need to manage your Stellar assets, send XLM, and execute non-custodial transactions."
-                : "Establish trustless smart contract agreements, lock funds safely in Soroban vaults, and automate milestone payments."
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {isWallet
+                ? "Every architectural layer is optimized for Stellar's sub-second ledger finality, low transaction cost, and strict cryptographic privacy."
+                : "Decentralized escrow workflows with programmatic stage disbursement, client deliverable review, and multisig guardian protection."
               }
             </p>
           </div>
         </FadeIn>
 
-        {/* Center-Focused Seamless Infinite Carousel */}
-        <FadeIn delay={200}>
-          <div 
-            className="relative w-full overflow-hidden py-6 sm:py-8 [mask-image:linear-gradient(to_right,transparent,white_6%,white_94%,transparent)] [--card-w:min(310px,76vw)] [--gap:14px] sm:[--card-w:360px] sm:[--gap:24px]"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <div
-              onTransitionEnd={handleTransitionEnd}
-              className={`flex items-center ${
-                enableTransition ? "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" : ""
-              }`}
-              style={{
-                transform: `translateX(calc(50% - (${currentIndex} * (var(--card-w) + var(--gap))) - (var(--card-w) / 2)))`,
-              }}
-            >
-              {loopFeatures.map((feature, index) => {
-                const Icon = feature.icon
-                const isCenter = index === currentIndex
-                const realItemIndex = (index % currentFeatures.length) + 1
-
-                return (
-                  <div
-                    key={`${feature.title}-${index}`}
-                    style={{ width: "var(--card-w)", marginRight: "var(--gap)" }}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    className={`shrink-0 select-none rounded-2xl p-5 sm:p-7 transition-all duration-700 cursor-pointer ${
-                      isCenter
-                        ? isWallet
-                          ? "scale-[1.02] sm:scale-105 z-20 border border-blue-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(59,130,246,0.2),inset_0_1px_1px_0_rgba(147,197,253,0.3)] opacity-100"
-                          : "scale-[1.02] sm:scale-105 z-20 border border-amber-500/50 bg-card/60 backdrop-blur-md shadow-[0_12px_40px_rgba(245,158,11,0.2),inset_0_1px_1px_0_rgba(251,191,36,0.3)] opacity-100"
-                        : "scale-95 opacity-40 border border-white/[0.06] bg-card/30 backdrop-blur-sm"
-                    }`}
-                  >
-                    {/* Top accent highlight for centered card */}
-                    <div className={`h-[2px] w-full mb-3 sm:mb-4 rounded-full transition-opacity duration-500 ${
-                      isCenter
-                        ? isWallet
-                          ? "bg-gradient-to-r from-blue-500 via-cyan-400 to-transparent opacity-100"
-                          : "bg-gradient-to-r from-amber-500 via-orange-400 to-transparent opacity-100"
-                        : "opacity-0"
-                    }`} />
-
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${feature.iconBg} ${feature.iconColor} transition-transform duration-300 shadow-inner ${
-                          isCenter ? "scale-105 sm:scale-110" : ""
-                        }`}>
-                          <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                        </div>
-                        <span className={`text-[10px] sm:text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md border ${
-                          isCenter
-                            ? isWallet
-                              ? "bg-blue-500/20 text-blue-300 border-blue-400/30"
-                              : "bg-amber-500/20 text-amber-300 border-amber-400/30"
-                            : "bg-white/[0.03] text-muted-foreground/60 border-white/[0.06]"
-                        }`}>
-                          0{realItemIndex}
-                        </span>
-                      </div>
-                      <div className="space-y-1.5 sm:space-y-2">
-                        <h3 className={`text-base sm:text-lg font-semibold leading-tight transition-colors duration-300 ${
-                          isCenter ? "text-foreground" : "text-muted-foreground"
-                        }`}>
-                          {feature.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {feature.description}
-                        </p>
-                      </div>
+        {/* Asymmetric Capabilities Bento */}
+        {isWallet ? (
+          <div className="grid gap-6 lg:grid-cols-12 items-stretch">
+            {/* Tile 1: Primary Anchor (8 Columns) - Sub-5s Settlement Engine */}
+            <FadeIn delay={100} className="lg:col-span-8">
+              <div className="h-full rounded-3xl border border-white/20 dark:border-white/10 bg-card/90 dark:bg-[#070b19]/90 p-7 sm:p-8 backdrop-blur-2xl flex flex-col justify-between space-y-6 hover:border-primary/40 transition-all shadow-xl">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="size-11 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                      <Zap className="size-6" />
                     </div>
+                    <span className="text-xs font-mono font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                      ~3.8s Ledger Settlement
+                    </span>
                   </div>
-                )
-              })}
-            </div>
+                  <h3 className="text-2xl font-bold text-foreground">Instant Stellar Transfer Engine</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+                    Execute cross-border XLM and asset transfers with sub-second ledger finality. Horizon SSE connection ensures zero-polling instant balance updates upon ledger close.
+                  </p>
+                </div>
+
+                {/* Telemetry Visual Ribbon */}
+                <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-muted/60 dark:bg-slate-950/60 border border-border/50 text-xs backdrop-blur-md">
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Finality Time</span>
+                    <span className="font-mono font-bold text-foreground mt-0.5 block">&lt; 5.0 Seconds</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Average Fee</span>
+                    <span className="font-mono font-bold text-emerald-400 mt-0.5 block">0.00001 XLM</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Signing Flow</span>
+                    <span className="font-mono font-bold text-blue-400 mt-0.5 block">Freighter / Kit</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Tile 2: Secondary Pillar (4 Columns) - Local Key Privacy */}
+            <FadeIn delay={180} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-white/20 dark:border-white/10 bg-card/90 dark:bg-[#070b19]/90 p-7 sm:p-8 backdrop-blur-2xl flex flex-col justify-between space-y-6 hover:border-primary/40 transition-all shadow-xl">
+                <div className="space-y-4">
+                  <div className="size-11 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                    <Lock className="size-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground">In-Memory Secret Key Isolation</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Private keys and seed phrases stay encrypted strictly in browser session memory. No telemetry or server storage.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-muted/60 dark:bg-slate-950/60 border border-border/50 flex items-center gap-2.5 text-xs text-muted-foreground font-mono backdrop-blur-md">
+                  <CheckCircle2 className="size-4 text-emerald-400 shrink-0" />
+                  <span>100% Non-Custodial Architecture</span>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Tile 3: Asset Management (4 Columns) */}
+            <FadeIn delay={260} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-white/20 dark:border-white/10 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-primary/40 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                    <Wallet className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Multi-Asset Trustlines</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Establish Stellar trustlines for USDC, EURC, and custom tokens with automatic minimum reserve tracking.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground">0.5 XLM reserve per trustline</span>
+              </div>
+            </FadeIn>
+
+            {/* Tile 4: Real-time SSE Stream (4 Columns) */}
+            <FadeIn delay={320} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-white/20 dark:border-white/10 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-primary/40 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                    <TrendingUp className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Horizon SSE Live Tracker</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Streaming Server-Sent Events push payment notifications to your dashboard the millisecond ledgers finalize.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Event Stream
+                </span>
+              </div>
+            </FadeIn>
+
+            {/* Tile 5: Ledger Transaction Explorer (4 Columns) */}
+            <FadeIn delay={380} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-white/20 dark:border-white/10 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-primary/40 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                    <BarChart3 className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Explorer Hash Inspection</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Direct cryptographic proof links to StellarExpert and Horizon raw JSON endpoints with full CSV export capabilities.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground">StellarExpert verified</span>
+              </div>
+            </FadeIn>
           </div>
-        </FadeIn>
+        ) : (
+          /* ========================================================= */
+          /* FLOW ESCROW BENTO */
+          /* ========================================================= */
+          <div className="grid gap-6 lg:grid-cols-12 items-stretch">
+            {/* Tile 1: Primary Anchor (8 Columns) - Soroban Vaults */}
+            <FadeIn delay={100} className="lg:col-span-8">
+              <div className="h-full rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-7 sm:p-8 backdrop-blur-2xl flex flex-col justify-between space-y-6 hover:border-amber-500/50 transition-all shadow-xl">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="size-11 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center">
+                      <ShieldCheck className="size-6" />
+                    </div>
+                    <span className="text-xs font-mono font-semibold px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                      Soroban WASM Runtime
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground">Non-Custodial Smart Contract Vaults</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+                    Client funds lock safely on-chain in custom Soroban smart contracts. Neither Lumen Wallet nor centralized custodians can touch or freeze deposits.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-muted/60 dark:bg-slate-950/60 border border-border/50 text-xs backdrop-blur-md">
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Execution VM</span>
+                    <span className="font-mono font-bold text-foreground mt-0.5 block">Rust / WASM</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Execution Cost</span>
+                    <span className="font-mono font-bold text-emerald-400 mt-0.5 block">&lt; $0.001 Gas</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block text-[11px]">Disbursement</span>
+                    <span className="font-mono font-bold text-amber-400 mt-0.5 block">Client Release</span>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Tile 2: MultiSig Arbitration (4 Columns) */}
+            <FadeIn delay={180} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-7 sm:p-8 backdrop-blur-2xl flex flex-col justify-between space-y-6 hover:border-amber-500/50 transition-all shadow-xl">
+                <div className="space-y-4">
+                  <div className="size-11 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                    <Scale className="size-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground">3-of-5 Guardian MultiSig</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Decentralized arbitration panels resolve disputes on-chain without single points of failure.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-muted/60 dark:bg-slate-950/60 border border-border/50 flex items-center gap-2.5 text-xs text-emerald-400 font-mono backdrop-blur-md">
+                  <CheckCircle2 className="size-4 shrink-0" />
+                  <span>Quorum Consensus Enforced</span>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* Tile 3: Stage Milestones (4 Columns) */}
+            <FadeIn delay={260} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-amber-500/50 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center">
+                    <CalendarRange className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Stage-by-Stage Release</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Break high-stakes contracts into verifiable milestones. Funds disburse only when deliverables pass review.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-amber-400">Milestone verified releases</span>
+              </div>
+            </FadeIn>
+
+            {/* Tile 4: Role-Based Access (4 Columns) */}
+            <FadeIn delay={320} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-amber-500/50 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center">
+                    <Users className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Role-Based Workbenches</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Tailored dashboards for Depositors (Clients), Beneficiaries (Contractors), and Arbitrators.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-muted-foreground">3 Distinct Web3 Roles</span>
+              </div>
+            </FadeIn>
+
+            {/* Tile 5: Time-Locked Refund (4 Columns) */}
+            <FadeIn delay={380} className="lg:col-span-4">
+              <div className="h-full rounded-3xl border border-amber-500/30 bg-card/90 dark:bg-[#070b19]/90 p-6 sm:p-7 backdrop-blur-2xl flex flex-col justify-between space-y-5 hover:border-amber-500/50 transition-all shadow-xl">
+                <div className="space-y-3">
+                  <div className="size-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                    <Award className="size-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-foreground">Time-Locked Auto-Refund</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Protects clients from unresponsive contractors with automatic expiration timers and zero-fee claims.
+                  </p>
+                </div>
+                <span className="text-[11px] font-mono text-emerald-400">Automatic refund safety</span>
+              </div>
+            </FadeIn>
+          </div>
+        )}
       </div>
     </section>
   )

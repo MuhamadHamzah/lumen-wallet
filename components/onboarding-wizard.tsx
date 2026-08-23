@@ -12,7 +12,7 @@ interface OnboardingWizardProps {
 }
 
 export function OnboardingWizard({ open, onOpenChange }: OnboardingWizardProps) {
-  const { publicKey, connectWallet } = useWallet()
+  const { publicKey } = useWallet()
   const [step, setStep] = useState(1)
 
   const steps = [
@@ -140,7 +140,10 @@ export function OnboardingWizard({ open, onOpenChange }: OnboardingWizardProps) 
                 {!publicKey ? (
                   <Button
                     size="sm"
-                    onClick={() => connectWallet("freighter")}
+                    onClick={() => {
+                      onOpenChange(false)
+                      window.location.href = "/onboarding"
+                    }}
                     className="h-7 text-[11px] font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shrink-0 gap-1 px-3"
                   >
                     <Wallet className="size-3" /> Connect

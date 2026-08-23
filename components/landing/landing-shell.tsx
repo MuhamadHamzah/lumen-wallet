@@ -86,20 +86,20 @@ export function LandingShell({
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/[0.06] bg-background/60 backdrop-blur-xl">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
+      <footer className="relative z-10 border-t border-border/40 bg-background/60 backdrop-blur-xl">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Logo />
-                <span className="text-xs text-muted-foreground">
-                  Built on Stellar Network
+                <span className="text-xs font-mono text-muted-foreground">
+                  • Non-Custodial Core
                 </span>
               </div>
               
               {/* Footer Switch Overrides (Accessibility) */}
               {onModeSwitch && (
-                <div className="flex items-center gap-3 text-xs border-l border-white/10 pl-0 sm:pl-6">
+                <div className="flex items-center gap-3 text-xs border-l border-border/60 pl-0 sm:pl-6">
                   <button
                     onClick={() => onModeSwitch("wallet")}
                     className={`hover:text-blue-400 transition-colors font-medium ${
@@ -108,7 +108,7 @@ export function LandingShell({
                   >
                     Wallet View
                   </button>
-                  <span className="text-white/10">|</span>
+                  <span className="text-border/60">|</span>
                   <button
                     onClick={() => onModeSwitch("flow")}
                     className={`hover:text-amber-400 transition-colors font-medium ${
@@ -122,7 +122,7 @@ export function LandingShell({
             </div>
             
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
                     mode === "wallet" ? "bg-blue-400" : "bg-amber-400"
@@ -131,9 +131,9 @@ export function LandingShell({
                     mode === "wallet" ? "bg-blue-500" : "bg-amber-500"
                   }`} />
                 </span>
-                <span className="text-[11px] text-muted-foreground">Stellar Network Active</span>
+                <span className="text-[11px] font-mono text-muted-foreground">Stellar Horizon 2.27 Live</span>
               </div>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-[11px] font-mono text-muted-foreground">
                 © {new Date().getFullYear()} Lumen Wallet
               </p>
             </div>

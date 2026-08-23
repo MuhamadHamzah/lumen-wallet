@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       const tx = TransactionBuilder.fromXDR(signedXdr, getNetworkPassphrase(network))
       const result = await server.submitTransaction(tx)
       try {
-        const senderPubKey = tx.source
+        const senderPubKey = (tx as any).source || (tx as any).feeSource || ""
         await logInteraction(senderPubKey, "Swap Tokens", result.hash)
       } catch (err) {
         console.error("Failed to log interaction for signed XDR swap:", err)

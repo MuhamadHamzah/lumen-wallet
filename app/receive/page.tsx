@@ -6,10 +6,10 @@ import { ReceiveCard } from "@/components/receive/receive-card"
 export default function ReceivePage() {
   return (
     <AppShell>
-      <div className="mx-auto max-w-lg space-y-6">
+      <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-balance">Receive</h1>
-          <p className="text-sm text-muted-foreground">Share your address to get paid in XLM</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Receive Assets</h1>
+          <p className="text-xs text-muted-foreground font-mono">Inbound Stellar Payment Terminal &amp; Address Desk</p>
         </div>
         <ReceiveCard />
       </div>

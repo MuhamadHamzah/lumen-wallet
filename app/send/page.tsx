@@ -6,10 +6,10 @@ import { SendForm } from "@/components/send/send-form"
 export default function SendPage() {
   return (
     <AppShell>
-      <div className="mx-auto max-w-lg space-y-6">
+      <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-balance">Send payment</h1>
-          <p className="text-sm text-muted-foreground">Transfer XLM to any Stellar address</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Send Assets</h1>
+          <p className="text-xs text-muted-foreground font-mono">Stellar Horizon Peer-to-Peer Transfer Desk</p>
         </div>
         <SendForm />
       </div>

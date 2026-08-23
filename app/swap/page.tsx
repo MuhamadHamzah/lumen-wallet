@@ -450,362 +450,363 @@ export default function SwapPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-lg space-y-6">
+      <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-balance">Swap Assets</h1>
-          <p className="text-sm text-muted-foreground">Exchange assets instantly using native Stellar Liquidity Pools</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Swap Assets</h1>
+          <p className="text-xs text-muted-foreground font-mono">Stellar Horizon Liquidity Pools &amp; Pathfinding Engine</p>
         </div>
 
         {!accountExists && (
-          <Alert variant="warning" className="border-amber-500/30 bg-amber-500/10 text-amber-500">
+          <Alert variant="default" className="border-amber-500/30 bg-amber-500/10 text-amber-500 rounded-2xl">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Account Not Found</AlertTitle>
+            <AlertTitle>Account Not Initialized on {network.toUpperCase()}</AlertTitle>
             <AlertDescription>
-              Your account does not exist on this network yet. Fund it first using the Friendbot on the dashboard before swapping.
+              Your account does not exist on this network yet. Fund it using the Friendbot on the dashboard before swapping.
             </AlertDescription>
           </Alert>
         )}
 
-        <Card className="border border-border/50 bg-gradient-to-b from-card to-card/90 backdrop-blur p-6 shadow-xl relative overflow-hidden">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">Swap Interface</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              className={`text-muted-foreground hover:text-foreground shrink-0 transition-colors ${showSettings ? "bg-muted" : ""}`}
-              onClick={() => setShowSettings(!showSettings)}
-            >
-              <Settings className="size-5" />
-            </Button>
-          </div>
-
-          {/* Slippage settings panel */}
-          {showSettings && (
-            <div className="mb-6 p-4 rounded-xl border border-border/40 bg-muted/40 backdrop-blur space-y-3 animate-in fade-in slide-in-from-top-3 duration-200">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-semibold">Slippage Tolerance</span>
-                <span className="font-mono text-xs font-semibold text-primary">{slippage}%</span>
-              </div>
-              <div className="flex gap-2">
-                {[0.5, 1.0, 2.0].map((val) => (
-                  <Button
-                    key={val}
-                    variant={slippage === val ? "default" : "outline"}
-                    size="sm"
-                    className="flex-1 bg-transparent hover:bg-muted text-xs"
-                    onClick={() => setSlippage(val)}
-                  >
-                    {val}%
-                  </Button>
-                ))}
-              </div>
-              <p className="text-[10px] text-muted-foreground">
-                Your transaction will revert if the price changes unfavorably by more than this percentage during execution.
-              </p>
+        <div className="grid gap-6 lg:grid-cols-12 items-start">
+          {/* Left 7 Columns: Execution Swapbox */}
+          <div className="lg:col-span-7 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-7 backdrop-blur-xl space-y-6 shadow-sm">
+            <div className="flex justify-between items-center pb-4 border-b border-border/40">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Swap Terminal</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`text-xs gap-1.5 text-muted-foreground hover:text-foreground rounded-xl ${showSettings ? "bg-muted text-foreground" : ""}`}
+                onClick={() => setShowSettings(!showSettings)}
+              >
+                <Settings className="size-3.5" />
+                <span>Slippage: {slippage}%</span>
+              </Button>
             </div>
-          )}
 
-          {/* SWAP CARD BODY */}
-          <div className="flex flex-col relative">
-            {/* SOURCE PANEL */}
-            <div className="rounded-xl border border-border/30 bg-muted/30 p-4 space-y-3 focus-within:border-primary/40 transition-colors">
-              <div className="flex justify-between items-center text-xs text-muted-foreground">
-                <span>From (Send)</span>
-                <span className="flex items-center gap-1">
-                  Balance: <span className="font-mono text-foreground font-semibold">{srcBalance.toLocaleString(undefined, { maximumFractionDigits: 5 })} {sourceAsset.code}</span>
-                </span>
+            {/* Slippage settings panel */}
+            {showSettings && (
+              <div className="p-4 rounded-2xl border border-border/60 bg-muted/40 backdrop-blur space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-semibold text-foreground">Slippage Tolerance</span>
+                  <span className="font-mono text-xs font-semibold text-primary">{slippage}%</span>
+                </div>
+                <div className="flex gap-2">
+                  {[0.5, 1.0, 2.0].map((val) => (
+                    <Button
+                      key={val}
+                      variant={slippage === val ? "default" : "outline"}
+                      size="sm"
+                      className="flex-1 text-xs rounded-xl h-8"
+                      onClick={() => setSlippage(val)}
+                    >
+                      {val}%
+                    </Button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Transaction will revert if execution price changes unfavorably by more than {slippage}%.
+                </p>
               </div>
-              <div className="flex gap-3 items-center">
-                <Select
-                  value={isCustomSource ? "custom" : sourceAsset.code}
-                  onValueChange={(val) => {
-                    if (val === "custom") {
-                      setIsCustomSource(true)
-                    } else {
-                      setIsCustomSource(false)
-                      const sel = allAssets.find((a) => a.code === val)
-                      if (sel) setSourceAsset(sel)
-                    }
-                  }}
-                >
-                  <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {allAssets.map((a) => (
-                      <SelectItem key={`${a.code}-${a.issuer}`} value={a.code}>
-                        {a.symbol}
-                      </SelectItem>
-                    ))}
-                    <SelectItem value="custom">Custom...</SelectItem>
-                  </SelectContent>
-                </Select>
+            )}
 
-                <div className="relative flex-1">
-                  <Input
-                    type="text"
-                    inputMode="decimal"
-                    placeholder="0.00"
-                    value={sourceAmount}
-                    onChange={(e) => {
-                      const val = e.target.value.replace(/,/g, ".")
-                      if (val === "" || /^[0-9]*\.?[0-9]*$/.test(val)) {
-                        setSourceAmount(val)
+            {/* SWAP FORM BODY */}
+            <div className="space-y-3 relative">
+              {/* SOURCE ASSET PANEL */}
+              <div className="rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-2.5 focus-within:border-primary/50 transition-colors">
+                <div className="flex justify-between items-center text-xs text-muted-foreground">
+                  <span className="font-semibold uppercase text-[10px] tracking-wider">Pay From</span>
+                  <span className="font-mono text-[11px]">
+                    Available: <span className="font-bold text-foreground">{srcBalance.toLocaleString(undefined, { maximumFractionDigits: 5 })} {sourceAsset.code}</span>
+                  </span>
+                </div>
+
+                <div className="flex gap-3 items-center">
+                  <Select
+                    value={isCustomSource ? "custom" : sourceAsset.code}
+                    onValueChange={(val) => {
+                      if (val === "custom") {
+                        setIsCustomSource(true)
+                      } else {
+                        setIsCustomSource(false)
+                        const sel = allAssets.find((a) => a.code === val)
+                        if (sel) setSourceAsset(sel)
                       }
                     }}
-                    className="text-right font-mono font-semibold text-lg border-0 bg-transparent pr-14 focus-visible:ring-0 focus-visible:ring-offset-0 h-10 pl-0 py-0"
-                  />
-                  {sourceAsset.code === "XLM" ? (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] h-6 px-1.5 font-bold hover:bg-muted text-primary cursor-pointer"
-                      onClick={() => setSourceAmount(String(Math.max(0, srcBalance - 1)))}
-                    >
-                      MAX
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] h-6 px-1.5 font-bold hover:bg-muted text-primary cursor-pointer"
-                      onClick={() => setSourceAmount(String(srcBalance))}
-                    >
-                      MAX
-                    </Button>
-                  )}
-                </div>
-              </div>
+                  >
+                    <SelectTrigger className="w-[120px] sm:w-[140px] font-semibold border-border/60 rounded-xl h-11 shrink-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {allAssets.map((a) => (
+                        <SelectItem key={`${a.code}-${a.issuer}`} value={a.code}>
+                          {a.symbol}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="custom">Custom Token...</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              {/* Custom Source Asset input fields */}
-              {isCustomSource && (
-                <div className="pt-3 border-t border-border/20 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="space-y-1">
-                    <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Custom Asset Code</Label>
+                  <div className="relative flex-1">
                     <Input
-                      placeholder="e.g. BTC"
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="0.00"
+                      value={sourceAmount}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/,/g, ".")
+                        if (val === "" || /^[0-9]*\.?[0-9]*$/.test(val)) {
+                          setSourceAmount(val)
+                        }
+                      }}
+                      className="text-right font-mono font-bold text-lg border-0 bg-transparent pr-14 focus-visible:ring-0 h-11 pl-0 py-0"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] font-mono font-bold text-primary hover:bg-muted/60 h-7 px-2"
+                      onClick={() => setSourceAmount(String(sourceAsset.code === "XLM" ? Math.max(0, srcBalance - 1) : srcBalance))}
+                    >
+                      MAX
+                    </Button>
+                  </div>
+                </div>
+
+                {isCustomSource && (
+                  <div className="pt-3 border-t border-border/40 space-y-2 animate-in fade-in duration-150">
+                    <Input
+                      placeholder="Custom Code (e.g. BTC)"
                       value={customSrcCode}
                       onChange={(e) => setCustomSrcCode(e.target.value)}
-                      className="h-8 text-xs font-mono bg-background/50 border-border/40"
+                      className="h-8 text-xs font-mono rounded-lg"
                     />
-                  </div>
-                  <div className="space-y-1">
-                    <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Issuer Public Key</Label>
                     <div className="flex gap-2">
                       <Input
-                        placeholder="G..."
+                        placeholder="Issuer G..."
                         value={customSrcIssuer}
                         onChange={(e) => setCustomSrcIssuer(e.target.value)}
-                        className="h-8 text-xs font-mono flex-1 bg-background/50 border-border/40"
+                        className="h-8 text-xs font-mono flex-1 rounded-lg"
                       />
-                      <Button size="sm" className="h-8 text-xs shrink-0 font-semibold" onClick={() => handleApplyCustomAsset("source")}>
+                      <Button size="sm" className="h-8 text-xs rounded-lg" onClick={() => handleApplyCustomAsset("source")}>
                         Apply
                       </Button>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* SWITCH SWAP DIRECTION BUTTON */}
-            <div className="relative h-2 flex justify-center z-10">
-              <Button
-                size="icon"
-                variant="outline"
-                className="absolute -top-3 size-8 rounded-full border border-border/60 bg-card hover:bg-muted shadow-md hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
-                onClick={handleSwapAssets}
-                type="button"
-              >
-                <RefreshCw className={`size-3.5 text-primary transition-transform duration-500 ${rotated ? "rotate-180" : ""}`} />
-              </Button>
-            </div>
-
-            {/* DESTINATION PANEL */}
-            <div className="rounded-xl border border-border/30 bg-muted/30 p-4 space-y-3 focus-within:border-primary/40 transition-colors mt-2">
-              <div className="flex justify-between items-center text-xs text-muted-foreground">
-                <span>To (Receive)</span>
-                <span className="flex items-center gap-1">
-                  Balance: <span className="font-mono text-foreground font-semibold">{destBalance.toLocaleString(undefined, { maximumFractionDigits: 5 })} {destAsset.code}</span>
-                </span>
+                )}
               </div>
-              <div className="flex gap-3 items-center">
-                <Select
-                  value={isCustomDest ? "custom" : destAsset.code}
-                  onValueChange={(val) => {
-                    if (val === "custom") {
-                      setIsCustomDest(true)
-                    } else {
-                      setIsCustomDest(false)
-                      const sel = allAssets.find((a) => a.code === val)
-                      if (sel) setDestAsset(sel)
-                    }
-                  }}
+
+              {/* FLIP ASSET BUTTON */}
+              <div className="flex justify-center -my-2 relative z-10">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="size-8 rounded-full border-border/80 bg-card hover:bg-muted shadow-md hover:scale-105 transition-transform cursor-pointer"
+                  onClick={handleSwapAssets}
+                  type="button"
                 >
-                  <SelectTrigger className="w-[110px] sm:w-[140px] bg-background/50 font-semibold border-border/40 shrink-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {allAssets.map((a) => (
-                      <SelectItem key={`${a.code}-${a.issuer}`} value={a.code}>
-                        {a.symbol}
-                      </SelectItem>
-                    ))}
-                    <SelectItem value="custom">Custom...</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <div className="relative flex-1 flex items-center justify-end h-10">
-                  {pathLoading ? (
-                    <Loader2 className="size-4 animate-spin text-muted-foreground mr-2" />
-                  ) : destAmount ? (
-                    <span className="font-mono font-semibold text-lg text-foreground pr-2">
-                      {Number(destAmount).toLocaleString(undefined, { maximumFractionDigits: 5 })}
-                    </span>
-                  ) : (
-                    <span className="font-mono text-muted-foreground text-lg pr-2">-</span>
-                  )}
-                </div>
+                  <RefreshCw className={`size-3.5 text-primary transition-transform duration-500 ${rotated ? "rotate-180" : ""}`} />
+                </Button>
               </div>
 
-              {/* Custom Destination Asset input fields */}
-              {isCustomDest && (
-                <div className="pt-3 border-t border-border/20 space-y-2.5 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="space-y-1">
-                    <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Custom Asset Code</Label>
+              {/* DESTINATION ASSET PANEL */}
+              <div className="rounded-2xl border border-border/60 bg-muted/30 p-4 space-y-2.5 focus-within:border-primary/50 transition-colors">
+                <div className="flex justify-between items-center text-xs text-muted-foreground">
+                  <span className="font-semibold uppercase text-[10px] tracking-wider">Receive To</span>
+                  <span className="font-mono text-[11px]">
+                    Balance: <span className="font-bold text-foreground">{destBalance.toLocaleString(undefined, { maximumFractionDigits: 5 })} {destAsset.code}</span>
+                  </span>
+                </div>
+
+                <div className="flex gap-3 items-center">
+                  <Select
+                    value={isCustomDest ? "custom" : destAsset.code}
+                    onValueChange={(val) => {
+                      if (val === "custom") {
+                        setIsCustomDest(true)
+                      } else {
+                        setIsCustomDest(false)
+                        const sel = allAssets.find((a) => a.code === val)
+                        if (sel) setDestAsset(sel)
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="w-[120px] sm:w-[140px] font-semibold border-border/60 rounded-xl h-11 shrink-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {allAssets.map((a) => (
+                        <SelectItem key={`${a.code}-${a.issuer}`} value={a.code}>
+                          {a.symbol}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="custom">Custom Token...</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <div className="flex-1 flex items-center justify-end h-11">
+                    {pathLoading ? (
+                      <Loader2 className="size-4 animate-spin text-muted-foreground mr-2" />
+                    ) : destAmount ? (
+                      <span className="font-mono font-bold text-lg text-foreground pr-2">
+                        {Number(destAmount).toLocaleString(undefined, { maximumFractionDigits: 5 })}
+                      </span>
+                    ) : (
+                      <span className="font-mono text-muted-foreground text-lg pr-2">-</span>
+                    )}
+                  </div>
+                </div>
+
+                {isCustomDest && (
+                  <div className="pt-3 border-t border-border/40 space-y-2 animate-in fade-in duration-150">
                     <Input
-                      placeholder="e.g. USDC"
+                      placeholder="Custom Code (e.g. USDC)"
                       value={customDstCode}
                       onChange={(e) => setCustomDstCode(e.target.value)}
-                      className="h-8 text-xs font-mono bg-background/50 border-border/40"
+                      className="h-8 text-xs font-mono rounded-lg"
                     />
-                  </div>
-                  <div className="space-y-1">
-                    <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Issuer Public Key</Label>
                     <div className="flex gap-2">
                       <Input
-                        placeholder="G..."
+                        placeholder="Issuer G..."
                         value={customDstIssuer}
                         onChange={(e) => setCustomDstIssuer(e.target.value)}
-                        className="h-8 text-xs font-mono flex-1 bg-background/50 border-border/40"
+                        className="h-8 text-xs font-mono flex-1 rounded-lg"
                       />
-                      <Button size="sm" className="h-8 text-xs shrink-0 font-semibold" onClick={() => handleApplyCustomAsset("dest")}>
+                      <Button size="sm" className="h-8 text-xs rounded-lg" onClick={() => handleApplyCustomAsset("dest")}>
                         Apply
                       </Button>
                     </div>
                   </div>
+                )}
+              </div>
+            </div>
+
+            {/* TRUSTLINE NOTICE */}
+            {accountExists && !destHasTrustline && (
+              <div className="p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 space-y-3">
+                <div className="flex gap-2 text-amber-500">
+                  <AlertTriangle className="size-4 shrink-0 mt-0.5" />
+                  <div className="text-xs space-y-1">
+                    <p className="font-semibold">Trustline Required for {destAsset.code}</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      Stellar requires establishing a trustline before your address can receive {destAsset.code}.
+                    </p>
+                  </div>
                 </div>
+                <Button
+                  onClick={handleAddTrustline}
+                  disabled={actionLoading}
+                  className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs h-9 rounded-xl gap-2"
+                >
+                  {actionLoading ? (
+                    <>
+                      <Loader2 className="size-3.5 animate-spin" />
+                      Opening Trustline…
+                    </>
+                  ) : (
+                    <>Open {destAsset.code} Trustline</>
+                  )}
+                </Button>
+              </div>
+            )}
+
+            {exceedsBalance && (
+              <p className="text-xs text-destructive text-center font-mono">
+                Insufficient {sourceAsset.code} balance.
+              </p>
+            )}
+
+            {pathError && (
+              <p className="text-xs text-destructive text-center font-mono">
+                {pathError}
+              </p>
+            )}
+
+            {/* ACTION EXECUTION BUTTON */}
+            <div className="pt-2">
+              {destHasTrustline ? (
+                <Button
+                  onClick={handleExecuteSwap}
+                  disabled={!canSwap}
+                  className="w-full h-11 rounded-xl font-semibold text-sm gap-2 shadow-md focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {actionLoading ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" />
+                      Executing Horizon Swap…
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="size-4" />
+                      Confirm &amp; Swap Assets
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button disabled className="w-full h-11 rounded-xl font-semibold text-sm">
+                  Trustline Required
+                </Button>
               )}
             </div>
           </div>
 
-          {/* MISSING TRUSTLINE WARNING */}
-          {accountExists && !destHasTrustline && (
-            <div className="mt-5 p-4 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-3">
-              <div className="flex gap-2 text-amber-500">
-                <AlertTriangle className="size-5 shrink-0" />
-                <div className="text-xs space-y-1">
-                  <p className="font-semibold">Trustline Required</p>
-                  <p className="text-muted-foreground">
-                    You must establish a trustline for **{destAsset.code}** to hold this asset. This requires keeping a small amount of XLM (0.5 XLM) as reserve on your account.
-                  </p>
+          {/* Right 5 Columns: Liquidity Pathfinding & Rate Desk */}
+          <div className="lg:col-span-5 rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-7 backdrop-blur-xl space-y-6 shadow-sm">
+            <div className="flex items-center justify-between pb-3 border-b border-border/40">
+              <span className="text-xs font-bold uppercase tracking-wider text-foreground">Liquidity Pathing</span>
+              <span className="text-[10px] font-mono text-emerald-400">Horizon Node Synced</span>
+            </div>
+
+            <div className="space-y-3.5 text-xs">
+              <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/50 space-y-2">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Market Rate:</span>
+                  <span className="font-mono font-medium text-foreground">
+                    1 {sourceAsset.code} ≈ {rate?.toFixed(5) || "-"} {destAsset.code}
+                  </span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Guaranteed Minimum:</span>
+                  <span className="font-mono font-medium text-emerald-400">{destMinAmount} {destAsset.code}</span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Slippage Limit:</span>
+                  <span className="font-mono font-medium text-foreground">{slippage}%</span>
                 </div>
               </div>
-              <Button
-                onClick={handleAddTrustline}
-                disabled={actionLoading}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold text-xs py-2 gap-2"
-              >
-                {actionLoading ? (
-                  <>
-                    <Loader2 className="size-3.5 animate-spin" />
-                    Opening Trustline...
-                  </>
-                ) : (
-                  <>Open {destAsset.code} Trustline</>
-                )}
-              </Button>
-            </div>
-          )}
 
-          {/* PATHFINDING DETAIL VIEW */}
-          {destAmount && (
-            <div className="mt-5 p-4 rounded-xl border border-border/40 bg-muted/20 text-xs space-y-2.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Exchange Rate</span>
-                <span className="font-mono font-semibold">
-                  1 {sourceAsset.code} ≈ {rate?.toFixed(5)} {destAsset.code}
-                </span>
-              </div>
-              
               {path.length > 0 && (
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Swap Route</span>
-                  <span className="flex items-center gap-1 font-mono text-[10px] font-semibold text-primary uppercase bg-primary/10 rounded px-2 py-0.5">
-                    {sourceAsset.code}
+                <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/50 space-y-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
+                    Execution Route
+                  </span>
+                  <div className="flex flex-wrap items-center gap-1 font-mono text-[11px] font-semibold text-primary">
+                    <span className="bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">{sourceAsset.code}</span>
                     <ChevronRight className="size-3 text-muted-foreground" />
                     {path.map((p, idx) => (
                       <span key={idx} className="flex items-center gap-1">
-                        {p.code}
+                        <span className="bg-muted px-2 py-0.5 rounded-md border border-border">{p.code}</span>
                         <ChevronRight className="size-3 text-muted-foreground" />
                       </span>
                     ))}
-                    {destAsset.code}
-                  </span>
+                    <span className="bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">{destAsset.code}</span>
+                  </div>
                 </div>
               )}
 
-              <div className="flex justify-between items-center border-t border-border/20 pt-2 text-[10px] text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  Minimum Received
-                  <Info className="size-3" />
+              <div className="p-3.5 rounded-2xl bg-muted/40 border border-border/50 space-y-1.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
+                  Automated Market Maker
                 </span>
-                <span className="font-mono text-foreground">
-                  {destMinAmount} {destAsset.code}
-                </span>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  Stellar automatically discovers optimal liquidity paths across all active Order Books and AMM pools with zero intermediary spread.
+                </p>
               </div>
             </div>
-          )}
 
-          {/* WARNING AND ERRORS IN PAGE FORM */}
-          {exceedsBalance && (
-            <p className="text-xs text-destructive text-center mt-4 font-medium animate-pulse">
-              Insufficient {sourceAsset.code} balance to execute this swap.
-            </p>
-          )}
-
-          {pathError && (
-            <p className="text-xs text-destructive text-center mt-4 font-medium">
-              {pathError}
-            </p>
-          )}
-
-          {/* SUBMIT BUTTON */}
-          <div className="mt-6">
-            {destHasTrustline ? (
-              <Button
-                onClick={handleExecuteSwap}
-                disabled={!canSwap}
-                className="w-full gap-2 font-semibold text-sm h-11"
-              >
-                {actionLoading ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Swapping assets...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="size-4" />
-                    Confirm &amp; Swap
-                  </>
-                )}
-              </Button>
-            ) : (
-              <Button disabled className="w-full font-semibold text-sm h-11">
-                Trustline Required
-              </Button>
-            )}
+            <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+              <span>Horizon SSE Streaming</span>
+              <span className="text-emerald-500">Atomic Execution</span>
+            </div>
           </div>
-        </Card>
+        </div>
       </div>
 
       {/* SWAP SUCCESS DIALOG */}
