@@ -23,7 +23,7 @@ Lumen Wallet & LumenFlow Escrow have successfully transitioned to a production-g
 
 ### 🛡️ Smart Contract Mainnet Deployments
 * **LumenFlow Escrow Contract**: `CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`
-* **Custom SEP-41 Token Contract**: `CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`
+* **Custom SEP-41 Token Contract**: `CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE`
 * **Explorer Verification**: Both contracts are deployed live and verifiable on [Stellar Expert Public Mainnet](https://stellar.expert/explorer/public/contract/CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3).
 
 ### 💭 Advanced Feature: Multi-signature Logic
@@ -167,8 +167,8 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 * **Testnet Contract ID**: `CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD`
   * **Explorer**: [View on Stellar Expert (Testnet)](https://stellar.expert/explorer/testnet/contract/CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD)
   * **Transaction Hash of Contract Call**: `9e3faaa3307e0428c82c444a449d715d79eec8d7cc3ba6b12699dc3b304b7dea`
-* **Mainnet Contract ID**: `CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`
-  * **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT)
+* **Mainnet Contract ID**: `CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE`
+  * **Explorer**: [View on Stellar Expert (Public)](https://stellar.expert/explorer/public/contract/CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE)
 
 #### 2. LumenFlow Escrow Contract
 * **Mainnet Contract ID**: `CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`
