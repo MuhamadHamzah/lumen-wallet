@@ -4,6 +4,7 @@ import { useState } from "react"
 import { ShieldCheck, ArrowRight, Lock, CheckCircle2, Clock, Cpu, ArrowUpRight, Scale, TrendingUp, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FadeIn } from "./web3-animations"
+import { AnimatedNumber } from "./animated-number"
 
 interface HeroProps {
   onConnectClick: () => void
@@ -68,15 +69,21 @@ export function Hero({ onConnectClick, mode = "wallet" }: HeroProps) {
               <div className="pt-10 border-t border-border/40 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-center">
                 <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Ledger Finality</span>
-                  <p className="text-sm font-bold font-mono text-foreground">~3.8s Instant</p>
+                  <p className="text-sm font-bold font-mono text-foreground">
+                    ~<AnimatedNumber value={3.8} decimals={1} duration={1600} />s Instant
+                  </p>
                 </div>
                 <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Gas Execution</span>
-                  <p className="text-sm font-bold font-mono text-emerald-400">&lt; 0.00001 XLM</p>
+                  <p className="text-sm font-bold font-mono text-emerald-400">
+                    &lt; <AnimatedNumber value={0.00001} decimals={5} duration={1600} /> XLM
+                  </p>
                 </div>
                 <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Key Custody</span>
-                  <p className="text-sm font-bold font-mono text-foreground">100% Non-Custodial</p>
+                  <p className="text-sm font-bold font-mono text-foreground">
+                    <AnimatedNumber value={100} decimals={0} duration={1200} />% Non-Custodial
+                  </p>
                 </div>
                 <div className="space-y-1 p-3 rounded-2xl bg-card/30 border border-border/40">
                   <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">Smart Contracts</span>

@@ -17,6 +17,7 @@ import {
   CheckCircle2
 } from "lucide-react"
 import { FadeIn } from "./web3-animations"
+import { AnimatedNumber } from "./animated-number"
 
 interface FeaturesProps {
   mode?: "wallet" | "flow"
@@ -101,18 +102,24 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                     <span className="font-mono text-blue-400 lowercase">horizon-sse:connected</span>
                   </div>
                   <div className="text-3xl sm:text-4xl font-extrabold font-mono tracking-tight mt-1 flex items-baseline gap-1.5 text-foreground">
-                    12,450.85 <span className="text-xs text-blue-400 font-semibold uppercase">XLM</span>
+                    <AnimatedNumber value={12450.85} decimals={2} duration={2000} /> <span className="text-xs text-blue-400 font-semibold uppercase">XLM</span>
                   </div>
-                  <div className="text-xs text-muted-foreground font-medium mt-1">≈ $1,369.59 USD</div>
+                  <div className="text-xs text-muted-foreground font-medium mt-1 font-mono">
+                    ≈ $<AnimatedNumber value={1369.59} decimals={2} duration={2000} /> USD
+                  </div>
 
                   <div className="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-white/[0.08] text-xs relative z-10">
                     <div>
                       <span className="text-muted-foreground font-medium block text-[11px]">USDC Trustline</span>
-                      <span className="font-mono font-bold mt-0.5 block text-foreground">1,250.00 USDC</span>
+                      <span className="font-mono font-bold mt-0.5 block text-foreground">
+                        <AnimatedNumber value={1250.0} decimals={2} duration={1800} delay={150} /> USDC
+                      </span>
                     </div>
                     <div>
                       <span className="text-muted-foreground font-medium block text-[11px]">Settlement Time</span>
-                      <span className="font-mono font-bold mt-0.5 block text-emerald-400">3.8 Seconds</span>
+                      <span className="font-mono font-bold mt-0.5 block text-emerald-400">
+                        <AnimatedNumber value={3.8} decimals={1} duration={1500} delay={250} /> Seconds
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -128,7 +135,9 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                       <div className="size-6 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold text-[11px]">↑</div>
                       <div>
                         <div className="font-semibold text-foreground">Payment Sent</div>
-                        <div className="text-[10px] text-muted-foreground font-mono">120.00 XLM → GD2B...K8XQ</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">
+                          <AnimatedNumber value={120.0} decimals={2} duration={1600} delay={300} /> XLM → GD2B...K8XQ
+                        </div>
                       </div>
                     </div>
                     <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2 py-0.5 rounded-full">Finalized</span>
@@ -139,7 +148,9 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                       <div className="size-6 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-[11px]">↓</div>
                       <div>
                         <div className="font-semibold text-foreground">USDC Inbound</div>
-                        <div className="text-[10px] text-muted-foreground font-mono">50.00 USDC ← GCQA...M5K0</div>
+                        <div className="text-[10px] text-muted-foreground font-mono">
+                          <AnimatedNumber value={50.0} decimals={2} duration={1600} delay={400} /> USDC ← GCQA...M5K0
+                        </div>
                       </div>
                     </div>
                     <span className="text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 px-2 py-0.5 rounded-full">Finalized</span>
@@ -199,7 +210,7 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                       <Zap className="size-6" />
                     </div>
                     <span className="text-xs font-mono font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                      ~3.8s Ledger Settlement
+                      ~<AnimatedNumber value={3.8} decimals={1} duration={1600} />s Ledger Settlement
                     </span>
                   </div>
                   <h3 className="text-2xl font-bold text-foreground">Instant Stellar Transfer Engine</h3>
@@ -212,11 +223,15 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                 <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-muted/60 dark:bg-slate-950/60 border border-border/50 text-xs backdrop-blur-md">
                   <div>
                     <span className="text-muted-foreground block text-[11px]">Finality Time</span>
-                    <span className="font-mono font-bold text-foreground mt-0.5 block">&lt; 5.0 Seconds</span>
+                    <span className="font-mono font-bold text-foreground mt-0.5 block">
+                      &lt; <AnimatedNumber value={5.0} decimals={1} duration={1600} /> Seconds
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground block text-[11px]">Average Fee</span>
-                    <span className="font-mono font-bold text-emerald-400 mt-0.5 block">0.00001 XLM</span>
+                    <span className="font-mono font-bold text-emerald-400 mt-0.5 block">
+                      <AnimatedNumber value={0.00001} decimals={5} duration={1600} /> XLM
+                    </span>
                   </div>
                   <div>
                     <span className="text-muted-foreground block text-[11px]">Signing Flow</span>
@@ -258,7 +273,9 @@ export function Features({ mode = "wallet" }: FeaturesProps) {
                     Establish Stellar trustlines for USDC, EURC, and custom tokens with automatic minimum reserve tracking.
                   </p>
                 </div>
-                <span className="text-[11px] font-mono text-muted-foreground">0.5 XLM reserve per trustline</span>
+                <span className="text-[11px] font-mono text-muted-foreground">
+                  <AnimatedNumber value={0.5} decimals={1} duration={1500} /> XLM reserve per trustline
+                </span>
               </div>
             </FadeIn>
 

@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useWallet } from "@/components/wallet-provider"
+import { AnimatedNumber } from "@/components/animated-number"
 
 interface FeedbackItem {
   id: string;
@@ -141,7 +142,9 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider font-mono">Mainnet Calls</div>
-            <div className="text-2xl font-extrabold font-mono text-emerald-400 tracking-tight mt-0.5">{mainnetLogs.length}</div>
+            <div className="text-2xl font-extrabold font-mono text-emerald-400 tracking-tight mt-0.5">
+              <AnimatedNumber value={mainnetLogs.length} decimals={0} duration={1200} />
+            </div>
           </div>
         </div>
 
@@ -151,7 +154,9 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider font-mono">Testnet Calls</div>
-            <div className="text-2xl font-extrabold font-mono text-amber-400 tracking-tight mt-0.5">{testnetLogs.length}</div>
+            <div className="text-2xl font-extrabold font-mono text-amber-400 tracking-tight mt-0.5">
+              <AnimatedNumber value={testnetLogs.length} decimals={0} duration={1400} />
+            </div>
           </div>
         </div>
 
@@ -161,7 +166,9 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider font-mono">Active Keypairs</div>
-            <div className="text-2xl font-extrabold font-mono text-foreground tracking-tight mt-0.5">{uniqueUsers}</div>
+            <div className="text-2xl font-extrabold font-mono text-foreground tracking-tight mt-0.5">
+              <AnimatedNumber value={uniqueUsers} decimals={0} duration={1400} />
+            </div>
           </div>
         </div>
 
@@ -171,7 +178,9 @@ export function FeedbackAnalytics() {
           </div>
           <div>
             <div className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider font-mono">Satisfaction Index</div>
-            <div className="text-2xl font-extrabold font-mono text-foreground tracking-tight mt-0.5">{avgRating} / 5.0</div>
+            <div className="text-2xl font-extrabold font-mono text-foreground tracking-tight mt-0.5">
+              <AnimatedNumber value={Number(avgRating) || 5.0} decimals={1} duration={1200} /> / 5.0
+            </div>
           </div>
         </div>
       </div>
