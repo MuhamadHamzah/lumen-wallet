@@ -206,23 +206,32 @@ export async function writeInteractions(data: InteractionLog[]): Promise<void> {
     try {
       const newItem = filteredData[0]
       if (newItem) {
+        const isTestnet = (newItem.network || "").toLowerCase() === "testnet" ||
+          newItem.action?.toLowerCase().includes("testnet") ||
+          newItem.action?.toLowerCase().includes("friendbot")
+        
+        let actionLabel = newItem.action
+        if (isTestnet && !actionLabel.toLowerCase().includes("testnet") && !actionLabel.toLowerCase().includes("friendbot")) {
+          actionLabel = `${actionLabel} (Testnet)`
+        }
+
         const formatted = {
           address: newItem.address,
-          action: newItem.action,
-          tx_hash: newItem.txHash,
-          time: newItem.time,
-          network: newItem.network || "mainnet",
+          action: actionLabel,
+          tx_hash: newItem.txHash || "N/A",
+          time: newItem.time || new Date().toISOString(),
         }
         const { error } = await supabase.from("interactions").insert([formatted])
-        if (error) throw error
+        if (error) {
+          console.error("Kesalahan Supabase writeInteractions insert:", error)
+        }
       }
-      return
     } catch (err) {
-      console.error("Kesalahan Supabase writeInteractions, menulis ke lokal:", err)
+      console.error("Kesalahan Supabase writeInteractions:", err)
     }
   }
 
-  // Fallback ke penyimpanan berkas lokal
+  // Fallback dan sinkronisasi ke penyimpanan berkas lokal
   try {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
     fs.writeFileSync(INTERACTIONS_FILE, JSON.stringify(filteredData, null, 2))
