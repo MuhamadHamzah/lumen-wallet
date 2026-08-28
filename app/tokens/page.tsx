@@ -39,7 +39,7 @@ export default function TokensPage() {
       // Default tokens
       const isMainnet = (network as string) === "mainnet" || (network as string) === "public"
       const defaultToken = isMainnet
-        ? "CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE"
+        ? "CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT"
         : "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD"
       setTrackedContracts([defaultToken])
     }

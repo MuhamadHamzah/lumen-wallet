@@ -418,10 +418,10 @@ env.storage().instance().extend_ttl(10000, 50000);`,
                     <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">Mainnet Active</span>
                   </div>
                   <div className="p-3 rounded-xl bg-muted/50 border border-border font-mono text-xs text-foreground select-all break-all">
-                    CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE
+                    CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT
                   </div>
                   <a
-                    href="https://stellar.expert/explorer/public/contract/CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE"
+                    href="https://stellar.expert/explorer/public/contract/CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-mono"

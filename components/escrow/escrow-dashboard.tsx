@@ -95,7 +95,7 @@ export function EscrowDashboard() {
       setClientAddr(publicKey)
     }
     const isMainnet = network === "mainnet"
-    setTokenAddr(isMainnet ? "CCW67TSZV3SSS2HXMBQ5KGHSKJYYHQMRHDDYASPRYBSWQWSTFP3TCWZE" : "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD")
+    setTokenAddr(isMainnet ? "CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT" : "CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD")
   }, [publicKey, network])
 
   const handleAddMilestone = () => {
