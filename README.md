@@ -110,15 +110,15 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 ## 📸 Screenshots & Product Showcase
 
 ### 1. Wallet Connection Options
-> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Testnet Keypair).
+> Connect wallet modal presenting the available connection options (Freighter, WalletConnect, Secret Key import, or auto-generating a Keypair).
 ![Wallet Options](public/screenshots/wallet-options.png)
 
 ### 2. Wallet Connected & Balance
-> Dashboard showing wallet connected state with public address, XLM balance, and testnet indicator.
+> Dashboard showing wallet connected state with public address, XLM balance, and live network status.
 ![Wallet Connected & Balance](public/screenshots/wallet-connected.png)
 
-### 3. Successful Testnet Transaction
-> Payment sent successfully via Freighter on Stellar Testnet, with transaction hash and confirmation.
+### 3. Successful Transaction
+> Payment sent successfully via wallet on Stellar network, with transaction hash and confirmation.
 ![Successful Transaction](public/screenshots/transaction-success.png)
 
 ### 4. Transaction History
@@ -137,24 +137,32 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 > Soroban compliance interface for managing SEP-41 custom token minting and transfers.
 ![Custom Soroban Tokens](public/screenshots/Tokens.png)
 
-### 8. LumenFlow Escrow Dashboard
-> Decentalized multi-role milestone escrow workspace (Client, Freelancer, and Arbitrator roles).
+### 8. MultiSig Vault Management
+> Multi-signature threshold setup and proposal approval workflow without custodial servers.
+![MultiSig Vault](public/screenshots/MultiSig%20Vault.png)
+
+### 9. LumenFlow Escrow Dashboard
+> Decentralized multi-role milestone escrow workspace (Client, Freelancer, and Arbitrator roles).
 ![LumenFlow Escrow Dashboard](public/screenshots/LumenFlow%20Escrow.png)
 
-### 9. Proof of 50+ User Wallet Interactions
-> Verified database log showing 10+ unique Stellar wallet address interaction records (21 interactions).
-![Proof of Wallet Interactions](public/screenshots/Proof%20of%2010+%20user%20wallet%20interactions.png)
+### 10. Proof of 20+ Mainnet User Wallet Interactions
+> Verified telemetry log showing 20+ unique Stellar wallet address interaction records on Mainnet and Testnet.
+![Proof of Mainnet Wallet Interactions](public/screenshots/Proof%20of%2020+%20mainnet%20user%20wallet%20interactions.png)
 
-### 10. Basic User Feedback Summary
-> Live satisfaction index and structured user feedback review comments retrieved dynamically from Supabase.
+### 11. Basic User Feedback Summary
+> Live satisfaction index and structured user feedback review comments retrieved dynamically from database.
 ![User Feedback Summary](public/screenshots/Basic%20user%20feedback%20summary.png)
 
-### 11. Mobile Responsive UI
-> Mobile responsive view of the wallet interface on mobile device screen width.
+### 12. Developer Documentation & Tutorial Portal
+> Interactive developer documentation portal featuring Soroban contract tutorials, TTL guidance, and security reviews.
+![Developer Docs](public/screenshots/Developer%20Docs.png)
+
+### 13. Mobile Responsive UI
+> Mobile responsive view of the wallet interface optimized for mobile viewport widths.
 ![Mobile Responsive UI](public/screenshots/mobile-responsive.png)
 
-### 12. Monitoring & CI/CD Pipeline
-> Vercel CI/CD automatic deployment pipeline and Analytics setup.
+### 14. Monitoring & CI/CD Pipeline
+> Automated GitHub Actions CI/CD pipeline and Vercel production deployment.
 ![Monitoring & CI/CD](public/screenshots/cicd-pipeline.png)
 
 ---
