@@ -169,6 +169,8 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ## 📜 Smart Contracts
 
+![Soroban Smart Contracts Architecture](public/smartcontract.png)
+
 ### Deployed Contract Addresses
 
 #### 1. Custom Token (Soroban SEP-41 Token)
@@ -220,7 +222,7 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ## 🛠️ Tech Stack
 
-![Alt Text](public/frontend.png)
+![Frontend & Ecosystem Architecture](public/frontend.png)
 
 | Category | Technology |
 |----------|-----------|
