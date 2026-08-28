@@ -10,8 +10,8 @@
 > **Demo Video Walkthrough**: [https://youtu.be/F8JIcWFxsIQ](https://youtu.be/F8JIcWFxsIQ)  
 > **Twitter/X Launch Announcement**: [View on X (Post #2091562996686553279)](https://x.com/sorobanLumen/status/2091562996686553279)  
 > **Executive Pitch Deck (Canva PPT)**: [View Pitch Deck](https://canva.link/zk12jyusvccpa2g) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/PITCH_DECK.md)  
-> **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)  
-> **Feedback Google Form**: [Open Form](https://forms.gle/D3LD7AwEN5GYzbuG8)  
+> **User Onboarding Responses (Google Sheets)**: [View Live Sheet](https://docs.google.com/spreadsheets/d/1wDXAUrghccv78avfJYX6ERi-xKjHAc-codlLHaNEWwM/edit?usp=sharing)  
+> **Feedback Google Form**: [Open Form](https://forms.gle/tfyv2s1kowFR3LHKA)  
 > **Smart Contract Security Review**: [SECURITY_REVIEW.md](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/SECURITY_REVIEW.md)  
 > **Technical Tutorial & Developer Docs**: [Read Live on Web (lumenchain.xyz/docs)](https://lumenchain.xyz/docs) | [Markdown Version](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/TUTORIAL.md)  
 
@@ -32,9 +32,9 @@ Lumen Wallet & LumenFlow Escrow have successfully transitioned to a production-g
 ### 👥 Mainnet Onboarding & Real Adoption
 * **Verified Mainnet Users**: **20+ Unique Mainnet Addresses** executing active payment transactions.
 * **User Satisfaction Rating**: **4.85 / 5.0** (Based on collected user feedback)
-* **User Onboarding Google Form**: [https://forms.gle/D3LD7AwEN5GYzbuG8](https://forms.gle/D3LD7AwEN5GYzbuG8)
+* **User Onboarding Google Form**: [https://forms.gle/tfyv2s1kowFR3LHKA](https://forms.gle/tfyv2s1kowFR3LHKA)
 * **Exported Responses Spreadsheet**:
-  * 🌐 **[Live Google Sheets Response Data](https://docs.google.com/spreadsheets/d/1klxaFev9MbpKn-UoLbUcjfdQaG1huWxoVaW7d2yOS2c/edit?usp=sharing)**
+  * 🌐 **[Live Google Sheets Response Data](https://docs.google.com/spreadsheets/d/1wDXAUrghccv78avfJYX6ERi-xKjHAc-codlLHaNEWwM/edit?usp=sharing)**
   * 📁 **[Local Excel Record (.xlsx)](file:///c:/DATA/stellar-web3/lumen%20wallet/lumen_wallet/docs/user_onboarding_responses.xlsx)**
 * **Social Media Promotion**: [View Twitter/X Launch Post](https://x.com/sorobanLumen/status/2091562996686553279)
 
