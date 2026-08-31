@@ -17,13 +17,18 @@ export interface SponsorshipConfig {
 const sponsorRateLimitStore = new Map<string, number[]>()
 const MAX_REQUESTS_PER_MINUTE = 10
 
+// Ephemeral in-memory relayer keypair fallback when env secret is not set
+let fallbackMemoryKeypair: Keypair | null = null
+
 export function getSponsorKeypair(): Keypair {
   const secret = process.env.STELLAR_SPONSOR_SECRET_KEY
   if (secret && StrKey.isValidEd25519SecretSeed(secret)) {
     return Keypair.fromSecret(secret)
   }
-  // Deterministic valid fallback keypair for relayer
-  return Keypair.fromSecret("SD3K7H6G4EWRM4WGLG7YHQZ4I6P7V7C2V4V6WZQ52KYYQ6G4EWRM4WGL")
+  if (!fallbackMemoryKeypair) {
+    fallbackMemoryKeypair = Keypair.random()
+  }
+  return fallbackMemoryKeypair
 }
 
 export function getSponsorshipConfig(): SponsorshipConfig {
