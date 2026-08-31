@@ -39,6 +39,7 @@ export function SendForm() {
   const [memo, setMemo] = useState("")
   const [loading, setLoading] = useState(false)
   const [txHash, setTxHash] = useState<string | null>(null)
+  const [gaslessEnabled, setGaslessEnabled] = useState(true)
 
   const { data: balance } = useSWR(
     publicKey ? ["balance", publicKey, network] : null,
@@ -335,6 +336,32 @@ export function SendForm() {
               rows={2}
               className="resize-none rounded-xl text-xs font-mono"
             />
+          </div>
+
+          {/* Gasless Fee Sponsorship Option */}
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-cyan-500/[0.07] border border-cyan-500/30">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-cyan-400">⚡ Gasless Fee Sponsorship</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-mono">CAP-0015</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Lumen Relayer covers the network XLM gas fee for this payment.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setGaslessEnabled(!gaslessEnabled)}
+              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                gaslessEnabled ? "bg-cyan-500" : "bg-muted"
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                  gaslessEnabled ? "translate-x-4" : "translate-x-0"
+                }`}
+              />
+            </button>
           </div>
 
           <div className="pt-2">
