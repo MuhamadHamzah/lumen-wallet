@@ -51,12 +51,16 @@ In accordance with Black Belt Level 6 standards, product features were iterative
 | **3** | *"Dark mode theme needs pure pitch-black contrast and refined kinetic grid illumination."* | Implemented **OLED pure pitch-black (`#000000`) theme** and torchlight cursor grid effects. | [`57519f8`](https://github.com/MuhamadHamzah/lumen-wallet/commit/57519f8) |
 | **4** | *"Escrow milestone status needs clear visual progress bars and status completion tracking."* | Implemented visual milestone progress tracker and completion percentages in the **LumenFlow Escrow** dashboard. | [`5be6467`](https://github.com/MuhamadHamzah/lumen-wallet/commit/5be6467) |
 | **5** | *"New Web3 users find wallet connection and initial funding flow confusing."* | Built an interactive guided tour walkthrough modal (`components/onboarding-wizard.tsx`). | [`acc2a4e`](https://github.com/MuhamadHamzah/lumen-wallet/commit/acc2a4e) |
+| **6** | *"Users with 0 XLM cannot pay gas fees for token transfers and milestone escrow."* | Implemented **Gasless Fee Sponsorship Relayer (Stellar CAP-0015 Fee Bump)** with `/api/sponsor` endpoint and UI toggle. | [`2d9a359`](https://github.com/MuhamadHamzah/lumen-wallet/commit/2d9a359) |
+| **7** | *"Clients need automated refund mechanism if freelancer misses milestone deadlines."* | Implemented **Automated Escrow Expiration & Timeout Clawbacks (`claim_expired`)** with on-chain timestamp verification. | [`ebe8a2d`](https://github.com/MuhamadHamzah/lumen-wallet/commit/ebe8a2d) |
+| **8** | *"Mobile web app needs standalone installability and offline resilience."* | Implemented **Progressive Web App (PWA)** with `manifest.json`, `sw.js` caching, and offline connectivity status banner. | [`7800391`](https://github.com/MuhamadHamzah/lumen-wallet/commit/7800391) |
+| **9** | *"Cockpit dashboard needs interactive transaction volume charts and asset distribution metrics."* | Integrated **Real-Time SVG Transaction Analytics** widget with 24h/7d/30d timeframe filters. | [`bd460d9`](https://github.com/MuhamadHamzah/lumen-wallet/commit/bd460d9) |
 
 ### 🔮 Next Phase Evolving Plan (Future Improvements)
 Based on continuous user feedback and ecosystem growth goals:
-1. **Automated Escrow Expiry & Claimbacks**: Enable automatic timeout clawbacks if a contractor fails to deliver milestones within agreed schedules.
-2. **Mobile Progressive Web App (PWA)**: Package the dApp as an installable PWA with biometric signing.
-3. **Advanced ZK Verification Circuits**: Research Groth16 zk-SNARK verifiers on Soroban WASM for confidential milestone settlements.
+1. **Multi-Asset Automated Market Maker (AMM) Liquidity Pools**: Research automated constant-product liquidity pool deployment on Soroban.
+2. **Advanced ZK Verification Circuits**: Research Groth16 zk-SNARK verifiers on Soroban WASM for confidential milestone settlements.
+3. **Cross-Border SEP-24 / SEP-31 Fiat On/Off-Ramp Anchors**: Direct bank transfer integrations for seamless local currency conversion.
 
 ---
 
@@ -99,11 +103,21 @@ Lumen Wallet is a **full-featured, modern web-based wallet** for the Stellar blo
 
 ### 💼 LumenFlow Milestone Escrow
 - **Decentralized Escrow Accounts**: Trustless, programmable lockups of stablecoins.
+- **Automated Milestone Expiry & Timeout Claimback**: Milestone deadline timestamps with on-chain automated clawbacks (`claim_expired`).
 - **Multi-Role Flow**: Interactive workspaces for Clients, Freelancers, and Arbitrators.
 - **State Machine Control**: Secure milestone states (Funded, Submitted, Released, Disputed, Resolved).
 - **Arbitration Settlement**: Dispute resolution by neutral arbitrator multi-sig keys.
 - **Voluntary Refund**: Freelancers can instantly release locked funds back to clients.
-- **Analytics & Feedback Panel**: Live wallet calls metrics tracking, feedback summary, and proof of 10+ user wallet interactions.
+
+### ⚡ Gasless Fee Sponsorship (Fee Bump CAP-0015)
+- **Zero-gas onboarding**: Users can execute transfers and milestone interactions without holding native XLM.
+- **Lumen Relayer API**: Server-side `/api/sponsor` endpoint wraps and signs fee-bump transactions.
+- **Rate-limiting protection**: Sliding-window rate limit ensures fair relayer fund usage.
+
+### 📱 Progressive Web App (PWA) & Telemetry
+- **Installable Web App**: Standalone mobile and desktop support with custom splash and theme colors.
+- **Offline Shell Caching**: Service Worker (`sw.js`) caches UI assets and provides network failure fallback.
+- **Interactive Analytics**: SVG-rendered volume graphs and asset flow distribution charts.
 
 ---
 
