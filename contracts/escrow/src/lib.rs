@@ -113,6 +113,10 @@ impl EscrowContract {
             panic!("milestone must be funded to submit");
         }
 
+        if milestone.deadline > 0 && env.ledger().timestamp() > milestone.deadline {
+            panic!("cannot submit: milestone deadline has expired");
+        }
+
         milestone.status = 2; // Submitted
         env.storage().instance().set(&milestone_key, &milestone);
     }
