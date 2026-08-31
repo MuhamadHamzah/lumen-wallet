@@ -16,6 +16,7 @@ interface Milestone {
   description: string;
   amount: number;
   status: number; // 0 = Created, 1 = Funded, 2 = Submitted, 3 = Released, 4 = Disputed, 5 = Resolved/Refunded
+  deadline?: number; // Unix timestamp in seconds
 }
 
 interface EscrowProject {
@@ -44,9 +45,9 @@ export function EscrowDashboard() {
   const [arbitratorAddr, setArbitratorAddr] = useState("")
   const [tokenAddr, setTokenAddr] = useState("CCBQXWFFVSY67I7DKGM3RSC7VHZOYJRSU24NRH6BSBGNGM52IEGX4PXD")
   const [tokenSymbol, setTokenSymbol] = useState("USDC")
-  const [milestones, setMilestones] = useState<{ description: string; amount: number }[]>([
-    { description: "Milestone 1: Design & Architecture", amount: 100 },
-    { description: "Milestone 2: Smart Contract & Deployment", amount: 150 }
+  const [milestones, setMilestones] = useState<{ description: string; amount: number; deadlineDays: number }[]>([
+    { description: "Milestone 1: Design & Architecture", amount: 100, deadlineDays: 7 },
+    { description: "Milestone 2: Smart Contract & Deployment", amount: 150, deadlineDays: 14 }
   ])
 
   // Arbitration Form State
@@ -99,17 +100,19 @@ export function EscrowDashboard() {
   }, [publicKey, network])
 
   const handleAddMilestone = () => {
-    setMilestones([...milestones, { description: `Milestone ${milestones.length + 1}`, amount: 100 }])
+    setMilestones([...milestones, { description: `Milestone ${milestones.length + 1}`, amount: 100, deadlineDays: 7 }])
   }
 
   const handleRemoveMilestone = (index: number) => {
     setMilestones(milestones.filter((_, i) => i !== index))
   }
 
-  const handleMilestoneChange = (index: number, field: "description" | "amount", value: string) => {
+  const handleMilestoneChange = (index: number, field: "description" | "amount" | "deadlineDays", value: string) => {
     const updated = [...milestones]
     if (field === "amount") {
       updated[index].amount = Number(value)
+    } else if (field === "deadlineDays") {
+      updated[index].deadlineDays = Number(value)
     } else {
       updated[index].description = value
     }
@@ -123,6 +126,7 @@ export function EscrowDashboard() {
     }
 
     const isMainnet = network === "mainnet"
+    const nowSec = Math.floor(Date.now() / 1000)
     const newProject: EscrowProject = {
       id: isMainnet ? "CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3" : "CCLAKX7JHV4V7BWFQ62DZEQNNJAVYEBNOHWOFUVC6CRVLROQ6Z4O2364",
       name: projName,
@@ -134,8 +138,9 @@ export function EscrowDashboard() {
       milestones: milestones.map((m, idx) => ({
         id: idx + 1,
         description: m.description,
-        amount: Number(m.amount),
-        status: 0 // Created
+        amount: m.amount,
+        status: 0,
+        deadline: nowSec + (m.deadlineDays || 7) * 86400,
       }))
     }
 
@@ -676,9 +681,22 @@ export function EscrowDashboard() {
                             value={m.amount}
                             onChange={(e) => handleMilestoneChange(idx, "amount", e.target.value)}
                             placeholder="Amount" 
-                            className="w-24 h-9 text-xs font-mono rounded-xl"
+                            className="w-20 h-9 text-xs font-mono rounded-xl"
                             required 
                           />
+                          <div className="flex items-center gap-1 shrink-0 bg-background/50 px-2 py-1 rounded-xl border border-border/40">
+                            <span className="text-[10px] text-muted-foreground font-mono">Exp:</span>
+                            <Input 
+                              type="number"
+                              value={m.deadlineDays || 7}
+                              onChange={(e) => handleMilestoneChange(idx, "deadlineDays", e.target.value)}
+                              placeholder="Days" 
+                              className="w-14 h-7 text-xs font-mono p-1 text-center rounded-lg border-0 bg-transparent"
+                              title="Expiration Deadline in Days"
+                              required 
+                            />
+                            <span className="text-[10px] text-muted-foreground font-mono">d</span>
+                          </div>
                           {milestones.length > 1 && (
                             <Button 
                               type="button" 
