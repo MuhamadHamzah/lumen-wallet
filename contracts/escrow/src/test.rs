@@ -128,3 +128,24 @@ fn test_deposit_with_deadline_success() {
     assert_eq!(token_client.balance(&escrow_client.address), 2500);
     assert_eq!(token_client.balance(&client), 7500);
 }
+
+#[test]
+fn test_claim_expired_milestone_clawback() {
+    let (env, client, _freelancer, _arbitrator, _token_admin, token_address, escrow_client) = setup_test();
+    let token_client = soroban_sdk::token::Client::new(&env, &token_address);
+
+    let deadline = 1000;
+    env.ledger().set_timestamp(500);
+    escrow_client.deposit_with_deadline(&1, &3000, &deadline);
+
+    // Fast-forward timestamp past deadline
+    env.ledger().set_timestamp(1500);
+
+    // Client executes timeout clawback
+    escrow_client.claim_expired(&1);
+
+    let milestone = escrow_client.get_milestone(&1).unwrap();
+    assert_eq!(milestone.status, 5); // Resolved / Refunded
+    assert_eq!(token_client.balance(&client), 10_000); // Fully recovered
+    assert_eq!(token_client.balance(&escrow_client.address), 0);
+}
