@@ -5,7 +5,7 @@ import {
   Horizon,
   BASE_FEE,
 } from "@stellar/stellar-sdk"
-import { getSponsorKeypair, getSponsorshipConfig } from "@/lib/sponsorship-server"
+import { getSponsorKeypair, getSponsorshipConfig, checkSponsorRateLimit } from "@/lib/sponsorship-server"
 import { getServer, getNetworkPassphrase } from "@/lib/stellar-server"
 
 export async function GET(req: NextRequest) {
@@ -27,6 +27,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "anonymous-client"
+    if (!checkSponsorRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many gasless sponsorship requests. Please wait a minute before trying again." },
+        { status: 429 }
+      )
+    }
+
     const config = getSponsorshipConfig()
     if (!config.enabled) {
       return NextResponse.json(

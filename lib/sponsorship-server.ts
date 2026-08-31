@@ -2,8 +2,8 @@ import "server-only"
 import { Keypair, StrKey } from "@stellar/stellar-sdk"
 
 /**
- * Server-side Fee Sponsorship Configuration
- * Manages Relayer Accounts and Fee Limits for Gasless Transactions.
+ * Server-side Fee Sponsorship Configuration & Quota Manager
+ * Manages Relayer Accounts, Fee Limits, and Rate Limiting for Gasless Transactions.
  */
 
 export interface SponsorshipConfig {
@@ -12,6 +12,10 @@ export interface SponsorshipConfig {
   maxDailySponsoredTxs: number
   sponsorPublicKey: string
 }
+
+// In-memory rate limiting store for sponsor requests (key -> timestamp[])
+const sponsorRateLimitStore = new Map<string, number[]>()
+const MAX_REQUESTS_PER_MINUTE = 10
 
 export function getSponsorKeypair(): Keypair {
   const secret = process.env.STELLAR_SPONSOR_SECRET_KEY
@@ -30,4 +34,24 @@ export function getSponsorshipConfig(): SponsorshipConfig {
     maxDailySponsoredTxs: parseInt(process.env.MAX_DAILY_SPONSORED_TXS ?? "500", 10),
     sponsorPublicKey: keypair.publicKey(),
   }
+}
+
+/**
+ * Check and record rate limit for an identifier (IP or Public Key)
+ * Returns true if allowed, false if rate limit exceeded.
+ */
+export function checkSponsorRateLimit(identifier: string): boolean {
+  const now = Date.now()
+  const oneMinuteAgo = now - 60 * 1000
+
+  const timestamps = sponsorRateLimitStore.get(identifier) ?? []
+  const recentTimestamps = timestamps.filter((t) => t > oneMinuteAgo)
+
+  if (recentTimestamps.length >= MAX_REQUESTS_PER_MINUTE) {
+    return false
+  }
+
+  recentTimestamps.push(now)
+  sponsorRateLimitStore.set(identifier, recentTimestamps)
+  return true
 }
