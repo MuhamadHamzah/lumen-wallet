@@ -149,3 +149,19 @@ fn test_claim_expired_milestone_clawback() {
     assert_eq!(token_client.balance(&client), 10_000); // Fully recovered
     assert_eq!(token_client.balance(&escrow_client.address), 0);
 }
+
+#[test]
+#[should_panic(expected = "cannot submit: milestone deadline has expired")]
+fn test_submit_after_deadline_fails() {
+    let (env, _client, _freelancer, _arbitrator, _token_admin, _token_address, escrow_client) = setup_test();
+
+    let deadline = 1000;
+    env.ledger().set_timestamp(500);
+    escrow_client.deposit_with_deadline(&1, &2000, &deadline);
+
+    // Fast-forward past deadline
+    env.ledger().set_timestamp(1500);
+
+    // Submitting work after deadline must panic
+    escrow_client.submit(&1);
+}
