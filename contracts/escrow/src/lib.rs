@@ -71,6 +71,36 @@ impl EscrowContract {
         env.storage().instance().set(&milestone_key, &milestone);
     }
 
+    /// Deposit funds into a milestone with a hard timestamp expiration deadline. Requires client authentication.
+    pub fn deposit_with_deadline(env: Env, id: u32, amount: i128, deadline: u64) {
+        let client: Address = env.storage().instance().get(&DataKey::Client).unwrap();
+        client.require_auth();
+
+        if amount <= 0 {
+            panic!("amount must be positive");
+        }
+
+        let milestone_key = DataKey::Milestone(id);
+        if env.storage().instance().has(&milestone_key) {
+            let m: Milestone = env.storage().instance().get(&milestone_key).unwrap();
+            if m.status != 0 {
+                panic!("milestone already funded or processed");
+            }
+        }
+
+        // Lock tokens from client into the escrow contract
+        let token: Address = env.storage().instance().get(&DataKey::Token).unwrap();
+        let token_client = soroban_sdk::token::Client::new(&env, &token);
+        token_client.transfer(&client, &env.current_contract_address(), &amount);
+
+        let milestone = Milestone {
+            amount,
+            status: 1, // Funded
+            deadline,
+        };
+        env.storage().instance().set(&milestone_key, &milestone);
+    }
+
     /// Submit a milestone (freelancer completed the work). Requires freelancer authentication.
     pub fn submit(env: Env, id: u32) {
         let freelancer: Address = env.storage().instance().get(&DataKey::Freelancer).unwrap();
