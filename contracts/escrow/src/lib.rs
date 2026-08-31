@@ -222,6 +222,37 @@ impl EscrowContract {
         token_client.transfer(&env.current_contract_address(), &client, &amount);
     }
 
+    /// Automatically claim back expired milestone funds to client if deadline has passed without completion.
+    pub fn claim_expired(env: Env, id: u32) {
+        let client: Address = env.storage().instance().get(&DataKey::Client).unwrap();
+        client.require_auth();
+
+        let milestone_key = DataKey::Milestone(id);
+        let mut milestone: Milestone = env.storage().instance().get(&milestone_key).expect("milestone not found");
+
+        if milestone.deadline == 0 {
+            panic!("milestone has no expiration deadline");
+        }
+
+        let current_time = env.ledger().timestamp();
+        if current_time < milestone.deadline {
+            panic!("milestone deadline has not yet expired");
+        }
+
+        // Only allow claiming if funded, submitted but pending, or disputed
+        if milestone.status != 1 && milestone.status != 4 {
+            panic!("invalid status for expiration clawback");
+        }
+
+        let amount = milestone.amount;
+        milestone.status = 5; // Resolved / Clawed Back
+        env.storage().instance().set(&milestone_key, &milestone);
+
+        let token: Address = env.storage().instance().get(&DataKey::Token).unwrap();
+        let token_client = soroban_sdk::token::Client::new(&env, &token);
+        token_client.transfer(&env.current_contract_address(), &client, &amount);
+    }
+
     // Getters
     pub fn get_client(env: Env) -> Address {
         env.storage().instance().get(&DataKey::Client).unwrap()
