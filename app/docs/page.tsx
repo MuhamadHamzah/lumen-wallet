@@ -449,6 +449,26 @@ env.storage().instance().extend_ttl(10000, 50000);`,
                     <ExternalLink className="size-3" />
                   </a>
                 </div>
+
+                <div className="p-6 rounded-2xl border border-border/60 bg-card/40 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-foreground uppercase">3. Gasless Fee Sponsorship Relayer</span>
+                    <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">CAP-0015 Active</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Stellar Fee Bump Relayer endpoint (<code className="text-foreground font-mono">POST /api/sponsor</code>) automatically wraps user transactions and signs as feeSource, granting 100% gasless transactions.
+                  </p>
+                </div>
+
+                <div className="p-6 rounded-2xl border border-border/60 bg-card/40 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-foreground uppercase">4. Progressive Web App (PWA) Mobile Architecture</span>
+                    <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">PWA Standalone</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Equipped with Service Worker caching (<code className="text-foreground font-mono">/sw.js</code>), Web Manifest (<code className="text-foreground font-mono">/manifest.json</code>), and offline network state indicators.
+                  </p>
+                </div>
               </div>
             </div>
           )}
