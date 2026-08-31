@@ -50,31 +50,32 @@ Lumen Wallet offers a unified, zero-friction Web3 wallet experience powered by S
 └──────────────┘          └──────────────────┘         └──────────────────┘
 ```
 
-- **Frontend**: Next.js 16 (App Router), TypeScript 5.7, Tailwind CSS, Radix UI Primitives, SWR.
+- **Frontend**: Next.js 16 (App Router), TypeScript 5.7, Tailwind CSS, Radix UI Primitives, SWR, Progressive Web App (PWA).
 - **Smart Contracts**: Rust Soroban WASM contracts deployed on Stellar Mainnet (`CAEY3YRTOPP5KLJYQ2JRUTJNUG7VMXMEHJVTJP3FFS73XY37CAPB5KT3`) and Custom Token (`CAWDNAUATO6EPYCAD57EBY45YGLDMRE4ZHKTWN6GBMCPATMHWUMG7CLT`).
+- **Gasless Relayer**: Stellar CAP-0015 Fee Bump Relayer server (`/api/sponsor`) providing 100% sponsored gasless transactions.
 - **Persistence**: Hybrid Supabase PostgreSQL persistence with local JSON fallback for interaction logs, user feedback, and escrow metadata.
 
 ---
 
 ## 📈 5. Growth Strategy & User Traction
 
-- **Level 5 Onboarding Campaign**: Onboarded **50+ active testnet users** executing real Stellar testnet transactions and providing structured feedback.
+- **Level 6 Black Belt Mainnet Launch**: Onboarded **20+ verified Mainnet users** executing real Stellar transactions with 4.85/5.0 customer satisfaction.
 - **Feedback-Driven Iteration Loop**: Real-time user feedback collected directly in dApp, exported to Excel, and mapped directly to Git commit releases.
 - **Ecosystem Partnerships & Developer Grants**: Partnering with Web3 freelance DAOs and applying for Stellar Community Fund (SCF) growth grants.
 
 ---
 
-## 🔮 6. Future Roadmap
+## 🔮 6. Roadmap & Milestone Execution
 
 ```
-Phase 1 (Completed) ──► Phase 2 (Completed) ──► Phase 3 (Q3 2026) ──► Phase 4 (Q4 2026)
-Wallet & SEP-41 Token    Escrow & 50+ Users     Mainnet & Mobile PWA  DAO Governance
+Phase 1 (Done) ──► Phase 2 (Done) ──► Phase 3 (Black Belt - Live) ──► Phase 4 (Next)
+Wallet & DEX       Escrow & Feedback   Mainnet, Gasless Relayer & PWA    AMM Pools & ZK
 ```
 
 - **Phase 1 (MVP)**: Multi-wallet connection, DEX Path Payment Swaps, SEP-41 custom token minting on Soroban.
-- **Phase 2 (Blue Belt - Current)**: LumenFlow Milestone Escrow, Guided Onboarding Wizard, 50+ onboarded testnet users, and live Supabase analytics.
-- **Phase 3 (Mainnet & Mobile)**: Official Mainnet launch, Progressive Web App (PWA) mobile support, and automated milestone timeout releases.
-- **Phase 4 (Ecosystem Expansion)**: Multi-chain liquidity bridges, automated yield-generating escrow lockups, and decentralized DAO arbitration.
+- **Phase 2 (Feedback & Escrow)**: LumenFlow Milestone Escrow, Guided Onboarding Wizard, and live Supabase analytics.
+- **Phase 3 (Black Belt - Live)**: Official Mainnet contract deployments, Gasless Fee Sponsorship (Fee Bump CAP-0015), Milestone Expiry & Timeout Clawbacks, and Progressive Web App (PWA).
+- **Phase 4 (Next Phase)**: Constant-product AMM liquidity pools, ZK privacy settlements, and SEP-24/SEP-31 fiat on/off-ramp anchors.
 
 ---
 
