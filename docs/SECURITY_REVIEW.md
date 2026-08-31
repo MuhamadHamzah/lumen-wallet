@@ -22,6 +22,7 @@ Every critical state-changing function validates the caller's identity:
 * `dispute()` enforces `caller.require_auth()` and asserts that the caller must be either the client or the freelancer.
 * `resolve()` enforces `arbitrator.require_auth()`.
 * `refund_by_freelancer()` enforces `freelancer.require_auth()`.
+* `claim_expired()` enforces `client.require_auth()` and validates that the ledger timestamp has strictly exceeded the configured milestone deadline.
 
 This prevents unauthorized parties from locking, submitting, releasing, or disputing milestone funds.
 
