@@ -414,13 +414,25 @@ export function SendForm() {
               <span>Transfer Outflow:</span>
               <span className="font-mono font-medium text-primary">- {(amountNum || 0).toFixed(4)} XLM</span>
             </div>
-            <div className="flex justify-between text-muted-foreground">
+            <div className="flex justify-between text-muted-foreground items-center">
               <span>Network Base Fee:</span>
-              <span className="font-mono font-medium text-foreground">~{fee} XLM</span>
+              {gaslessEnabled ? (
+                <span className="font-mono font-medium text-cyan-400 inline-flex items-center gap-1">
+                  <span className="size-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  0.0000 XLM (Sponsored ⚡)
+                </span>
+              ) : (
+                <span className="font-mono font-medium text-foreground">~{fee} XLM</span>
+              )}
             </div>
             <div className="pt-2 border-t border-border/50 flex justify-between font-semibold">
               <span className="text-foreground">Estimated Balance After:</span>
-              <span className="font-mono text-emerald-400">{remainingBalance.toFixed(4)} XLM</span>
+              <span className="font-mono text-emerald-400">
+                {(gaslessEnabled
+                  ? Math.max(0, currentBalNum - (amountNum || 0))
+                  : remainingBalance
+                ).toFixed(4)} XLM
+              </span>
             </div>
           </div>
 
