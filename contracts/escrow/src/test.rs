@@ -107,8 +107,24 @@ fn test_submit_without_funding() {
 #[test]
 #[should_panic(expected = "shares sum must equal total milestone amount")]
 fn test_invalid_resolution_shares() {
-    let (env, client, _freelancer, _arbitrator, _token_admin, _token_address, escrow_client) = setup_test();
+    let (_env, client, _freelancer, _arbitrator, _token_admin, _token_address, escrow_client) = setup_test();
     escrow_client.deposit(&1, &1000);
     escrow_client.dispute(&client, &1);
     escrow_client.resolve(&1, &500, &600); // Sum is 1100, which is invalid
+}
+
+#[test]
+fn test_deposit_with_deadline_success() {
+    let (env, client, _freelancer, _arbitrator, _token_admin, token_address, escrow_client) = setup_test();
+    let token_client = soroban_sdk::token::Client::new(&env, &token_address);
+
+    let deadline_timestamp = 1787500000;
+    escrow_client.deposit_with_deadline(&1, &2500, &deadline_timestamp);
+
+    let milestone = escrow_client.get_milestone(&1).unwrap();
+    assert_eq!(milestone.amount, 2500);
+    assert_eq!(milestone.status, 1); // Funded
+    assert_eq!(milestone.deadline, deadline_timestamp);
+    assert_eq!(token_client.balance(&escrow_client.address), 2500);
+    assert_eq!(token_client.balance(&client), 7500);
 }
