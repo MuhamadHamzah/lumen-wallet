@@ -226,6 +226,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </span>
                 </>
               )}
+              <span className="text-muted-foreground/40">•</span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 font-mono text-[10px] font-medium" title="Stellar Fee Bump relayer is online and sponsoring gas fees">
+                <span className="size-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                ⚡ Gasless Relayer Active
+              </span>
             </div>
             <div className="flex items-center gap-3">
               <NetworkSwitcher />
