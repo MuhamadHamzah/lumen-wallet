@@ -84,12 +84,11 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("[API Sponsor Error]:", error?.response?.data || error?.message || error)
     
-    // Extract horizon error details if available
     const horizonError = error?.response?.data?.extras?.result_codes
     return NextResponse.json(
       {
         error: horizonError
-          ? Stellar rejection: 
+          ? `Stellar rejection: ${JSON.stringify(horizonError)}`
           : error?.message || "Internal error processing sponsored transaction",
       },
       { status: 422 }
