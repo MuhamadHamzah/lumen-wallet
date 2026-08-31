@@ -282,6 +282,21 @@ export function EscrowDashboard() {
     )
   }
 
+  const handleClaimExpired = (mId: number, amount: number) => {
+    toast.promise(
+      new Promise((resolve) => setTimeout(resolve, 1200)),
+      {
+        loading: `Clawing back expired milestone funds (${amount} ${activeProject?.tokenSymbol})...`,
+        success: () => {
+          updateMilestoneStatus(mId, 5) // Set status to Resolved/Refunded
+          incrementWalletMetrics(`Milestone #${mId} Timeout Clawback (${amount} ${activeProject?.tokenSymbol})`, 1)
+          return `Timeout clawback executed! ${amount} ${activeProject?.tokenSymbol} refunded to your client wallet.`
+        },
+        error: "Failed to claim expired milestone."
+      }
+    )
+  }
+
   // Log wallet interaction to server-side API for persistence
   const incrementWalletMetrics = async (actionName: string, _count = 1) => {
     try {
@@ -525,6 +540,12 @@ export function EscrowDashboard() {
                               {userIsFreelancer && (m.status === 1 || m.status === 2) && (
                                 <Button size="sm" variant="outline" onClick={() => handleRefund(m.id, m.amount)} className="gap-1.5 rounded-xl text-xs h-8">
                                   <Ban className="size-3.5" /> Refund Client
+                                </Button>
+                              )}
+
+                              {userIsClient && (m.status === 1 || m.status === 4) && m.deadline && Math.floor(Date.now() / 1000) >= m.deadline && (
+                                <Button size="sm" variant="destructive" onClick={() => handleClaimExpired(m.id, m.amount)} className="gap-1.5 rounded-xl text-xs h-8 bg-rose-600 hover:bg-rose-700">
+                                  <AlertTriangle className="size-3.5" /> Claim Expired Funds
                                 </Button>
                               )}
 
