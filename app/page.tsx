@@ -5,6 +5,7 @@ import { useWallet } from "@/components/wallet-provider"
 import { AppShell } from "@/components/app-shell"
 import { BalanceCard } from "@/components/dashboard/balance-card"
 import { RecentTransactions } from "@/components/dashboard/recent-transactions"
+import { TransactionAnalytics } from "@/components/dashboard/transaction-analytics"
 import { LandingPageContainer } from "@/components/landing/landing-page-container"
 import { AuthModal } from "@/components/landing/auth-modal"
 
@@ -41,6 +42,9 @@ export default function Page() {
               <RecentTransactions />
             </div>
           </div>
+
+          {/* Real-Time Transaction & Volume Analytics */}
+          <TransactionAnalytics />
         </div>
       </AppShell>
     )
