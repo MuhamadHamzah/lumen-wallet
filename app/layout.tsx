@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { WalletProvider } from '@/components/wallet-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { PWAInstallPrompt } from '@/components/pwa-install-prompt'
+import { OfflineBanner } from '@/components/offline-banner'
 import './globals.css'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <WalletProvider>
+            <OfflineBanner />
             {children}
             <PWAInstallPrompt />
             <Toaster richColors position="top-center" />
