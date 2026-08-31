@@ -469,11 +469,30 @@ export function EscrowDashboard() {
                                 <span className="text-[10px] font-bold text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md font-mono">Stage #{m.id}</span>
                                 <h4 className="font-bold text-sm text-foreground">{m.description}</h4>
                               </div>
-                              <div className="flex items-center gap-3 mt-1">
+                              <div className="flex items-center gap-3 mt-1 flex-wrap">
                                 <span className="font-mono text-sm font-extrabold text-primary">
                                   {m.amount} {activeProject.tokenSymbol}
                                 </span>
                                 {getStatusBadge(m.status)}
+                                {m.deadline && (
+                                  (() => {
+                                    const nowSec = Math.floor(Date.now() / 1000)
+                                    const isExpired = nowSec >= m.deadline
+                                    const diffHours = Math.round((m.deadline - nowSec) / 3600)
+                                    const diffDays = Math.round(diffHours / 24)
+                                    return (
+                                      <span
+                                        className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                                          isExpired
+                                            ? "bg-rose-500/10 border-rose-500/30 text-rose-400 font-semibold"
+                                            : "bg-muted/50 border-border text-muted-foreground"
+                                        }`}
+                                      >
+                                        {isExpired ? "⏰ Expired (Clawback Eligible)" : `⏳ ${diffDays > 0 ? `${diffDays}d left` : `${diffHours}h left`}`}
+                                      </span>
+                                    )
+                                  })()
+                                )}
                               </div>
                             </div>
 
