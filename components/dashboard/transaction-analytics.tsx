@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { BarChart3, TrendingUp, Zap, ArrowUpRight, ArrowDownLeft } from "lucide-react"
+import { BarChart3, TrendingUp, Zap, ArrowUpRight, ArrowDownLeft, PieChart } from "lucide-react"
 
 const CHART_DATA = {
   "24h": [
@@ -145,18 +145,13 @@ export function TransactionAnalytics() {
               </linearGradient>
             </defs>
 
-            {/* Grid horizontal lines */}
             <line x1={paddingX} y1={paddingY} x2={width - paddingX} y2={paddingY} stroke="currentColor" strokeOpacity="0.08" />
             <line x1={paddingX} y1={height / 2} x2={width - paddingX} y2={height / 2} stroke="currentColor" strokeOpacity="0.08" />
             <line x1={paddingX} y1={height - paddingY} x2={width - paddingX} y2={height - paddingY} stroke="currentColor" strokeOpacity="0.15" />
 
-            {/* Area Fill */}
             <path d={areaPath} fill="url(#chartGradient)" />
-
-            {/* Line Stroke */}
             <polyline fill="none" stroke="#0066FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" points={pointsString} />
 
-            {/* Data point dots */}
             {activePoints.map((p, i) => {
               const cx = paddingX + (i / (activePoints.length - 1)) * (width - 2 * paddingX)
               const cy = height - paddingY - (p.val / maxVal) * (height - 2 * paddingY)
@@ -174,6 +169,42 @@ export function TransactionAnalytics() {
           {activePoints.map((p, i) => (
             <span key={i}>{p.label}</span>
           ))}
+        </div>
+      </div>
+
+      {/* Asset Distribution Breakdown Bar */}
+      <div className="p-4 rounded-2xl bg-muted/20 border border-border/50 space-y-3">
+        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
+          <span className="flex items-center gap-1.5">
+            <PieChart className="size-3.5 text-primary" /> Asset Flow Distribution
+          </span>
+          <span className="text-[10px] font-mono lowercase">100% Soroban SAC Compatible</span>
+        </div>
+
+        <div className="w-full h-3 rounded-full overflow-hidden flex bg-muted/50 border border-border/40">
+          <div style={{ width: "62%" }} className="bg-primary h-full" title="Native XLM (62%)" />
+          <div style={{ width: "24%" }} className="bg-cyan-500 h-full" title="Circle USDC (24%)" />
+          <div style={{ width: "8%" }} className="bg-emerald-500 h-full" title="Circle EURC (8%)" />
+          <div style={{ width: "6%" }} className="bg-amber-500 h-full" title="Custom Token (6%)" />
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px] font-mono">
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-primary" />
+            <span className="text-foreground">XLM: 62%</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-cyan-500" />
+            <span className="text-foreground">USDC: 24%</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-emerald-500" />
+            <span className="text-foreground">EURC: 8%</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-amber-500" />
+            <span className="text-foreground">Custom: 6%</span>
+          </div>
         </div>
       </div>
     </div>
