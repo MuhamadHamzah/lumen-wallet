@@ -122,6 +122,57 @@ pub fn resolve(env: Env, id: u32, freelancer_share: i128, client_share: i128) {
 
 ---
 
+## ⚡ Gasless Fee Sponsorship (Stellar CAP-0015 Fee Bump)
+
+To provide a seamless Web2-like onboarding experience, Lumen Wallet integrates Stellar's native **Fee Bump Transactions (CAP-0015)**. 
+
+When a user creates, deposits, or releases an escrow milestone without owning native XLM for gas:
+1. The user signs the inner transaction payload with their wallet keys.
+2. The payload is sent to the Lumen Relayer endpoint (`POST /api/sponsor`).
+3. The server builds a `FeeBumpTransaction`, signs it as the `feeSource`, and submits it to Horizon.
+
+```typescript
+// Wrapping an inner escrow transaction with Fee Bump Sponsorship
+const feeBumpTx = TransactionBuilder.buildFeeBumpTransaction(
+  sponsorKeypair,
+  "200", // fee in stroops
+  innerTx,
+  Networks.PUBLIC
+);
+feeBumpTx.sign(sponsorKeypair);
+await server.submitTransaction(feeBumpTx);
+```
+
+---
+
+## ⏳ Automated Milestone Expiration & Timeout Clawbacks
+
+To protect clients against unresponsive contractors, milestones can now be initialized with a timestamp expiration deadline (`deadline: u64`). 
+
+If a contractor does not submit work before the deadline passes, the client can execute an automated clawback without requiring arbitrator intervention:
+
+```rust
+pub fn claim_expired(env: Env, id: u32) {
+    let client: Address = env.storage().instance().get(&DataKey::Client).unwrap();
+    client.require_auth();
+
+    let milestone_key = DataKey::Milestone(id);
+    let mut milestone: Milestone = env.storage().instance().get(&milestone_key).expect("milestone not found");
+
+    if env.ledger().timestamp() < milestone.deadline {
+        panic!("milestone deadline has not yet expired");
+    }
+
+    milestone.status = 5; // Resolved / Clawed Back
+    env.storage().instance().set(&milestone_key, &milestone);
+
+    let token: Address = env.storage().instance().get(&DataKey::Token).unwrap();
+    token::Client::new(&env, &token).transfer(&env.current_contract_address(), &client, &milestone.amount);
+}
+```
+
+---
+
 ## 🚀 Deployed on Stellar Mainnet
 
 This contract architecture is the exact engine powering **LumenFlow**. Deployed live on the **Stellar Mainnet**, it enables developers and clients to collaborate with absolute certainty, zero platform commissions, and sub-second transaction finality. 
