@@ -6,6 +6,7 @@ use soroban_sdk::{contract, contractimpl, contracttype, Address, Env};
 pub struct Milestone {
     pub amount: i128,
     pub status: u32, // 0 = Created, 1 = Funded, 2 = Submitted, 3 = Released, 4 = Disputed, 5 = Resolved
+    pub deadline: u64, // Unix timestamp expiration (0 = no deadline)
 }
 
 #[contracttype]
@@ -65,6 +66,7 @@ impl EscrowContract {
         let milestone = Milestone {
             amount,
             status: 1, // Funded
+            deadline: 0,
         };
         env.storage().instance().set(&milestone_key, &milestone);
     }
